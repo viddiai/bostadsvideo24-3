@@ -78,6 +78,19 @@ img { max-width: 100%; height: auto; }
   background: var(--accent); color: var(--bg);
   padding: 11px 22px; border-radius: 8px; font-weight: 600;
 }
+.nav-banner {
+  background: var(--ink); color: var(--bg);
+  padding: 9px 18px; border-radius: 99px;
+  font-size: 13.5px; font-weight: 700; white-space: nowrap;
+  box-shadow: 3px 3px 0 var(--accent);
+}
+.nav-banner:hover {
+  opacity: 1; transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 var(--accent);
+}
+@media (max-width: 1180px) {
+  .nav-banner { order: 1; flex-basis: 100%; text-align: center; white-space: normal; }
+}
 
 /* ---------- Knappar & chips ---------- */
 .btn-primary {
