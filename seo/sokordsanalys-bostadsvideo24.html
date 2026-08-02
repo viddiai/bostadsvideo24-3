@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sökordsanalys — bostadsvideo24.se</title>
+<style>
+:root{
+  --surface:#1a1a19;
+  --card:#232322;
+  --ink:#ffffff;
+  --ink-2:#c3c2b7;
+  --ink-3:#83827a;
+  --rule:#33332f;
+  --accent:#3987e5;
+  --warn:#e0a03c;
+  --bad:#e66767;
+  --good:#199e70;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--surface);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1100px;margin:0 auto;padding:56px 40px 96px}
+
+header.rpt{border-bottom:1px solid var(--rule);padding-bottom:32px;margin-bottom:44px}
+.eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin:0 0 14px}
+h1{font-size:40px;font-weight:700;line-height:1.15;margin:0 0 20px;letter-spacing:-.01em}
+.meta{display:flex;flex-wrap:wrap;gap:36px;margin-top:22px}
+.meta div{min-width:110px}
+.meta .k{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:5px}
+.meta .v{font-size:17px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+
+.heroes{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:52px}
+.hero{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:26px 22px}
+.hero .big{font-size:42px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.hero .lbl{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-top:12px;line-height:1.35}
+.hero.bad .big{color:var(--bad)}
+.hero.warn .big{color:var(--warn)}
+.hero.good .big{color:var(--good)}
+.hero.accent .big{color:var(--accent)}
+
+section{margin-bottom:56px}
+h2{font-size:26px;font-weight:700;margin:0 0 8px;letter-spacing:-.01em}
+.sub{color:var(--ink-2);font-size:16px;margin:0 0 24px;max-width:80ch}
+h3{font-size:19px;font-weight:700;margin:0 0 8px}
+p{margin:0 0 16px;color:var(--ink-2);max-width:82ch}
+p.ink{color:var(--ink)}
+strong{color:var(--ink);font-weight:600}
+
+.callout{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:8px;padding:26px 28px;margin-bottom:26px}
+.callout.badbar{border-left-color:var(--bad)}
+.callout.warnbar{border-left-color:var(--warn)}
+.callout.goodbar{border-left-color:var(--good)}
+.callout h3{margin-bottom:10px}
+.callout p:last-child{margin-bottom:0}
+
+table{width:100%;border-collapse:collapse;margin:0 0 14px;font-size:15px}
+caption{text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);padding-bottom:12px}
+th{text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:600;padding:0 14px 12px;border-bottom:1px solid var(--rule)}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+td{background:var(--card);padding:13px 14px;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
+td.kw{color:var(--ink);font-weight:600}
+tbody tr:last-child td{border-bottom:none}
+.note{font-size:14px;color:var(--ink-3);margin:0 0 8px;max-width:88ch}
+
+.pill{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:5px;white-space:nowrap}
+.pill.bad{background:rgba(230,103,103,.16);color:var(--bad);border:1px solid rgba(230,103,103,.4)}
+.pill.warn{background:rgba(224,160,60,.16);color:var(--warn);border:1px solid rgba(224,160,60,.4)}
+.pill.good{background:rgba(25,158,112,.16);color:var(--good);border:1px solid rgba(25,158,112,.45)}
+.pill.accent{background:rgba(57,135,229,.16);color:var(--accent);border:1px solid rgba(57,135,229,.45)}
+.pill.mute{background:rgba(131,130,122,.16);color:var(--ink-3);border:1px solid var(--rule)}
+
+.bars{margin:8px 0 10px}
+.bar-row{display:flex;align-items:center;gap:16px;padding:9px 0;border-bottom:1px solid var(--rule)}
+.bar-row:last-child{border-bottom:none}
+.bar-lbl{width:250px;flex:none;font-size:15px;color:var(--ink)}
+.bar-track{flex:1;height:18px;background:var(--card);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);border-radius:3px}
+.bar-fill.good{background:var(--good)}
+.bar-fill.warn{background:var(--warn)}
+.bar-fill.bad{background:var(--bad)}
+.bar-val{width:96px;flex:none;text-align:right;font-variant-numeric:tabular-nums;font-size:15px;font-weight:600;color:var(--ink)}
+.axis{font-size:13px;color:var(--ink-3);margin-top:10px}
+
+/* CLUSTER CARDS */
+.cluster{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:26px 28px;margin-bottom:18px}
+.cluster-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:6px}
+.cluster-head h3{margin:0;font-size:20px}
+.slug{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;color:var(--accent);background:rgba(57,135,229,.1);padding:3px 9px;border-radius:5px;border:1px solid rgba(57,135,229,.3)}
+.cluster-vol{font-size:14px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;font-variant-numeric:tabular-nums}
+.cluster table{margin-bottom:16px}
+.cluster td{background:transparent;padding:9px 14px 9px 0}
+.cluster th{padding-left:0;padding-right:14px}
+.verdict{border-top:1px solid var(--rule);padding-top:16px;margin-top:4px}
+.verdict p:last-child{margin-bottom:0}
+
+.action{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:28px 30px;margin-bottom:18px;display:flex;gap:24px}
+.action .n{flex:none;width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.action .body{flex:1}
+.action h3{margin-bottom:6px;font-size:20px}
+.action .where{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:14px}
+.action p:last-child{margin-bottom:0}
+
+footer.rpt{border-top:1px solid var(--rule);padding-top:34px;margin-top:16px}
+footer.rpt h2{font-size:22px;margin-bottom:18px}
+footer.rpt table{font-size:14px}
+.fine{font-size:14px;color:var(--ink-3);max-width:90ch;margin:0 0 12px}
+.fine strong{color:var(--ink-2)}
+ul.fine-list{font-size:14px;color:var(--ink-3);max-width:90ch;padding-left:20px;margin:0 0 18px}
+ul.fine-list li{margin-bottom:8px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:var(--ink-2);background:var(--card);padding:2px 6px;border-radius:4px;border:1px solid var(--rule)}
+@media(max-width:900px){
+  .heroes{grid-template-columns:repeat(2,1fr)}
+  .wrap{padding:36px 22px 64px}
+  h1{font-size:31px}
+  .bar-lbl{width:150px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="rpt">
+  <p class="eyebrow">Rapport 2 — Sökordsanalys</p>
+  <h1>Ett sökord bär hela nischen: "mäklarfotograf". Dess topp 10 är byggd av generalister.</h1>
+  <div class="meta">
+    <div><div class="k">Domän</div><div class="v">bostadsvideo24.se</div></div>
+    <div><div class="k">Marknad</div><div class="v">Sverige · svenska</div></div>
+    <div><div class="k">Tjänsteomfång</div><div class="v">Video + stillbilder</div></div>
+    <div><div class="k">Geografi</div><div class="v">Sthlm · Gbg · Malmö</div></div>
+    <div><div class="k">Datum</div><div class="v">2026-07-31</div></div>
+  </div>
+</header>
+
+<div class="heroes">
+  <div class="hero accent">
+    <div class="big">67</div>
+    <div class="lbl">Sökord testade mot API:et</div>
+  </div>
+  <div class="hero warn">
+    <div class="big">40</div>
+    <div class="lbl">Hade mätbar volym</div>
+  </div>
+  <div class="hero good">
+    <div class="big">290</div>
+    <div class="lbl">Sökningar/mån inom omfånget</div>
+  </div>
+  <div class="hero bad">
+    <div class="big">6 790</div>
+    <div class="lbl">Sökningar/mån bortskurna</div>
+  </div>
+  <div class="hero accent">
+    <div class="big">5</div>
+    <div class="lbl">Kluster att bygga</div>
+  </div>
+</div>
+
+<!-- 1. SÖKORDSMÄNGDEN -->
+<section>
+  <h2>1. Sökordsmängden inom omfånget</h2>
+  <p class="sub">Efter din avgränsning — video och stillbilder, inte drönare, inte homestaging, inte företagsfilm — återstår 13 sökord med mätbar volym. Här är hela mängden, inget bortsorterat.</p>
+
+  <table>
+    <caption>13 sökord inom omfånget · sorterat på volym · alla värden från API:et</caption>
+    <thead>
+      <tr>
+        <th>Sökord</th>
+        <th class="num">Volym/mån</th>
+        <th class="num">Svårighet</th>
+        <th class="num">Konk.index</th>
+        <th class="num">CPC (SEK)</th>
+        <th>Sökintention (API)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="kw">bostadsfotograf</td><td class="num">70</td><td class="num">23</td><td class="num">7</td><td class="num">1,00</td><td>Navigerande <span class="pill mute">0,59</span></td></tr>
+      <tr><td class="kw">mäklarfotograf</td><td class="num">50</td><td class="num">ej tillgängligt</td><td class="num">16</td><td class="num">6,09</td><td>Informationell <span class="pill mute">0,49</span></td></tr>
+      <tr><td class="kw">mäklarbilder</td><td class="num">40</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td>Informationell <span class="pill mute">0,83</span></td></tr>
+      <tr><td class="kw">bostadsfotograf stockholm</td><td class="num">20</td><td class="num">ej tillgängligt</td><td class="num">30</td><td class="num">3,08</td><td>Informationell <span class="pill mute">0,40</span></td></tr>
+      <tr><td class="kw">fastighetsfotograf</td><td class="num">20</td><td class="num">ej tillgängligt</td><td class="num">17</td><td class="num">2,64</td><td>Informationell <span class="pill mute">0,46</span></td></tr>
+      <tr><td class="kw">fotografering lägenhet pris</td><td class="num">20</td><td class="num">ej tillgängligt</td><td class="num">48</td><td class="num">2,46</td><td>Kommersiell <span class="pill mute">0,79</span></td></tr>
+      <tr><td class="kw">bostadsfilm</td><td class="num">10</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td>Informationell <span class="pill mute">0,90</span></td></tr>
+      <tr><td class="kw">mäklarvideo</td><td class="num">10</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td>Informationell <span class="pill mute">0,76</span></td></tr>
+      <tr><td class="kw">mäklarfoto</td><td class="num">10</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td>Navigerande <span class="pill mute">0,51</span></td></tr>
+      <tr><td class="kw">fotograf mäklare</td><td class="num">10</td><td class="num">ej tillgängligt</td><td class="num">6</td><td class="num">ej tillgängligt</td><td>Kommersiell <span class="pill mute">0,70</span></td></tr>
+      <tr><td class="kw">bostadsfotograf göteborg</td><td class="num">10</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td>Navigerande <span class="pill mute">0,50</span></td></tr>
+      <tr><td class="kw">mäklarfotograf stockholm</td><td class="num">10</td><td class="num">ej tillgängligt</td><td class="num">18</td><td class="num">8,03</td><td>Kommersiell <span class="pill mute">0,55</span></td></tr>
+      <tr><td class="kw">mäklarfotograf göteborg</td><td class="num">10</td><td class="num">ej tillgängligt</td><td class="num">86</td><td class="num">ej tillgängligt</td><td>Kommersiell <span class="pill mute">0,57</span></td></tr>
+      <tr><td class="kw"><strong>Summa</strong></td><td class="num"><strong>290</strong></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Källa: Google Ads Search Volume + DataForSEO Labs Bulk Keyword Difficulty + Search Intent. Siffran i grå ruta är API:ets sannolikhet för den angivna intentionen.</p>
+
+  <div class="callout warnbar">
+    <h3><span class="pill warn">Hög</span> &nbsp;Svårighetsgrad gick nästan inte att få fram</h3>
+    <p><code>bulk_keyword_difficulty</code> anropades med 20 sökord och returnerade ett värde för <strong>två</strong> av dem: "bostadsfotograf" 23 och "arkitekturfotograf" 1. För övriga 18 saknade svaret fältet helt. Det är därför "ej tillgängligt" står i så många celler — inte för att jag hoppat över dem.</p>
+    <p>Det betyder att jag <strong>inte kan rangordna klustren på svårighetsgrad</strong>. Jag har i stället bedömt konkurrens genom att läsa faktiska SERP:ar, vilket redovisas i avsnitt 3. Det som skulle höja säkerheten: en Ahrefs- eller Semrush-källa för KD, eller ett SERP-anrop per sökord i stället för per kluster.</p>
+  </div>
+
+  <div class="callout badbar">
+    <h3><span class="pill bad">Läs det här innan du litar på intentionskolumnen</span></h3>
+    <p>API:et klassar <strong>"mäklarfotograf" som informationell</strong> (0,49) och <strong>"bostadsfilm" som informationell</strong> (0,90). Den faktiska SERP:en säger något annat: båda är fulla av tjänstesidor som säljer fotografering och film, inte av guider.</p>
+    <p>När API-etiketten och SERP:en säger emot varandra följer jag SERP:en. Jag har därför placerat båda i kommersiell efterforskning i avsnitt 2, och markerat avvikelsen. Etiketten i tabellen ovan är API:ets råa svar, oförändrat.</p>
+  </div>
+</section>
+
+<!-- 2. INTENTIONSGRUPPER -->
+<section>
+  <h2>2. Grupperat efter sökintention</h2>
+  <p class="sub">Varje sökord ligger i exakt en grupp. Där jag flyttat ett sökord från API:ets etikett står det utskrivet.</p>
+
+  <table>
+    <caption>Fyra intentionsgrupper · 13 sökord · ingen dubblering</caption>
+    <thead>
+      <tr><th>Grupp</th><th>Sökord</th><th class="num">Volym/mån</th><th>Anmärkning</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="kw">Kommersiell efterforskning</td>
+        <td>mäklarfotograf · fastighetsfotograf · fotograf mäklare · mäklarfotograf sthlm · mäklarfotograf gbg · fotografering lägenhet pris · bostadsfilm · mäklarvideo</td>
+        <td class="num">140</td>
+        <td><span class="pill accent">Hög</span> Köparen jämför leverantörer. Två flyttade hit från API:ets "informationell".</td>
+      </tr>
+      <tr>
+        <td class="kw">Navigerande</td>
+        <td>bostadsfotograf · mäklarfoto · bostadsfotograf göteborg</td>
+        <td class="num">90</td>
+        <td><span class="pill warn">Låg</span> Söker ett specifikt företag, inte en tjänst. Svårt att kapa.</td>
+      </tr>
+      <tr>
+        <td class="kw">Informationell</td>
+        <td>mäklarbilder · bostadsfotograf stockholm</td>
+        <td class="num">60</td>
+        <td><span class="pill warn">Låg</span> Vill lära sig, inte köpa. Ger trafik, inte offerter.</td>
+      </tr>
+      <tr>
+        <td class="kw">Transaktionell</td>
+        <td>inga inom omfånget</td>
+        <td class="num">0</td>
+        <td><span class="pill bad">Kritisk</span> Se nedan.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="note">"fota lägenhet" var det enda transaktionella sökordet i hela testmängden (0,87) — men det är gör-det-själv-intent från en privatperson, inte ett mäklarkontor som köper in. Bortskuret, se avsnitt 5.</p>
+
+  <div class="callout badbar">
+    <h3><span class="pill bad">Kritisk</span> &nbsp;Det finns ingen transaktionell efterfrågan i den här nischen</h3>
+    <p>Noll sökord inom omfånget bär transaktionell intention. Ingen svensk söker "boka bostadsfotograf" eller "beställ mäklarvideo" i mätbar volym. Köpet sker inte i sökfältet — det sker i en relation mellan kontorschef och leverantör.</p>
+    <p class="ink">Konsekvens för byggordningen: sidorna nedan ska inte optimeras för att stänga affären. De ska optimeras för att <strong>bli hittade och sedan lämna ifrån sig ett namn</strong>. Behandla organisk trafik som toppen av tratten, inte botten.</p>
+  </div>
+</section>
+
+<!-- 3. KLUSTER -->
+<section>
+  <h2>3. Kluster, sidor och SERP-bedömning</h2>
+  <p class="sub">Sökord som bör ligga på samma sida. Varje SERP-omdöme bygger på ett faktiskt <code>serp/organic/live/advanced</code>-anrop — jag har inte gissat om någon topp 10 är svag.</p>
+
+  <div class="cluster">
+    <div class="cluster-head">
+      <h3>Kluster A — Mäklarfotograf</h3>
+      <span class="slug">/maklarfotograf</span>
+      <span class="pill good">SERP: Svag — bekräftad</span>
+    </div>
+    <div class="cluster-vol">90 sökningar/mån · 4 sökord · kommersiell efterforskning</div>
+    <table>
+      <thead><tr><th>Sökord</th><th class="num">Volym</th><th class="num">CPC</th></tr></thead>
+      <tbody>
+        <tr><td class="kw">mäklarfotograf</td><td class="num">50</td><td class="num">6,09</td></tr>
+        <tr><td class="kw">fastighetsfotograf</td><td class="num">20</td><td class="num">2,64</td></tr>
+        <tr><td class="kw">fotograf mäklare</td><td class="num">10</td><td class="num">ej tillgängligt</td></tr>
+        <tr><td class="kw">mäklarfoto</td><td class="num">10</td><td class="num">ej tillgängligt</td></tr>
+      </tbody>
+    </table>
+    <div class="verdict">
+      <p><strong>Varför SERP:en är svag:</strong> fem av nio organiska träffar är generella ortsfotografer med en tunn undersida — <code>fotografstockholm.se/maklarfotograf/</code> (plats 1), <code>fotografumeå.se/maklarfotograf/</code> (plats 2), <code>fotografgavle.se/maklarfotograf/</code> (plats 5), <code>fotograf-goteborg.se/maklarfotograf/</code> (plats 7), <code>synligaforetag.se/maklarfotograf-vasteraas/</code> (plats 8).</p>
+      <p>De säljer porträtt, barnfoto och företagsfoto och har lagt till mäklarfoto som en rad i menyn. En fotograf i <strong>Umeå</strong> och en i <strong>Gävle</strong> rankar nationellt på det här ordet. Det händer bara när ingen specialist tävlar på allvar.</p>
+      <p>De två riktiga aktörerna är HF Agency (plats 3, 170 anslutna fotografer) och Diakrit (plats 4) — men Diakrit rankar med en <em>artikel</em> ("Vad gör en bostadsfotograf?"), inte med en tjänstesida. Plats fyra på ett kommersiellt sökord hålls av redaktionellt innehåll.</p>
+      <p class="ink"><strong>Detta är det enda klustret i hela analysen där en ny, välbyggd sida realistiskt kan ta topp 5.</strong> Det har också högst CPC inom omfånget (6,09 kr), vilket betyder att någon betalar för trafiken — ett tecken på att den konverterar.</p>
+    </div>
+  </div>
+
+  <div class="cluster">
+    <div class="cluster-head">
+      <h3>Kluster B — Ortssidor</h3>
+      <span class="slug">/maklarfotograf-stockholm</span>
+      <span class="slug">/maklarfotograf-goteborg</span>
+      <span class="pill warn">SERP: Blandad</span>
+    </div>
+    <div class="cluster-vol">50 sökningar/mån · 4 sökord · kommersiell och navigerande</div>
+    <table>
+      <thead><tr><th>Sökord</th><th class="num">Volym</th><th class="num">Konk.index</th><th>Tilldelad sida</th></tr></thead>
+      <tbody>
+        <tr><td class="kw">bostadsfotograf stockholm</td><td class="num">20</td><td class="num">30</td><td>/maklarfotograf-stockholm</td></tr>
+        <tr><td class="kw">mäklarfotograf stockholm</td><td class="num">10</td><td class="num">18</td><td>/maklarfotograf-stockholm</td></tr>
+        <tr><td class="kw">bostadsfotograf göteborg</td><td class="num">10</td><td class="num">ej tillgängligt</td><td>/maklarfotograf-goteborg</td></tr>
+        <tr><td class="kw">mäklarfotograf göteborg</td><td class="num">10</td><td class="num">86</td><td>/maklarfotograf-goteborg</td></tr>
+      </tbody>
+    </table>
+    <div class="verdict">
+      <p><strong>Malmö går inte att bygga.</strong> Du valde storstadstrio, men API:et säger nej till en tredjedel av den. Både <code>bostadsfotograf malmö</code> och <code>mäklarfotograf malmö</code> returnerade <strong>ingen volymdata alls</strong> från Google Ads — de ligger under mätgränsen. Samma sak gäller <code>bostadsfilm stockholm</code>, <code>bostadsfilm göteborg</code>, <code>fastighetsfotograf stockholm</code> och <code>fastighetsfotograf göteborg</code>.</p>
+      <p>Bygg Stockholm och Göteborg. Bygg Malmö när ni har en kund där att referera till, inte innan — en ortssida utan lokal referens och utan mätbar volym är en tom sida.</p>
+      <p><strong>Varning på Göteborg:</strong> "mäklarfotograf göteborg" har konkurrensindex <strong>86</strong> mot Stockholms 18. Någon budar hårt på Göteborg. <span class="pill warn">Låg säkerhet</span> — jag har inte kört live-SERP på ortssökorden, bara på de nationella. Det som skulle höja säkerheten: ett SERP-anrop per ortssökord.</p>
+    </div>
+  </div>
+
+  <div class="cluster">
+    <div class="cluster-head">
+      <h3>Kluster C — Bostadsfilm och mäklarvideo</h3>
+      <span class="slug">/bostadsfilm</span>
+      <span class="pill good">SERP: Svag — bekräftad</span>
+    </div>
+    <div class="cluster-vol">20 sökningar/mån · 2 sökord · kommersiell efterforskning</div>
+    <table>
+      <thead><tr><th>Sökord</th><th class="num">Volym</th><th>Anmärkning</th></tr></thead>
+      <tbody>
+        <tr><td class="kw">bostadsfilm</td><td class="num">10</td><td>Senast rapporterade månad: 20</td></tr>
+        <tr><td class="kw">mäklarvideo</td><td class="num">10</td><td>Stabil 10/mån sedan juli 2025</td></tr>
+      </tbody>
+    </table>
+    <div class="verdict">
+      <p><strong>Varför SERP:en är svag:</strong> plats 9 hålls av <code>bostadsfilm.carrd.co</code> — en gratis one-pager på Carrd. Plats 4 är en Shopify-kollektionssida (<code>utm.se/collections/bostadsfoto-1</code>). Plats 7 är en supportartikel i Diakrits hjälpcenter. Tre av tio platser går till sidor som inte ens är byggda för att ranka.</p>
+      <p class="ink"><strong>Men volymen är 20 i månaden.</strong> Det här är er kärntjänst och ert domännamn, och hela den mätbara efterfrågan ryms i en enda arbetsdag. Bygg sidan — den är billig och SERP:en är öppen — men förvänta er ingenting av den i trafik.</p>
+    </div>
+  </div>
+
+  <div class="cluster">
+    <div class="cluster-head">
+      <h3>Kluster D — Vad kostar det</h3>
+      <span class="slug">/vad-kostar-bostadsfotografering</span>
+      <span class="pill warn">SERP: Medelstark, fel publik</span>
+    </div>
+    <div class="cluster-vol">20 sökningar/mån · 1 sökord · kommersiell efterforskning</div>
+    <table>
+      <thead><tr><th>Sökord</th><th class="num">Volym</th><th class="num">Konk.index</th><th class="num">Intention</th></tr></thead>
+      <tbody>
+        <tr><td class="kw">fotografering lägenhet pris</td><td class="num">20</td><td class="num">48</td><td class="num">Kommersiell 0,79</td></tr>
+      </tbody>
+    </table>
+    <div class="verdict">
+      <p><strong>Vad SERP:en visar:</strong> Ekonomifokus (plats 1), Fastighetsbyrån (plats 2), sfoto.se prisguide (plats 4), Hemnets guide (plats 6), Fotosidans forumtråd från <strong>2011</strong> (plats 7). Det är bostadssäljare som undrar vad mäklaren tar betalt — inte kontorschefer som handlar upp.</p>
+      <p><strong>Men:</strong> <code>bofoto.se/priser.php</code> rankar på plats 8 med ingenting annat än en prislista ("LÄGENHET Från 1600:- · VILLA Från 2200:- · FILM Från 1700:-"). En rå prissida tar plats 8 nationellt. Och "Mäklarfotograf pris" återkommer som relaterad sökning på <strong>tre av de fem SERP:ar</strong> jag hämtade.</p>
+      <p>Bygg sidan för att fånga den efterfrågan och för att förkvalificera — inte för volymen.</p>
+    </div>
+  </div>
+
+  <div class="cluster">
+    <div class="cluster-head">
+      <h3>Kluster E — Guideinnehåll</h3>
+      <span class="slug">/guide/maklarbilder</span>
+      <span class="pill bad">SERP: Svag, men publiken är fel</span>
+    </div>
+    <div class="cluster-vol">110 sökningar/mån · 2 sökord · informationell och navigerande</div>
+    <table>
+      <thead><tr><th>Sökord</th><th class="num">Volym</th><th class="num">Svårighet</th><th>Problem</th></tr></thead>
+      <tbody>
+        <tr><td class="kw">bostadsfotograf</td><td class="num">70</td><td class="num">23</td><td>Jobbsökarintent</td></tr>
+        <tr><td class="kw">mäklarbilder</td><td class="num">40</td><td class="num">ej tillgängligt</td><td>Konsument- och hobbyintent</td></tr>
+      </tbody>
+    </table>
+    <div class="verdict">
+      <p><strong>Största volymen i analysen — och den jag rekommenderar att ni bygger sist.</strong> SERP:en för "mäklarbilder" består av Expressen, Elle, Kamera&amp;Bild från 2013, en Fotosidan-tråd från 2014 och en DI-artikel. Innehåll som är tio år gammalt håller topp 10. Det är lätt att slå.</p>
+      <p>Men läsaren är en privatperson som ska sälja sin lägenhet eller en hobbyfotograf som vill lära sig ljussätta. Ingen av dem köper ett månadsabonnemang på bostadsvideo. "bostadsfotograf" är samma sak i värre form — plats 1 är Indeed med 17 lediga jobb.</p>
+      <p class="ink">110 sökningar i månaden av fel personer är fortfarande fel personer. Bygg det när kluster A till D är klara, som länkmagnet inåt — inte som leadkälla.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4. BORTSKURET -->
+<section>
+  <h2>4. Vad jag skar bort, och varför</h2>
+  <p class="sub">6 790 sökningar i månaden lämnades utanför. 96 % av all uppmätt volym. Här är varje bortskuret sökord med skäl.</p>
+
+  <table>
+    <caption>27 bortskurna sökord med mätbar volym · sorterat på volym · visar samtliga</caption>
+    <thead>
+      <tr><th>Sökord</th><th class="num">Volym/mån</th><th>Skäl för bortskärning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="kw">mäklare stockholm</td><td class="num">1 900</td><td><span class="pill bad">Fel roll</span> Söks av bostadssäljare som letar mäklare — er kund, inte ni</td></tr>
+      <tr><td class="kw">marknadsföringsbyrå</td><td class="num">1 300</td><td><span class="pill bad">Fel tjänst</span> Extremt spretig månadsdata: 5 400 i feb, 390 i juni</td></tr>
+      <tr><td class="kw">fotograf göteborg</td><td class="num">590</td><td><span class="pill bad">Fel tjänst</span> Porträtt, bröllop, event — inte bostad</td></tr>
+      <tr><td class="kw">fotograf stockholm</td><td class="num">590</td><td><span class="pill bad">Fel tjänst</span> Samma sak</td></tr>
+      <tr><td class="kw">filmbolag</td><td class="num">590</td><td><span class="pill bad">Utanför omfånget</span> Du valde bort företagsfilm</td></tr>
+      <tr><td class="kw">videoproduktion</td><td class="num">320</td><td><span class="pill bad">Opålitlig</span> 2 400 i april, 50 i juni — medelvärdet är en artefakt</td></tr>
+      <tr><td class="kw">sociala medier byrå</td><td class="num">210</td><td><span class="pill bad">Fel tjänst</span> CPC 28,79 kr, byråkonkurrens</td></tr>
+      <tr><td class="kw">content byrå</td><td class="num">210</td><td><span class="pill bad">Fel tjänst</span> Konkurrensindex 72</td></tr>
+      <tr><td class="kw">homestaging</td><td class="num">170</td><td><span class="pill bad">Utanför omfånget</span> Du valde bort styling</td></tr>
+      <tr><td class="kw">filmproduktion</td><td class="num">170</td><td><span class="pill bad">Utanför omfånget</span> Företagsfilm bortvald</td></tr>
+      <tr><td class="kw">mäklarbyrå</td><td class="num">170</td><td><span class="pill bad">Fel roll</span> Söks av säljare som letar mäklare</td></tr>
+      <tr><td class="kw">bostadsfoto</td><td class="num">110</td><td><span class="pill bad">Konkurrents varumärke</span> Se rutan nedan</td></tr>
+      <tr><td class="kw">företagsfilm</td><td class="num">110</td><td><span class="pill bad">Utanför omfånget</span> Företagsfilm bortvald</td></tr>
+      <tr><td class="kw">styling inför försäljning</td><td class="num">90</td><td><span class="pill bad">Utanför omfånget</span> Styling bortvald</td></tr>
+      <tr><td class="kw">produktionsbolag film</td><td class="num">50</td><td><span class="pill bad">Utanför omfånget</span> Företagsfilm bortvald</td></tr>
+      <tr><td class="kw">drönarfotografering</td><td class="num">40</td><td><span class="pill bad">Utanför omfånget</span> Du valde bort drönare</td></tr>
+      <tr><td class="kw">bostadsannons</td><td class="num">40</td><td><span class="pill bad">Fel roll</span> Hemnet och portalerna äger ordet, navigerande</td></tr>
+      <tr><td class="kw">arkitekturfotograf</td><td class="num">30</td><td><span class="pill bad">Fel tjänst</span> Navigerande 0,79, svårighet 1 men ej er tjänst</td></tr>
+      <tr><td class="kw">sälja bostaden</td><td class="num">20</td><td><span class="pill bad">Fel roll</span> Bostadssäljare, CPC 11,55 kr mot mäklarbudgetar</td></tr>
+      <tr><td class="kw">virtuell visning</td><td class="num">10</td><td><span class="pill bad">Fel tjänst</span> 3D-rundtur, inte film</td></tr>
+      <tr><td class="kw">interiörfotograf</td><td class="num">10</td><td><span class="pill bad">Fel tjänst</span> Inredningsuppdrag, navigerande 0,76</td></tr>
+      <tr><td class="kw">fota lägenhet</td><td class="num">10</td><td><span class="pill bad">Fel roll</span> Gör-det-själv-intent, transaktionell 0,87</td></tr>
+      <tr><td class="kw">marknadsföring mäklare</td><td class="num">10</td><td><span class="pill bad">Ohållbar</span> Konkurrensindex 86 för 10 sökningar</td></tr>
+      <tr><td class="kw">drönare fotografering</td><td class="num">10</td><td><span class="pill bad">Utanför omfånget</span> Drönare bortvalt</td></tr>
+      <tr><td class="kw">video marknadsföring</td><td class="num">10</td><td><span class="pill bad">För brett</span> Ingen bostadskoppling</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Visar de 25 största av <strong>27 bortskurna sökord med volym</strong>. De två som inte får plats är "videobyrå" (10/mån, fel tjänst) och "reklamfilm företag" (10/mån, utanför omfånget) — båda bortskurna på samma grunder som raderna ovan. Ytterligare 26 testade sökord returnerade ingen volymdata alls och listas i footern.</p>
+
+  <div class="callout badbar">
+    <h3><span class="pill bad">Den dyraste fällan i analysen</span> &nbsp;"bostadsfoto" — 110/mån, konkurrensindex 1</h3>
+    <p>På pappret ser det ut som analysens bästa fynd: näst högsta volymen inom fotoytan och konkurrensindex <strong>1 av 100</strong>. Det är en fälla.</p>
+    <p>SERP:en ägs helt av <code>bostadsfoto.se</code>: plats 1 med <strong>fem sitelinks</strong> (Boka, Inför fotografering, Kontakt, Portfolio, Planritning), en Knowledge Graph-panel med adress i Enskede och telefonnummer, deras Instagram på plats 3 och deras bokningssystem <code>bostadsfoto.valei.com</code> på plats 4. API:et klassar ordet som navigerande med 0,76 sannolikhet.</p>
+    <p class="ink">Konkurrensindexet är 1 därför att ingen annonsör budar på någon annans varumärke. Volymen är folk som letar efter ett specifikt företag. Att bygga en sida på det ordet är att betala för att skicka trafik till en konkurrent.</p>
+  </div>
+</section>
+
+<!-- 5. BYGGORDNING -->
+<section>
+  <h2>5. Byggordning</h2>
+  <p class="sub">Fem sidor, i den ordning jag skulle skriva dem. Staplarna visar volym per kluster — ett mått, en axel.</p>
+
+  <div class="bars">
+    <div class="bar-row">
+      <div class="bar-lbl">E · Guide (sist)</div>
+      <div class="bar-track"><div class="bar-fill bad" style="width:100%"></div></div>
+      <div class="bar-val">110</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">A · Mäklarfotograf (först)</div>
+      <div class="bar-track"><div class="bar-fill good" style="width:81.8%"></div></div>
+      <div class="bar-val">90</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">B · Ortssidor</div>
+      <div class="bar-track"><div class="bar-fill good" style="width:45.5%"></div></div>
+      <div class="bar-val">50</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">C · Bostadsfilm</div>
+      <div class="bar-track"><div class="bar-fill warn" style="width:18.2%"></div></div>
+      <div class="bar-val">20</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">D · Prissida</div>
+      <div class="bar-track"><div class="bar-fill warn" style="width:18.2%"></div></div>
+      <div class="bar-val">20</div>
+    </div>
+  </div>
+  <p class="axis">Sökningar per månad per kluster. Notera att det största klustret byggs sist — volym är inte samma sak som värde.</p>
+
+  <table style="margin-top:28px">
+    <caption>Ordning, skäl och vad som avgör</caption>
+    <thead>
+      <tr><th class="num">Ordning</th><th>Sida</th><th class="num">Volym</th><th>Varför just här</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">1</td><td class="kw">/maklarfotograf</td><td class="num">90</td>
+        <td>Enda bekräftat svaga SERP:en med rätt köpare. Högst CPC (6,09 kr) inom omfånget. Ortssidorna behöver den som moderssida.</td>
+      </tr>
+      <tr>
+        <td class="num">2</td><td class="kw">/maklarfotograf-stockholm<br>/maklarfotograf-goteborg</td><td class="num">50</td>
+        <td>Lokal konkurrens är svagare än nationell. Bygger vidare på sida 1 med intern länkning — sajten har i dag en enda intern länk.</td>
+      </tr>
+      <tr>
+        <td class="num">3</td><td class="kw">/bostadsfilm</td><td class="num">20</td>
+        <td>Er kärntjänst och ert domännamn. SERP:en är öppen (en Carrd-sida på plats 9). Låg volym, men billig att skriva och rätt signal till Google om vad sajten handlar om.</td>
+      </tr>
+      <tr>
+        <td class="num">4</td><td class="kw">/vad-kostar-bostadsfotografering</td><td class="num">20</td>
+        <td>"Mäklarfotograf pris" återkommer som relaterad sökning på tre av fem hämtade SERP:ar. En rå prislista rankar redan på plats 8. Förkvalificerar dessutom bort fel förfrågningar.</td>
+      </tr>
+      <tr>
+        <td class="num">5</td><td class="kw">/guide/maklarbilder</td><td class="num">110</td>
+        <td>Störst volym, sist i ordningen. SERP:en är tio år gammal och lätt att slå, men publiken köper inte. Bygg den som länkmagnet när de fyra andra står.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- DE 3 SAKERNA -->
+<section>
+  <h2>De 3 saker jag skulle göra först</h2>
+
+  <div class="action">
+    <div class="n">1</div>
+    <div class="body">
+      <h3>Skriv /maklarfotograf innan något annat</h3>
+      <div class="where">Ny sida: www.bostadsvideo24.se/maklarfotograf</div>
+      <p><strong>Exakt ändring:</strong> en tjänstesida med "Mäklarfotograf" i H1 och title, som täcker mäklarfotograf, fastighetsfotograf, fotograf mäklare och mäklarfoto på samma sida. Skriv den för en kontorschef som handlar upp — inte för en privatperson.</p>
+      <p><strong>Varför just den:</strong> 90 sökningar/mån, högst CPC inom omfånget (6,09 kr), och en topp 10 där fem av nio platser hålls av generella ortsfotografer med en tunn undersida. En fotograf i Umeå och en i Gävle rankar nationellt. Det är det enda stället i hela nischen där dörren står öppen.</p>
+      <p><strong>Vad som gör att ni slår dem:</strong> de säljer bröllop, barnfoto och företagsporträtt och har mäklarfoto som en rad i menyn. Ni gör bara bostad. Säg det på sidan.</p>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="n">2</div>
+    <div class="body">
+      <h3>Bygg Stockholm och Göteborg — hoppa över Malmö</h3>
+      <div class="where">Nya sidor: /maklarfotograf-stockholm och /maklarfotograf-goteborg</div>
+      <p><strong>Exakt ändring:</strong> två ortssidor under moderssidan från punkt 1, med ömsesidig intern länkning. Ingen Malmö-sida.</p>
+      <p><strong>Varför just den:</strong> du bad om storstadstrio, men Google Ads returnerade <strong>ingen volymdata</strong> för vare sig "bostadsfotograf malmö" eller "mäklarfotograf malmö". Stockholm har 30 sökningar/mån fördelat på två fraser, Göteborg 20. Malmö har inget mätbart alls. Bygg den när ni har en kund där att visa upp.</p>
+      <p><strong>Att ha koll på:</strong> "mäklarfotograf göteborg" har konkurrensindex 86 mot Stockholms 18 — någon budar hårt i Göteborg. Ta Stockholm först. <span class="pill warn">Låg säkerhet</span> på Göteborgsbedömningen: jag har inte kört live-SERP på ortssökorden.</p>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="n">3</div>
+    <div class="body">
+      <h3>Publicera en öppen prislista</h3>
+      <div class="where">Ny sida: /vad-kostar-bostadsfotografering</div>
+      <p><strong>Exakt ändring:</strong> en sida med faktiska priser utskrivna — inte "kontakta oss för offert". Formatet som redan rankar ser ut så här hos konkurrenten: "LÄGENHET Från 1600:- · VILLA Från 2200:- · FILM Från 1700:-".</p>
+      <p><strong>Varför just den:</strong> <code>bofoto.se/priser.php</code> tar plats 8 nationellt på ingenting annat än en prislista. "Vad kostar en mäklarfotograf?" dyker upp som People-Also-Ask på två av mina SERP-hämtningar, och "Mäklarfotograf pris" som relaterad sökning på tre av fem. Efterfrågan på pristransparens är dokumenterad i SERP-datan, även om själva sökordet bara har 20/mån.</p>
+      <p><strong>Andra effekten:</strong> ni säljer fast månadspris till kontor. En öppen prissida sorterar bort privatpersoner som vill ha en enstaka fotografering, innan de bokar ett möte.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="rpt">
+  <h2>Datakällor &amp; metod</h2>
+
+  <table>
+    <thead>
+      <tr><th>Endpoint</th><th>Parametrar</th><th class="num">Rader</th><th class="num">Hämtad</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="kw">keywords_data/google_ads/search_volume</td><td>7 anrop · 67 sökord totalt · Sweden · sv</td><td class="num">40 med volym</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">dataforseo_labs/google/bulk_keyword_difficulty</td><td>20 sökord · Sweden · sv</td><td class="num">20 rader, 2 med värde</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">dataforseo_labs/google/search_intent</td><td>20 sökord · sv</td><td class="num">20</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">serp/google/organic/live/advanced</td><td>"mäklarfotograf" · Sweden · sv · djup 10</td><td class="num">9 organiska</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">serp/google/organic/live/advanced</td><td>"bostadsfoto" · Sweden · sv · djup 10</td><td class="num">7 organiska</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">serp/google/organic/live/advanced</td><td>"mäklarbilder" · Sweden · sv · djup 10</td><td class="num">8 organiska</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">serp/google/organic/live/advanced</td><td>"fotografering lägenhet pris" · Sweden · sv · djup 10</td><td class="num">9 organiska</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">serp/google/organic/live/advanced</td><td>"bostadsfilm" · Sweden · sv · djup 10</td><td class="num">10 organiska</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">serp/google/organic/live/advanced</td><td>"bostadsfotograf" · Sweden · sv · djup 10</td><td class="num">9 organiska</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">dataforseo_labs/google/keyword_suggestions</td><td>"bostadsvideo" och "bostadsfilm" · Sweden · sv</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">dataforseo_labs/google/keyword_ideas</td><td>bostadsfilm, mäklarvideo, fastighetsfotograf · Sweden · sv</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:32px;color:var(--ink)">Vad som saknas, och varför</h3>
+  <ul class="fine-list">
+    <li><strong>Ej tillgängligt: svårighetsgrad för 18 av 20 sökord.</strong> <code>bulk_keyword_difficulty</code> returnerade en rad per sökord men utelämnade fältet <code>keyword_difficulty</code> för alla utom "bostadsfotograf" (23) och "arkitekturfotograf" (1). Cellerna är märkta "ej tillgängligt", inte gissade. Rangordningen bygger därför på lästa SERP:ar, inte på KD.</li>
+    <li><strong>Ej tillgängligt: CPC och konkurrensindex för sju sökord inom omfånget.</strong> Google Ads returnerade volym men inga budfält för "mäklarbilder", "bostadsfilm", "mäklarvideo", "mäklarfoto", "bostadsfotograf göteborg" och delvis "fotograf mäklare" och "mäklarfotograf göteborg".</li>
+    <li><strong>26 av 67 testade sökord returnerade ingen volymdata alls.</strong> Bland dem: bostadsvideo, mäklarfilm, fastighetsvideo, video mäklare, video till hemnet, visningsfilm, filma bostad, bostadsvisning video, presentationsfilm bostad, videoproduktion mäklare, drönarfoto bostad, hemnet video, planritning bostad, 3d rundtur bostad, reels produktion, fotograf bostad, bilder till bostadsannons, vad kostar bostadsfotografering, bostadsfotograf malmö, mäklarfotograf malmö, bostadsfilm stockholm, bostadsfilm göteborg, fastighetsfotograf stockholm, fastighetsfotograf göteborg, drone fastighet, sälja bostad snabbare. Att Google Ads inte returnerar en volympost betyder i praktiken under 10 sökningar/mån.</li>
+    <li><strong>Keyword Ideas och Keyword Suggestions gav noll rader i samtliga anrop.</strong> DataForSEO:s Labs-databas hittar ingen long tail kring "bostadsvideo" eller "bostadsfilm" på svenska. Hela sökordsmängden i den här rapporten är därför byggd manuellt av mig och verifierad mot Google Ads — inte maskinellt expanderad. Det innebär att jag kan ha missat fraser ingen tänkt på.</li>
+    <li><strong>"homestaging" och "home staging" returnerade identiska värden</strong> (170/mån). Google normaliserar dem till samma sökord. Räknas som ett i alla summor, vilket är varför 67 testade ger 40 med volym och 26 utan.</li>
+  </ul>
+
+  <h3 style="margin-top:28px;color:var(--ink)">Vad som är min bedömning, inte API-data</h3>
+  <p class="fine"><strong>Klusterindelningen och byggordningen.</strong> Vilka sökord som hör till samma sida, och i vilken ordning sidorna ska skrivas, är mina beslut. API:et levererar volym, intention, konkurrensindex och SERP-innehåll — grupperingen är min läsning av det.</p>
+  <p class="fine"><strong>Två omklassificeringar av intention.</strong> "mäklarfotograf" (API: informationell 0,49) och "bostadsfilm" (API: informationell 0,90) har jag flyttat till kommersiell efterforskning, eftersom deras faktiska SERP:ar består av tjänstesidor. API:ets råa etikett står kvar i tabellen i avsnitt 1 så att du kan se avvikelsen.</p>
+  <p class="fine"><strong>Omdömet "svag SERP".</strong> Varje sådant påstående bygger på ett hämtat SERP-svar och är motiverat med namngivna URL:er och positioner i klustret det gäller. Jag har inte kallat någon SERP svag utan att ha hämtat den. Kluster B (ortssidorna) är det enda där jag <em>inte</em> hämtat SERP:en, och det är märkt "Låg säkerhet" på den punkten.</p>
+  <p class="fine" style="margin-top:22px">Inga trafikprognoser förekommer i den här rapporten. Rapport 1 innehöll sådana och de byggde på en antagen CTR-kurva. Här finns bara hämtade volymer och lästa SERP:ar. Rapport genererad 2026-07-31, all data hämtad samma dag.</p>
+</footer>
+
+</div>
+</body>
+</html>

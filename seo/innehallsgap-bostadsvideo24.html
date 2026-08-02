@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Innehållsgap — bostadsvideo24.se</title>
+<style>
+:root{
+  --surface:#1a1a19;
+  --card:#232322;
+  --ink:#ffffff;
+  --ink-2:#c3c2b7;
+  --ink-3:#83827a;
+  --rule:#33332f;
+  --accent:#3987e5;
+  --warn:#e0a03c;
+  --bad:#e66767;
+  --good:#199e70;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--surface);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:56px 40px 96px}
+
+header.rpt{border-bottom:1px solid var(--rule);padding-bottom:32px;margin-bottom:44px}
+.eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin:0 0 14px}
+h1{font-size:40px;font-weight:700;line-height:1.15;margin:0 0 20px;letter-spacing:-.01em}
+.meta{display:flex;flex-wrap:wrap;gap:36px;margin-top:22px}
+.meta div{min-width:110px}
+.meta .k{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:5px}
+.meta .v{font-size:17px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+
+.heroes{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:52px}
+.hero{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:26px 22px}
+.hero .big{font-size:42px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.hero .lbl{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-top:12px;line-height:1.35}
+.hero.bad .big{color:var(--bad)}
+.hero.warn .big{color:var(--warn)}
+.hero.good .big{color:var(--good)}
+.hero.accent .big{color:var(--accent)}
+
+section{margin-bottom:56px}
+h2{font-size:26px;font-weight:700;margin:0 0 8px;letter-spacing:-.01em}
+.sub{color:var(--ink-2);font-size:16px;margin:0 0 24px;max-width:80ch}
+h3{font-size:19px;font-weight:700;margin:0 0 8px}
+p{margin:0 0 16px;color:var(--ink-2);max-width:82ch}
+p.ink{color:var(--ink)}
+strong{color:var(--ink);font-weight:600}
+
+.callout{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:8px;padding:26px 28px;margin-bottom:26px}
+.callout.badbar{border-left-color:var(--bad)}
+.callout.warnbar{border-left-color:var(--warn)}
+.callout.goodbar{border-left-color:var(--good)}
+.callout h3{margin-bottom:10px}
+.callout p:last-child{margin-bottom:0}
+
+table{width:100%;border-collapse:collapse;margin:0 0 14px;font-size:15px}
+caption{text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);padding-bottom:12px}
+th{text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:600;padding:0 14px 12px;border-bottom:1px solid var(--rule)}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+td{background:var(--card);padding:13px 14px;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
+td.kw{color:var(--ink);font-weight:600}
+tbody tr:last-child td{border-bottom:none}
+.note{font-size:14px;color:var(--ink-3);margin:0 0 8px;max-width:90ch}
+.u{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;word-break:break-all}
+
+.pill{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:5px;white-space:nowrap}
+.pill.bad{background:rgba(230,103,103,.16);color:var(--bad);border:1px solid rgba(230,103,103,.4)}
+.pill.warn{background:rgba(224,160,60,.16);color:var(--warn);border:1px solid rgba(224,160,60,.4)}
+.pill.good{background:rgba(25,158,112,.16);color:var(--good);border:1px solid rgba(25,158,112,.45)}
+.pill.accent{background:rgba(57,135,229,.16);color:var(--accent);border:1px solid rgba(57,135,229,.45)}
+.pill.mute{background:rgba(131,130,122,.16);color:var(--ink-3);border:1px solid var(--rule)}
+
+.bars{margin:8px 0 10px}
+.bar-row{display:flex;align-items:center;gap:16px;padding:9px 0;border-bottom:1px solid var(--rule)}
+.bar-row:last-child{border-bottom:none}
+.bar-lbl{width:270px;flex:none;font-size:15px;color:var(--ink)}
+.bar-track{flex:1;height:18px;background:var(--card);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);border-radius:3px}
+.bar-fill.good{background:var(--good)}
+.bar-fill.warn{background:var(--warn)}
+.bar-fill.bad{background:var(--bad)}
+.bar-val{width:96px;flex:none;text-align:right;font-variant-numeric:tabular-nums;font-size:15px;font-weight:600;color:var(--ink)}
+.axis{font-size:13px;color:var(--ink-3);margin-top:10px}
+
+.cluster{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:26px 28px;margin-bottom:18px}
+.cluster-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:6px}
+.cluster-head h3{margin:0;font-size:20px}
+.slug{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;color:var(--accent);background:rgba(57,135,229,.1);padding:3px 9px;border-radius:5px;border:1px solid rgba(57,135,229,.3)}
+.cluster-vol{font-size:14px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;font-variant-numeric:tabular-nums}
+.cluster td{background:transparent;padding:9px 14px 9px 0}
+.cluster th{padding-left:0;padding-right:14px}
+.verdict{border-top:1px solid var(--rule);padding-top:16px;margin-top:4px}
+.verdict p:last-child{margin-bottom:0}
+
+.brief{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:26px 28px;margin-bottom:18px}
+.brief h3{font-size:19px;margin-bottom:4px}
+.brief .target{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:var(--ink-3);margin-bottom:16px;word-break:break-all}
+.brief ul{margin:0 0 0 0;padding-left:20px;color:var(--ink-2)}
+.brief li{margin-bottom:9px}
+.brief li:last-child{margin-bottom:0}
+
+.action{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:28px 30px;margin-bottom:18px;display:flex;gap:24px}
+.action .n{flex:none;width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.action .body{flex:1}
+.action h3{margin-bottom:6px;font-size:20px}
+.action .where{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:14px}
+.action p:last-child{margin-bottom:0}
+
+footer.rpt{border-top:1px solid var(--rule);padding-top:34px;margin-top:16px}
+footer.rpt h2{font-size:22px;margin-bottom:18px}
+footer.rpt table{font-size:14px}
+.fine{font-size:14px;color:var(--ink-3);max-width:92ch;margin:0 0 12px}
+.fine strong{color:var(--ink-2)}
+ul.fine-list{font-size:14px;color:var(--ink-3);max-width:92ch;padding-left:20px;margin:0 0 18px}
+ul.fine-list li{margin-bottom:8px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:var(--ink-2);background:var(--card);padding:2px 6px;border-radius:4px;border:1px solid var(--rule)}
+@media(max-width:900px){
+  .heroes{grid-template-columns:repeat(2,1fr)}
+  .wrap{padding:36px 22px 64px}
+  h1{font-size:30px}
+  .bar-lbl{width:150px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="rpt">
+  <p class="eyebrow">Rapport 3 — Innehållsgap</p>
+  <h1>43 konkurrenter, 8 verkliga gap. Två av dem är värda att skriva.</h1>
+  <div class="meta">
+    <div><div class="k">Domän</div><div class="v">bostadsvideo24.se</div></div>
+    <div><div class="k">Marknad</div><div class="v">Sverige · svenska</div></div>
+    <div><div class="k">Konkurrenter</div><div class="v">43 st</div></div>
+    <div><div class="k">Datum</div><div class="v">2026-07-31</div></div>
+  </div>
+</header>
+
+<div class="heroes">
+  <div class="hero accent">
+    <div class="big">43</div>
+    <div class="lbl">Konkurrentdomäner testade</div>
+  </div>
+  <div class="hero warn">
+    <div class="big">162</div>
+    <div class="lbl">Sökordsrader från svenska konkurrenter</div>
+  </div>
+  <div class="hero bad">
+    <div class="big">26</div>
+    <div class="lbl">Domäner utan rankning i Sverige</div>
+  </div>
+  <div class="hero warn">
+    <div class="big">8</div>
+    <div class="lbl">Sökord med minst 2 konkurrenter</div>
+  </div>
+  <div class="hero good">
+    <div class="big">2</div>
+    <div class="lbl">Kluster som överlever filtreringen</div>
+  </div>
+</div>
+
+<!-- 0. METODVARNING -->
+<section>
+  <h2>Läs det här först — metoden gick sönder på vägen</h2>
+  <p class="sub">Ett innehållsgap bygger på att jämföra vad konkurrenterna rankar på mot vad du rankar på. Tre saker gjorde att den jämförelsen inte kunde göras som avsett. De påverkar hur du ska läsa resten.</p>
+
+  <div class="callout badbar">
+    <h3><span class="pill bad">Kritisk</span> &nbsp;1. Din domän rankar på ingenting — så allt är ett gap</h3>
+    <p>Från rapport 1: <code>ranked_keywords</code> för bostadsvideo24.se returnerar <strong>0 rader</strong>. Villkoret "och min domän rankar inte alls" är därför uppfyllt för varenda sökord i hela analysen. Det filtret gör ingen skillnad och har ingen urskiljande kraft.</p>
+    <p>Konsekvens: rapporten handlar i praktiken om <em>vad konkurrenterna rankar på</em>, inte om ett gap i egentlig mening. Jag har behållit kravet på minst två konkurrenter, eftersom det är det enda filtret som faktiskt sållar.</p>
+  </div>
+
+  <div class="callout badbar">
+    <h3><span class="pill bad">Kritisk</span> &nbsp;2. DataForSEO:s svenska index missar sidor som bevisligen rankar</h3>
+    <p><code>svenskbostadsfilm.se</code> returnerar <strong>0 rader</strong> från Labs-databasen. I rapport 2 hämtade jag en live-SERP på "bostadsfilm" — där ligger <code>svenskbostadsfilm.se</code> på <strong>plats 1</strong>. Samma sak gäller <code>bofoto.se</code>, som live-SERP:en visar på plats 8 för "fotografering lägenhet pris", men som ger 0 rader i Labs.</p>
+    <p>Elva av 28 svenska domäner gav noll rader: bostadsfilm.se, svenskbostadsfilm.se, husfokus.com, bofoto.se, fastighetsfilm.com, hirschfoto.se, marulkmedia.com, drönar-foto.se, dronarfotografering.se, realecomedia.com och pavosolstudios.se.</p>
+    <p class="ink"><strong>Det betyder att gapet nedan är ett golv, inte en fullständig bild.</strong> Sökord med volym under ungefär 50/mån verkar systematiskt saknas i indexet — vilket är exakt det spann hela den här nischen ligger i. Det som skulle höja säkerheten: en live-SERP per kandidatsökord i stället för en indexuppslagning.</p>
+  </div>
+
+  <div class="callout warnbar">
+    <h3><span class="pill warn">Hög</span> &nbsp;3. Två av dina "konkurrenter" är samma företag</h3>
+    <p><code>hfagency.se</code> och <code>husfoto.se</code> är HF Agency. Bevis från datan: båda rankar på varumärkesordet "husfoto", och båda har identiska blogginlägg på identiska sökvägar — <code>/post/regler-dronarfoto</code>, <code>/post/zara-larssons-lyxvåning</code> och <code>/post/expressen-årevillan-som-zlatan-ibrahimovic-byggde-är-till-salu</code>.</p>
+    <p>Hade jag räknat dem som två skulle "husfoto" (1 000/mån) och fyra Zlatan-relaterade sökord felaktigt ha passerat tvåkonkurrentströskeln. <strong>All överlappsräkning nedan sker på bolagsnivå, inte domännivå.</strong></p>
+  </div>
+</section>
+
+<!-- 1. NORSKA -->
+<section>
+  <h2>1. De 15 norska domänerna</h2>
+  <p class="sub">De utgör en tredjedel av konkurrentlistan. De är inte konkurrenter på den svenska marknaden.</p>
+
+  <div class="callout badbar">
+    <h3><span class="pill bad">Noll av 15 rankar i Sverige</span></h3>
+    <p>Alla femton kördes mot <code>location_name: "Sweden"</code>. Samtliga returnerade <strong>0 rader</strong>. De kördes sedan om mot <code>location_name: "Norway"</code>, där tio av dem returnerade sammanlagt 55 sökordsrader.</p>
+    <p>De är alltså verksamma bolag med verklig synlighet — bara inte i Sverige. Norska bostadsfotosökord är dessutom andra ord: <strong>boligfotograf</strong> (110/mån, herrfotograf.no plats 12 och stavanger-eiendomsfoto.no plats 5) och <strong>boligfotograf oslo</strong> (40/mån, isnitt.no plats 10). Ingen svensk söker på "boligfotograf".</p>
+    <p class="ink">De är uteslutna ur gapanalysen. Vill du att de ska betyda något behöver det bli en separat rapport för den norska marknaden — och en separat sajt eller språkversion.</p>
+  </div>
+
+  <table>
+    <caption>Norska domäner · Sverige mot Norge · samtliga 15</caption>
+    <thead><tr><th>Domän</th><th class="num">Rader i Sverige</th><th class="num">Rader i Norge</th><th>Bästa relevanta sökord i Norge</th></tr></thead>
+    <tbody>
+      <tr><td class="kw">firmafotografen.no</td><td class="num">0</td><td class="num">25</td><td>boligfotograf oslo (40) · plats 15</td></tr>
+      <tr><td class="kw">stavanger-eiendomsfoto.no</td><td class="num">0</td><td class="num">12</td><td>boligfotograf (110) · plats 5</td></tr>
+      <tr><td class="kw">cinewo.no</td><td class="num">0</td><td class="num">5</td><td>fpv drone (1 600) · plats 10</td></tr>
+      <tr><td class="kw">impulsmedia.no</td><td class="num">0</td><td class="num">3</td><td>bryllupsfoto (70) · plats 4</td></tr>
+      <tr><td class="kw">isnitt.no</td><td class="num">0</td><td class="num">2</td><td>boligfotograf oslo (40) · plats 10</td></tr>
+      <tr><td class="kw">herrfotograf.no</td><td class="num">0</td><td class="num">2</td><td>boligfotograf (110) · plats 12</td></tr>
+      <tr><td class="kw">swendsenstudio.com</td><td class="num">0</td><td class="num">2</td><td>videograf (140) · plats 15</td></tr>
+      <tr><td class="kw">digitmedia.no</td><td class="num">0</td><td class="num">2</td><td>produktfoto (40) · plats 18</td></tr>
+      <tr><td class="kw">inviso.no</td><td class="num">0</td><td class="num">1</td><td>inviso (70) · plats 16 — varumärke</td></tr>
+      <tr><td class="kw">invisohouse.com</td><td class="num">0</td><td class="num">1</td><td>inviso (70) · plats 1 — varumärke</td></tr>
+      <tr><td class="kw">eiendomsfotografen.no</td><td class="num">0</td><td class="num">0</td><td>ej tillgängligt</td></tr>
+      <tr><td class="kw">huyrebel.com</td><td class="num">0</td><td class="num">0</td><td>ej tillgängligt</td></tr>
+      <tr><td class="kw">visuellbolig.no</td><td class="num">0</td><td class="num">0</td><td>ej tillgängligt</td></tr>
+      <tr><td class="kw">wallinga.no</td><td class="num">0</td><td class="num">0</td><td>ej tillgängligt</td></tr>
+      <tr><td class="kw">imageday.no</td><td class="num">0</td><td class="num">0</td><td>ej tillgängligt</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 2. VAD KONKURRENTERNA FAKTISKT RANKAR PÅ -->
+<section>
+  <h2>2. Vad de svenska konkurrenterna faktiskt rankar på</h2>
+  <p class="sub">Innan gapet: en titt på vad som drar trafik hos dem som lyckats. Det är sällan tjänsten de säljer.</p>
+
+  <table>
+    <caption>De 15 största sökorden bland 162 insamlade rader · alla från konkurrenternas topp 20</caption>
+    <thead><tr><th>Sökord</th><th class="num">Volym</th><th class="num">Position</th><th>Domän och vad sidan faktiskt är</th></tr></thead>
+    <tbody>
+      <tr><td class="kw">vitec express</td><td class="num">8 100</td><td class="num">16</td><td>diakrit.com — supportartikel om beställning via ett mäklarsystem</td></tr>
+      <tr><td class="kw">drönarkartan</td><td class="num">4 400</td><td class="num">9</td><td>dronartjanst.se — verktygssida för drönarpiloter</td></tr>
+      <tr><td class="kw">nero</td><td class="num">2 900</td><td class="num">4</td><td>nerointerior.se — varumärke</td></tr>
+      <tr><td class="kw">uddevallabron</td><td class="num">2 900</td><td class="num">16</td><td>utm.se — produktsida om en bro</td></tr>
+      <tr><td class="kw">fotograf</td><td class="num">2 400</td><td class="num">3</td><td>fotografstockholm.se — startsida</td></tr>
+      <tr><td class="kw">steg</td><td class="num">2 400</td><td class="num">4</td><td>utm.se — produktsida, ordet är en tillfällighet</td></tr>
+      <tr><td class="kw">emulsive</td><td class="num">1 900</td><td class="num">11</td><td>chimli.se — startsida</td></tr>
+      <tr><td class="kw">hedren</td><td class="num">1 600</td><td class="num">12</td><td>hfagency.se — personalpresentation, en anställds namn</td></tr>
+      <tr><td class="kw">drönarkort</td><td class="num">1 600</td><td class="num">14</td><td>dronartjanst.se — utbildningssida</td></tr>
+      <tr><td class="kw">husfoto</td><td class="num">1 000</td><td class="num">1</td><td>hfagency.se — varumärke</td></tr>
+      <tr><td class="kw">diakrit</td><td class="num">1 000</td><td class="num">1</td><td>diakrit.com — varumärke</td></tr>
+      <tr><td class="kw">linnégatan 8</td><td class="num">880</td><td class="num">13</td><td>nerointerior.se — sida om en enskild adress</td></tr>
+      <tr><td class="kw">fotografi</td><td class="num">880</td><td class="num">5</td><td>almerangfotografi.se — startsida</td></tr>
+      <tr><td class="kw">exteriör</td><td class="num">720</td><td class="num">7</td><td>bostadsfoto.se — tjänstesida</td></tr>
+      <tr><td class="kw">var bor zara larsson</td><td class="num">590</td><td class="num">7</td><td>hfagency.se — blogginlägg om en artists lägenhet</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Visar de 15 största av 162 insamlade rader. Fullständig lista finns i rådatan bakom rapporten.</p>
+
+  <div class="callout warnbar">
+    <h3><span class="pill warn">Mönstret är värt mer än enskilda siffror</span></h3>
+    <p>Ingen av de femton största posterna är en tjänstesida för bostadsvideo eller bostadsfoto. De fördelar sig på fyra typer: <strong>varumärkesnamn</strong> (nero, husfoto, diakrit, emulsive), <strong>drönarreglering</strong> (drönarkartan, drönarkort), <strong>kändisskvaller</strong> (var bor Zara Larsson, Zlatans hus i Åre) och <strong>rena tillfälligheter</strong> — utm.se rankar på "uddevallabron" och malmmedia.se på "filmad malm korsord".</p>
+    <p class="ink">HF Agency, marknadens största aktör med 170 anslutna fotografer, hämtar sin största icke-varumärkestrafik från ett blogginlägg om Zara Larssons lägenhet. Det är inte en innehållsstrategi du kan kopiera — det är tur med en viral artikel.</p>
+  </div>
+</section>
+
+<!-- 3. GAPET -->
+<section>
+  <h2>3. Gapet: sökord där minst två bolag rankar i topp 20</h2>
+  <p class="sub">Efter sammanslagning av HF Agencys två domäner till ett bolag återstår åtta sökord. Här är samtliga, inklusive de jag skär bort.</p>
+
+  <table>
+    <caption>Samtliga 8 gap-sökord · bästa position per bolag · sidformat klassificerat av mig</caption>
+    <thead>
+      <tr><th>Sökord</th><th class="num">Volym</th><th class="num">Bästa pos.</th><th>Rankande URL</th><th>Format</th><th>Beslut</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="kw">spridningstillstånd</td><td class="num">480</td><td class="num">3</td>
+        <td class="u">se360.se/aktuellt/spridningstillstand-dronare/<br>hfagency.se/post/regler-dronarfoto</td>
+        <td>Guide</td>
+        <td><span class="pill bad">Bortskuret</span> Drönare — utanför omfånget</td>
+      </tr>
+      <tr>
+        <td class="kw">fotografer</td><td class="num">480</td><td class="num">2</td>
+        <td class="u">fotografstockholm.se/<br>diakrit.com/se/fotografer</td>
+        <td>Tjänstesida + rekrytering</td>
+        <td><span class="pill bad">Bortskuret</span> Diakrits sida rekryterar fotografer</td>
+      </tr>
+      <tr>
+        <td class="kw">drönare stockholm</td><td class="num">260</td><td class="num">7</td>
+        <td class="u">dronartjanst.se/dronartjanst-stockholm/<br>fotografstockholm.se/flygfoto-dronare/</td>
+        <td>Tjänstesida</td>
+        <td><span class="pill bad">Bortskuret</span> Drönare — utanför omfånget</td>
+      </tr>
+      <tr>
+        <td class="kw">stockholm drönare</td><td class="num">260</td><td class="num">7</td>
+        <td class="u">dronartjanst.se/dronartjanst-stockholm/<br>fotografstockholm.se/flygfoto-dronare/</td>
+        <td>Tjänstesida</td>
+        <td><span class="pill bad">Bortskuret</span> Samma sökord, omvänd ordföljd</td>
+      </tr>
+      <tr>
+        <td class="kw">e-styling</td><td class="num">170</td><td class="num">1</td>
+        <td class="u">hfagency.se/e-styling<br>se360.se/e-styling/</td>
+        <td>Tjänstesida</td>
+        <td><span class="pill good">Behålls</span> Kluster 1</td>
+      </tr>
+      <tr>
+        <td class="kw">e styling</td><td class="num">170</td><td class="num">1</td>
+        <td class="u">Samma sidor som ovan</td>
+        <td>Tjänstesida</td>
+        <td><span class="pill mute">Variant</span> Räknas som samma sökord</td>
+      </tr>
+      <tr>
+        <td class="kw">spridningstillstånd drönare</td><td class="num">110</td><td class="num">3</td>
+        <td class="u">se360.se/aktuellt/spridningstillstand-dronare/<br>husfoto.se/post/regler-dronarfoto</td>
+        <td>Guide</td>
+        <td><span class="pill bad">Bortskuret</span> Drönare — utanför omfånget</td>
+      </tr>
+      <tr>
+        <td class="kw">styla badrum inför fotografering</td><td class="num">70</td><td class="num">4</td>
+        <td class="u">bostadsfoto.se/checklista<br>se360.se/infor-fotografering/badrum/</td>
+        <td>Checklista + guide</td>
+        <td><span class="pill good">Behålls</span> Kluster 2</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="bars" style="margin-top:26px">
+    <div class="bar-row">
+      <div class="bar-lbl">Bortskuret (6 sökord)</div>
+      <div class="bar-track"><div class="bar-fill bad" style="width:100%"></div></div>
+      <div class="bar-val">1 590</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Behållet (2 sökord)</div>
+      <div class="bar-track"><div class="bar-fill good" style="width:15.1%"></div></div>
+      <div class="bar-val">240</div>
+    </div>
+  </div>
+  <p class="axis">Sökningar per månad. Av 1 830 sökningar i gapet är 240 relevanta för det du säljer.</p>
+
+  <div class="callout warnbar" style="margin-top:26px">
+    <h3><span class="pill warn">Hög</span> &nbsp;Drönarinnehåll är nischens största trafikmagnet — och du valde bort det</h3>
+    <p>Fyra av åtta gap-sökord handlar om drönare, tillsammans 1 110 sökningar/mån — nästan två tredjedelar av hela gapet. Både SE360 och HF Agency har byggt guider om <strong>spridningstillstånd</strong>, alltså reglerna för att publicera flygbilder. Det är den enda innehållstyp i branschen där två konkurrenter oberoende av varandra investerat i samma ämne.</p>
+    <p>Jag skär bort det eftersom du uttryckligen valde bort drönare i rapport 2. <span class="pill mute">Notering</span> Om det beslutet ändras är det här den första sidan att skriva — det är den mest bevisade innehållsefterfrågan i hela materialet.</p>
+  </div>
+</section>
+
+<!-- 4. KLUSTER -->
+<section>
+  <h2>4. De två klustren</h2>
+  <p class="sub">Varje kluster har verifierats med en live-SERP. Sökord markerade "tillagt" möter inte tvåkonkurrentströskeln — de kommer från Google Ads och kompletterar klustret.</p>
+
+  <div class="cluster">
+    <div class="cluster-head">
+      <h3>Kluster 1 — E-styling</h3>
+      <span class="slug">/e-styling</span>
+      <span class="slug">/e-styling-pris</span>
+      <span class="pill accent">Prioritet 1</span>
+    </div>
+    <div class="cluster-vol">180 sökningar/mån · konkurrensindex 1 · kommersiell intention</div>
+    <table>
+      <thead><tr><th>Sökord</th><th class="num">Volym</th><th class="num">Konk.index</th><th>Ursprung</th></tr></thead>
+      <tbody>
+        <tr><td class="kw">e-styling / e styling</td><td class="num">170</td><td class="num">1</td><td>Gap — 2 bolag i topp 20</td></tr>
+        <tr><td class="kw">digital homestyling</td><td class="num">10</td><td class="num">2</td><td><span class="pill mute">Tillagt</span> Google Ads</td></tr>
+        <tr><td class="kw">e-styling pris</td><td class="num">ingen data</td><td class="num">ej tillgängligt</td><td><span class="pill mute">Tillagt</span> Relaterad sökning i SERP</td></tr>
+        <tr><td class="kw">virtuell möblering</td><td class="num">ingen data</td><td class="num">ej tillgängligt</td><td><span class="pill mute">Tillagt</span> Under mätgräns</td></tr>
+      </tbody>
+    </table>
+    <div class="verdict">
+      <p><strong>Vad e-styling är:</strong> tomma eller möblerade rum möbleras digitalt i efterhand med 3D-renderade möbler i befintliga foton. Det är en bildprodukt, inte en fysisk stylingtjänst — den ligger inom det omfång du valde.</p>
+      <p><strong>Live-SERP, hämtad 2026-07-31:</strong> HF Agency plats 1 (<code>/e-styling</code>), estylingstudio.se plats 2 (AI-verktyg, "Prova gratis"), SE360 plats 3 (<code>/e-styling/</code>), Hemnet plats 4 (redaktionell artikel), Swiperoom plats 5 (blogginlägg), videa.se plats 6, pintarstudios.se plats 7, Instagram plats 8, ett WordPress-inlägg från <strong>2016</strong> plats 9.</p>
+      <p class="ink"><strong>Den öppna luckan:</strong> ingen av de nio sidorna anger pris. "E-styling pris" ligger som relaterad sökning, och frågan "Vad kostar e-styling?" i People-Also-Ask besvaras av <code>ekonomifokus.se</code> — med priser för <em>fysisk</em> homestyling (2 000 kr konsultation, 15 000 kr och uppåt). Google har inget bättre svar att visa. Det är den mest konkreta luckan i hela rapporten.</p>
+    </div>
+  </div>
+
+  <div class="cluster">
+    <div class="cluster-head">
+      <h3>Kluster 2 — Inför fotografering</h3>
+      <span class="slug">/infor-fotografering</span>
+      <span class="pill warn">Prioritet 2</span>
+    </div>
+    <div class="cluster-vol">240 sökningar/mån · informationell intention · AI Overview dominerar</div>
+    <table>
+      <thead><tr><th>Sökord</th><th class="num">Volym</th><th class="num">Konk.index</th><th>Ursprung</th></tr></thead>
+      <tbody>
+        <tr><td class="kw">styla inför fotografering</td><td class="num">90</td><td class="num">30</td><td><span class="pill mute">Tillagt</span> Google Ads</td></tr>
+        <tr><td class="kw">styla badrum inför fotografering</td><td class="num">70</td><td class="num">52</td><td>Gap — 2 bolag i topp 20</td></tr>
+        <tr><td class="kw">bädda inför fotografering</td><td class="num">70</td><td class="num">11</td><td><span class="pill mute">Tillagt</span> bostadsfoto.se plats 7</td></tr>
+        <tr><td class="kw">inför fotografering</td><td class="num">10</td><td class="num">50</td><td><span class="pill mute">Tillagt</span> Google Ads</td></tr>
+      </tbody>
+    </table>
+    <div class="verdict">
+      <p><strong>Vad konkurrenterna gjort:</strong> SE360 har byggt en rum-för-rum-struktur — <code>se360.se/infor-fotografering/badrum/</code> ligger på plats 14. bostadsfoto.se har en enda checklistesida, <code>/checklista</code>, som rankar på plats 4 för badrum och plats 7 för bäddning. Två bolag, två format, samma ämne.</p>
+      <p><strong>Live-SERP på "styla inför fotografering":</strong> Elle plats 1 (artikel från 2019), Hemnets guide plats 2, Erik Olsson plats 3, Pinterest plats 4, Bjurfors plats 5, en TV4-video från 2019 plats 6. Redaktionellt och gammalt — lätt att slå på innehållskvalitet.</p>
+      <p><strong>Men:</strong> <span class="pill warn">Låg säkerhet på trafiken</span> SERP:en toppas av en AI Overview som besvarar frågan fullständigt, rum för rum, med citat från sju källor. Läsaren behöver inte klicka. Volymen är verklig, klicken är det sannolikt inte.</p>
+      <p class="ink">Skriv den ändå — men som <strong>förkvalificering och länkbete</strong>, inte som trafikkälla. En checklista som mäklaren skickar vidare till sin säljare är ett säljverktyg. Att bli citerad i AI Overview är också ett värde, även utan klick.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. BRIEF -->
+<section>
+  <h2>5. Brief till skribenten — vad dina sidor behöver som deras inte har</h2>
+  <p class="sub">Baserat på hämtning av de faktiska rankande sidorna, inte på antaganden om dem. Sidorna hämtades med <code>on_page/instant_pages</code> 2026-07-31.</p>
+
+  <div class="brief">
+    <h3>Sida 1 — <code>/e-styling</code></h3>
+    <div class="target">Slår mot: hfagency.se/e-styling (plats 1, 672 ord) och se360.se/e-styling/ (plats 3, 1 201 ord)</div>
+    <ul>
+      <li><strong>Sätt ut priset.</strong> Ingen av de nio sidorna på förstasidan gör det. Google visar Ekonomifokus generella homestylingpriser som svar på "Vad kostar e-styling?" i brist på bättre. Ett pris per bild och per objekt tar den positionen.</li>
+      <li><strong>Bygg ett före/efter-galleri med minst tio par.</strong> SE360:s sida har <strong>en enda bild</strong> på hela sidan — på en tjänst vars hela poäng är hur det ser ut. HF Agency har 22 bilder men bara ett "Före / efter"-avsnitt. Det här är den lättaste övertagbara ytan.</li>
+      <li><strong>Svara på invändningen om vilseledande annonsering.</strong> HF Agency har rubriken "Är det inte vilseledande?" på sin sida. Det är branschens känsligaste fråga och de äger svaret. Skriv ett bättre — med hänvisning till hur bilderna märks upp i annonsen.</li>
+      <li><strong>Koppla ihop e-styling med video i samma leverans.</strong> SE360 har rubriken "Kombinera e-styling med foto och film" men säljer dem som separata beställningar. Ingen aktör erbjuder e-stylade stillbilder <em>och</em> rörlig film från samma objekt inom 24 timmar. Det är din enda faktiska differentiering på den här sidan.</li>
+      <li><strong>Utnyttja att du är snabb.</strong> HF Agencys sida ligger på Wix, väger 672 KB och blir interaktiv efter 3 205 ms, varav 1 892 ms ren väntetid. Din startsida gör det på 354 ms. Det är en rankingfaktor de inte kan fixa utan att byta plattform.</li>
+      <li><strong>Skriv minst 1 200 ord.</strong> Den som ligger etta har 672. Den som ligger trea har 1 201 och en FAQ-sektion. Längden i sig rankar inte, men täckningen gör det — och 672 ord täcker inte pris, garantier, leveranstid och invändningar.</li>
+    </ul>
+  </div>
+
+  <div class="brief">
+    <h3>Sida 2 — <code>/e-styling-pris</code></h3>
+    <div class="target">Slår mot: ett tomrum. Ingen sida i topp 10 riktar sig mot prisfrågan.</div>
+    <ul>
+      <li><strong>Publicera en tabell med faktiska kronor.</strong> Från rapport 2: <code>bofoto.se/priser.php</code> tar plats 8 nationellt på ren prislista. Formatet fungerar bevisligen i den här branschen.</li>
+      <li><strong>Jämför mot fysisk homestyling.</strong> Ekonomifokus siffror — 2 000 kr för konsultation, från 15 000 kr för styling med inhyrda möbler — är de tal Google i dag visar för e-stylingfrågan. Ställ dina priser bredvid dem. Det är en jämförelse du vinner.</li>
+      <li><strong>Ta med "E styling utbildning" och "Digital styling program"</strong> som avsnitt eller interna länkar. Båda ligger som relaterade sökningar på e-styling-SERP:en, och ingen av tjänsteleverantörerna adresserar dem. <span class="pill warn">Låg säkerhet</span> — jag har inte hämtat volym för dem separat.</li>
+    </ul>
+  </div>
+
+  <div class="brief">
+    <h3>Sida 3 — <code>/infor-fotografering</code> med undersidor per rum</h3>
+    <div class="target">Slår mot: se360.se/infor-fotografering/badrum/ (plats 14) och bostadsfoto.se/checklista (plats 4 och 7)</div>
+    <ul>
+      <li><strong>Kopiera SE360:s struktur, inte deras innehåll.</strong> De har en URL per rum. bostadsfoto.se har allt på en checklistesida och rankar ändå högre. Bygg en modersida plus undersidor för badrum, kök och sovrum — de tre rum som återkommer i relaterade sökningar.</li>
+      <li><strong>Gör den nedladdningsbar och vidarebefordringsbar.</strong> Den verkliga användaren är en mäklare som ska skicka något till sin säljare. En PDF med kontorets logotyp är ett säljargument, inte en bloggpost.</li>
+      <li><strong>Skriv för att bli citerad, inte klickad.</strong> AI Overview besvarar redan frågan med sju källor. Korta, faktiska påståenden i punktform är det format som citeras. Räkna inte hem trafiken.</li>
+      <li><strong>Lägg till vinkeln ingen har: styling inför <em>film</em>.</strong> Samtliga sidor i topp 10 handlar om stillbild. Rörlig kamera ställer andra krav — sladdar syns i panorering, dörrar måste stå öppna, ljus måste vara jämnt genom hela rummet. Det är ett ämne där ingen konkurrerar och som bara du har anledning att skriva om.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- DE 3 SAKERNA -->
+<section>
+  <h2>De 3 saker jag skulle göra först</h2>
+
+  <div class="action">
+    <div class="n">1</div>
+    <div class="body">
+      <h3>Bestäm om ni säljer e-styling — innan skribenten börjar</h3>
+      <div class="where">Beslut, inte en sida</div>
+      <p><strong>Exakt vad:</strong> avgör om Bostadsvideo24 ska leverera digital möblering av stillbilder. Det är det enda kluster i hela gapanalysen med kommersiell intention, mätbar volym (170/mån) och en topp 10 utan prisinformation.</p>
+      <p><strong>Varför beslutet kommer först:</strong> du valde "stillbilder / bostadsfoto" i rapport 2, men e-styling är en egen produktionsprocess med 3D-rendering — inte något som följer av att ni redan filmar. Skriver ni sidan utan att kunna leverera bygger ni en tratt mot en tjänst som inte finns.</p>
+      <p><strong>Om svaret är nej:</strong> då har den här rapporten ett kluster kvar, /infor-fotografering, med 240 sökningar/mån och en SERP som AI Overview redan äter. Säg till så räknar jag om planen.</p>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="n">2</div>
+    <div class="body">
+      <h3>Skriv /e-styling-pris före /e-styling</h3>
+      <div class="where">Ny sida: www.bostadsvideo24.se/e-styling-pris</div>
+      <p><strong>Exakt ändring:</strong> en prissida med kronor per bild och per objekt, plus en jämförelsetabell mot fysisk homestyling.</p>
+      <p><strong>Varför före tjänstesidan:</strong> tjänstesidan tävlar mot HF Agency på plats 1 och SE360 på plats 3 — båda etablerade domäner med befintliga länkar. Prissidan tävlar mot ingen. "E-styling pris" är relaterad sökning, "Vad kostar e-styling?" är People-Also-Ask, och Google svarar i dag med en artikel om fysisk homestyling från Ekonomifokus. Det är en obesatt position, inte en strid.</p>
+      <p><strong>Bevis att formatet bär:</strong> <code>bofoto.se/priser.php</code> rankar plats 8 nationellt på en ren prislista utan annat innehåll.</p>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="n">3</div>
+    <div class="body">
+      <h3>Ta bort de 15 norska domänerna ur konkurrentlistan</h3>
+      <div class="where">Gäller bevakningen framåt, inte en sida på sajten</div>
+      <p><strong>Exakt ändring:</strong> stryk inviso.no, invisohouse.com, isnitt.no, cinewo.no, eiendomsfotografen.no, swendsenstudio.com, herrfotograf.no, huyrebel.com, visuellbolig.no, wallinga.no, impulsmedia.no, imageday.no, digitmedia.no, firmafotografen.no och stavanger-eiendomsfoto.no.</p>
+      <p><strong>Varför:</strong> samtliga femton returnerade 0 rader mot svenska Google. De rankar i Norge, på norska sökord — "boligfotograf", inte "bostadsfotograf". De kan aldrig ta en position ifrån dig i Sverige, och att ha dem kvar gör varje framtida konkurrentrapport en tredjedel dyrare och långsammare utan att tillföra en enda datapunkt.</p>
+      <p><strong>Behåll däremot:</strong> HF Agency (två domäner, ett bolag), SE360, Diakrit och bostadsfoto.se. Det är de fyra som faktiskt rankar på ämnen du kan tävla om.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="rpt">
+  <h2>Datakällor &amp; metod</h2>
+
+  <table>
+    <thead><tr><th>Endpoint</th><th>Parametrar</th><th class="num">Rader</th><th class="num">Hämtad</th></tr></thead>
+    <tbody>
+      <tr><td class="kw">dataforseo_labs/google/ranked_keywords</td><td>28 svenska domäner · Sweden · sv · topp 20 · volym &gt; 0 · limit 40</td><td class="num">162</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">dataforseo_labs/google/ranked_keywords</td><td>15 norska domäner · Sweden · sv · topp 20</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">dataforseo_labs/google/ranked_keywords</td><td>15 norska domäner · Norway · no · topp 20 · limit 25</td><td class="num">55</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">serp/google/organic/live/advanced</td><td>"e-styling" · Sweden · sv · djup 10</td><td class="num">9 organiska</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">serp/google/organic/live/advanced</td><td>"styla inför fotografering" · Sweden · sv · djup 10</td><td class="num">8 organiska + AI Overview</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">keywords_data/google_ads/search_volume</td><td>10 sökord kring e-styling och inför fotografering · Sweden · sv</td><td class="num">8 med volym</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">on_page/instant_pages</td><td>hfagency.se/e-styling · JS på · sv</td><td class="num">1</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">on_page/instant_pages</td><td>se360.se/e-styling/ · JS på · sv</td><td class="num">1</td><td class="num">2026-07-31</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:32px;color:var(--ink)">Vad som saknas, och varför</h3>
+  <ul class="fine-list">
+    <li><strong>Elva av 28 svenska domäner returnerade 0 rader:</strong> bostadsfilm.se, svenskbostadsfilm.se, husfokus.com, bofoto.se, fastighetsfilm.com, hirschfoto.se, marulkmedia.com, drönar-foto.se, dronarfotografering.se, realecomedia.com, pavosolstudios.se. För minst två av dem — svenskbostadsfilm.se och bofoto.se — vet jag från live-SERP:ar i rapport 2 att de <em>rankar</em> i topp 10. Labs-indexet är alltså ofullständigt för svenska lågvolymsökord, och gapet i rapporten är därför ett golv.</li>
+    <li><strong>Ett anrop timeoutade.</strong> Ett försök att hämta ranked_keywords för svenskbostadsfilm.se utan filter avbröts efter 180 sekunder. Slutsatsen om den domänen bygger därför på det filtrerade anropet (0 rader) plus live-SERP-datan från rapport 2.</li>
+    <li><strong>Ej tillgängligt: volym för "e-styling pris" och "virtuell möblering".</strong> Google Ads returnerade ingen volympost, vilket i praktiken betyder under 10 sökningar/mån. De ingår i planen på grund av att de förekommer som relaterad sökning respektive People-Also-Ask i SERP:en, inte på grund av uppmätt volym. Det är markerat i klustertabellen.</li>
+    <li><strong>Ej tillgängligt: konkurrensindex för "e-styling pris".</strong> Följer av att volymdata saknas.</li>
+    <li><strong>Sidformat är min klassificering, inte API-data.</strong> DataForSEO returnerar URL och position, inte sidtyp. Jag har klassificerat varje sida som guide, tjänstesida, jämförelse, listartikel, checklista eller verktyg utifrån URL, sidtitel och SERP-beskrivning. För de två e-stylingsidorna är klassificeringen verifierad genom att jag hämtat sidorna.</li>
+    <li><strong>Endast 2 av de 5 briefade sidorna bygger på hämtat sidinnehåll.</strong> hfagency.se/e-styling och se360.se/e-styling/ hämtades med instant_pages. Påståendena om bostadsfoto.se/checklista och se360.se/infor-fotografering/badrum/ bygger på SERP-data och URL-struktur. Det som skulle höja säkerheten: två instant_pages-anrop till.</li>
+  </ul>
+
+  <h3 style="margin-top:28px;color:var(--ink)">Vad som är min bedömning, inte API-data</h3>
+  <p class="fine"><strong>Sammanslagningen av hfagency.se och husfoto.se till ett bolag.</strong> API:et behandlar dem som två domäner. Jag slog ihop dem baserat på delade varumärkesrankningar och identiska blogginläggssökvägar. Det beslutet tog bort fem sökord ur gapet som annars felaktigt hade passerat tvåkonkurrentströskeln.</p>
+  <p class="fine"><strong>Relevansfiltreringen.</strong> Vilka av de åtta gap-sökorden som har "verkligt kommersiellt värde" är min bedömning utifrån det tjänsteomfång du angav i rapport 2 — video och stillbilder, inte drönare, homestaging eller företagsfilm. Samtliga bortskurna sökord är listade med skäl så att du kan invända.</p>
+  <p class="fine"><strong>Bedömningen att AI Overview äter kluster 2:s trafik.</strong> Jag ser i SERP-svaret att en AI Overview ligger överst och besvarar frågan fullständigt med sju källhänvisningar. Att det leder till färre klick är en slutsats jag drar, inte ett mått API:et levererar.</p>
+  <p class="fine" style="margin-top:22px">Inga trafikprognoser förekommer i den här rapporten. Alla volymer kommer från Google Ads Search Volume, alla positioner och URL:er från DataForSEO Labs och live-SERP:ar. Rapport genererad 2026-07-31, all data hämtad samma dag.</p>
+</footer>
+
+</div>
+</body>
+</html>

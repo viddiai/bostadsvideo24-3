@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Site Explorer — bostadsvideo24.se</title>
+<style>
+:root{
+  --surface:#1a1a19;
+  --card:#232322;
+  --ink:#ffffff;
+  --ink-2:#c3c2b7;
+  --ink-3:#83827a;
+  --rule:#33332f;
+  --accent:#3987e5;
+  --warn:#e0a03c;
+  --bad:#e66767;
+  --good:#199e70;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--surface);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:56px 40px 96px}
+
+/* HEADER */
+header.rpt{border-bottom:1px solid var(--rule);padding-bottom:32px;margin-bottom:44px}
+.eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin:0 0 14px}
+h1{font-size:40px;font-weight:700;line-height:1.15;margin:0 0 20px;letter-spacing:-.01em}
+.meta{display:flex;flex-wrap:wrap;gap:36px;margin-top:22px}
+.meta div{min-width:120px}
+.meta .k{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:5px}
+.meta .v{font-size:17px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+
+/* HERO STATS */
+.heroes{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:52px}
+.hero{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:26px 22px}
+.hero .big{font-size:42px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.hero .lbl{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-top:12px;line-height:1.35}
+.hero.bad .big{color:var(--bad)}
+.hero.warn .big{color:var(--warn)}
+.hero.good .big{color:var(--good)}
+.hero.accent .big{color:var(--accent)}
+
+/* SECTIONS */
+section{margin-bottom:56px}
+h2{font-size:26px;font-weight:700;margin:0 0 8px;letter-spacing:-.01em}
+.sub{color:var(--ink-2);font-size:16px;margin:0 0 24px;max-width:78ch}
+h3{font-size:19px;font-weight:700;margin:0 0 8px}
+p{margin:0 0 16px;color:var(--ink-2);max-width:80ch}
+p.ink{color:var(--ink)}
+strong{color:var(--ink);font-weight:600}
+
+/* CALLOUT */
+.callout{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--bad);border-radius:8px;padding:26px 28px;margin-bottom:28px}
+.callout.warnbar{border-left-color:var(--warn)}
+.callout.accentbar{border-left-color:var(--accent)}
+.callout h3{margin-bottom:10px}
+.callout p:last-child{margin-bottom:0}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:0 0 14px;font-size:15px}
+caption{text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);padding-bottom:12px}
+th{
+  text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--ink-3);font-weight:600;padding:0 16px 12px;border-bottom:1px solid var(--rule);
+}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+td{background:var(--card);padding:14px 16px;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
+td.kw{color:var(--ink);font-weight:600}
+tbody tr:last-child td{border-bottom:none}
+.note{font-size:14px;color:var(--ink-3);margin:0 0 8px}
+
+/* PILLS */
+.pill{
+  display:inline-block;font-size:13px;font-weight:700;letter-spacing:.04em;
+  padding:3px 10px;border-radius:5px;white-space:nowrap;
+}
+.pill.bad{background:rgba(230,103,103,.16);color:var(--bad);border:1px solid rgba(230,103,103,.4)}
+.pill.warn{background:rgba(224,160,60,.16);color:var(--warn);border:1px solid rgba(224,160,60,.4)}
+.pill.good{background:rgba(25,158,112,.16);color:var(--good);border:1px solid rgba(25,158,112,.45)}
+.pill.accent{background:rgba(57,135,229,.16);color:var(--accent);border:1px solid rgba(57,135,229,.45)}
+.pill.mute{background:rgba(131,130,122,.16);color:var(--ink-3);border:1px solid var(--rule)}
+
+/* BARS */
+.bars{margin:8px 0 10px}
+.bar-row{display:flex;align-items:center;gap:16px;padding:9px 0;border-bottom:1px solid var(--rule)}
+.bar-row:last-child{border-bottom:none}
+.bar-lbl{width:210px;flex:none;font-size:15px;color:var(--ink)}
+.bar-track{flex:1;height:18px;background:var(--card);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);border-radius:3px}
+.bar-fill.good{background:var(--good)}
+.bar-fill.warn{background:var(--warn)}
+.bar-fill.mute{background:var(--rule)}
+.bar-val{width:96px;flex:none;text-align:right;font-variant-numeric:tabular-nums;font-size:15px;font-weight:600;color:var(--ink)}
+.axis{font-size:13px;color:var(--ink-3);margin-top:10px}
+
+/* ACTIONS */
+.action{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:28px 30px;margin-bottom:18px;display:flex;gap:24px}
+.action .n{
+  flex:none;width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;
+  font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  font-variant-numeric:tabular-nums;
+}
+.action .body{flex:1}
+.action h3{margin-bottom:6px;font-size:20px}
+.action .where{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:14px}
+.action p:last-child{margin-bottom:0}
+
+/* FOOTER */
+footer.rpt{border-top:1px solid var(--rule);padding-top:34px;margin-top:16px}
+footer.rpt h2{font-size:22px;margin-bottom:18px}
+footer.rpt table{font-size:14px}
+footer.rpt td,footer.rpt th{padding-left:14px;padding-right:14px}
+.fine{font-size:14px;color:var(--ink-3);max-width:88ch;margin:0 0 12px}
+.fine strong{color:var(--ink-2)}
+ul.fine-list{font-size:14px;color:var(--ink-3);max-width:88ch;padding-left:20px;margin:0 0 18px}
+ul.fine-list li{margin-bottom:8px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:var(--ink-2);background:var(--card);padding:2px 6px;border-radius:4px;border:1px solid var(--rule)}
+@media(max-width:900px){
+  .heroes{grid-template-columns:repeat(2,1fr)}
+  .wrap{padding:36px 22px 64px}
+  h1{font-size:32px}
+  .bar-lbl{width:130px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="rpt">
+  <p class="eyebrow">Rapport 1 — Site Explorer</p>
+  <h1>Organisk synlighet: noll. Nischen är för liten för att SEO ska vara kanalen.</h1>
+  <div class="meta">
+    <div><div class="k">Domän</div><div class="v">bostadsvideo24.se</div></div>
+    <div><div class="k">Marknad</div><div class="v">Sverige · svenska</div></div>
+    <div><div class="k">Datum</div><div class="v">2026-07-31</div></div>
+    <div><div class="k">Datakälla</div><div class="v">DataForSEO</div></div>
+  </div>
+</header>
+
+<!-- HERO STATS -->
+<div class="heroes">
+  <div class="hero bad">
+    <div class="big">0</div>
+    <div class="lbl">Rankande sökord</div>
+  </div>
+  <div class="hero bad">
+    <div class="big">0</div>
+    <div class="lbl">Refererande domäner</div>
+  </div>
+  <div class="hero warn">
+    <div class="big">140</div>
+    <div class="lbl">Sökningar/mån i hela den relevanta nischen</div>
+  </div>
+  <div class="hero warn">
+    <div class="big">~38</div>
+    <div class="lbl">Besök/mån vid position 1 på allt — taket</div>
+  </div>
+  <div class="hero good">
+    <div class="big">100</div>
+    <div class="lbl">On-page-score av 100</div>
+  </div>
+</div>
+
+<!-- 1. RANKANDE SÖKORD -->
+<section>
+  <h2>1. Rankande sökord</h2>
+  <p class="sub">Uppdraget var att hämta varje sökord domänen rankar på i dag, med position, volym och exakt rankande URL. Svaret är kort.</p>
+
+  <div class="callout">
+    <h3><span class="pill bad">Kritisk</span> &nbsp;Domänen finns inte i DataForSEO:s rankningsindex</h3>
+    <p><code>dataforseo_labs/google/ranked_keywords</code> returnerade <strong>0 rader</strong> för Sverige/svenska — både med och utan subdomäner, och med alla SERP-typer påslagna (organic, paid, featured_snippet, local_pack, ai_overview_reference).</p>
+    <p>Kontrollfråga: jag körde en live-SERP på varumärkesordet <strong>"bostadsvideo24"</strong>. Domänen syns inte bland de 9 organiska träffarna på sida 1. Plats 1 är <code>se.trustpilot.com</code> (recensioner av Bostad24), plats 7 är <code>bostad24.se</code>. Sajten rankar alltså inte ens på sitt eget namn.</p>
+    <p>Det finns därför ingen tabell att fylla. Att skriva en är att hitta på.</p>
+  </div>
+
+  <table>
+    <caption>Rankningsfördelning — hämtad, inte uppskattad</caption>
+    <thead>
+      <tr>
+        <th>Positionsspann</th>
+        <th class="num">Antal sökord</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="kw">Position 1–3</td><td class="num">0</td><td><span class="pill bad">Kritisk</span></td></tr>
+      <tr><td class="kw">Position 4–10</td><td class="num">0</td><td><span class="pill bad">Kritisk</span></td></tr>
+      <tr><td class="kw">Position 11–20</td><td class="num">0</td><td><span class="pill bad">Kritisk</span></td></tr>
+      <tr><td class="kw">Position 21–100</td><td class="num">0</td><td><span class="pill bad">Kritisk</span></td></tr>
+      <tr><td class="kw"><strong>Totalt</strong></td><td class="num"><strong>0</strong></td><td><span class="pill bad">Kritisk</span></td></tr>
+    </tbody>
+  </table>
+  <p class="note">Källa: DataForSEO Labs — Google Ranked Keywords. 0 rader returnerade, 2026-07-31.</p>
+</section>
+
+<!-- 2. TOPPSIDOR -->
+<section>
+  <h2>2. De 20 främsta sidorna efter organisk trafik</h2>
+  <p class="sub">Två oberoende endpoints säger samma sak, och sidhämtningen förklarar varför.</p>
+
+  <div class="callout">
+    <h3><span class="pill bad">Kritisk</span> &nbsp;Inga sidor med organisk trafik — och bara en sida att indexera</h3>
+    <p><code>dataforseo_labs/google/relevant_pages</code> returnerade <strong>0 rader</strong>. <code>dataforseo_labs/google/domain_rank_overview</code> returnerade <strong>0 rader</strong>. <code>backlinks/summary</code> returnerade <strong>0 rader</strong> — noll refererande domäner.</p>
+    <p>Direkthämtning av startsidan (<code>on_page/instant_pages</code>) svarar <strong>HTTP 200</strong>: sajten lever, ligger på Vercel, är HTTPS, har canonical och 690 ord text. On-page-score <strong>100 av 100</strong>. Men <strong>internal_links_count = 1</strong> — det här är en enda landningssida utan undersidor. <code>Last-Modified</code> är <strong>2026-07-17</strong>, alltså cirka två veckor gammal.</p>
+    <p class="ink"><strong>Slutsats:</strong> problemet är inte teknisk kvalitet. Sidan är välbyggd. Problemet är att den är ny, ensam och helt utan inlänkar — det finns inget för Google att hitta den genom, och inget mer än en sida att ranka.</p>
+  </div>
+
+  <table>
+    <caption>Teknisk status för den enda sidan — hämtad live</caption>
+    <thead>
+      <tr><th>Mått</th><th class="num">Värde</th><th>Bedömning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="kw">HTTP-status</td><td class="num">200</td><td><span class="pill good">Vinner</span> Sidan svarar</td></tr>
+      <tr><td class="kw">On-page-score</td><td class="num">100 / 100</td><td><span class="pill good">Vinner</span> Inga tekniska fel</td></tr>
+      <tr><td class="kw">Interna länkar</td><td class="num">1</td><td><span class="pill bad">Kritisk</span> Ingen sajtstruktur</td></tr>
+      <tr><td class="kw">Refererande domäner</td><td class="num">0</td><td><span class="pill bad">Kritisk</span> Ingen upptäckbarhet</td></tr>
+      <tr><td class="kw">Ord i brödtext</td><td class="num">690</td><td><span class="pill warn">Låg</span> Tunt för ett ämne</td></tr>
+      <tr><td class="kw">Titellängd</td><td class="num">63 tecken</td><td><span class="pill good">Vinner</span> Inom gräns</td></tr>
+      <tr><td class="kw">Meta description</td><td class="num">229 tecken</td><td><span class="pill warn">Låg</span> Klipps i SERP</td></tr>
+      <tr><td class="kw">Time to interactive</td><td class="num">354 ms</td><td><span class="pill good">Vinner</span> Snabb</td></tr>
+      <tr><td class="kw">Cumulative layout shift</td><td class="num">0</td><td><span class="pill good">Vinner</span> Stabil</td></tr>
+      <tr><td class="kw">Senast ändrad</td><td class="num">2026-07-17</td><td><span class="pill mute">Ny</span> ~2 veckor gammal</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Källa: DataForSEO On-Page — Instant Pages, 1 rad returnerad, hämtad 2026-07-31 12:24 UTC.</p>
+</section>
+
+<!-- 3. MARKNADSSTORLEK -->
+<section>
+  <h2>3. Hur stor är nischen egentligen?</h2>
+  <p class="sub">Eftersom det inte finns någon historik att analysera vände jag på frågan: hur mycket organisk trafik finns det överhuvudtaget att vinna? Det här är det viktigaste resultatet i rapporten.</p>
+
+  <table>
+    <caption>Sökvolym Sverige/svenska — 20 sökord testade, 10 hade volym</caption>
+    <thead>
+      <tr>
+        <th>Sökord</th>
+        <th class="num">Sökningar/mån</th>
+        <th class="num">Konkurrensindex</th>
+        <th class="num">CPC (SEK)</th>
+        <th>Relevans för affären</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="kw">videoproduktion</td><td class="num">320</td><td class="num">30</td><td class="num">11,40</td><td><span class="pill warn">Låg</span> Fel målgrupp, opålitlig siffra</td></tr>
+      <tr><td class="kw">bostadsfotograf</td><td class="num">70</td><td class="num">7</td><td class="num">1,00</td><td><span class="pill warn">Låg</span> Jobbsökarintent, se nedan</td></tr>
+      <tr><td class="kw">fastighetsfotograf</td><td class="num">20</td><td class="num">17</td><td class="num">2,64</td><td><span class="pill accent">Hög</span> Angränsande köpintent</td></tr>
+      <tr><td class="kw">bostadsfilm</td><td class="num">10</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td><span class="pill accent">Hög</span> Exakt tjänstematchning</td></tr>
+      <tr><td class="kw">mäklarvideo</td><td class="num">10</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td><span class="pill accent">Hög</span> Exakt tjänstematchning</td></tr>
+      <tr><td class="kw">mäklarfoto</td><td class="num">10</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td><span class="pill accent">Hög</span> Rätt köpare</td></tr>
+      <tr><td class="kw">fotograf mäklare</td><td class="num">10</td><td class="num">6</td><td class="num">ej tillgängligt</td><td><span class="pill accent">Hög</span> Rätt köpare</td></tr>
+      <tr><td class="kw">marknadsföring mäklare</td><td class="num">10</td><td class="num">86</td><td class="num">1,60</td><td><span class="pill accent">Hög</span> Rätt köpare, hård konkurrens</td></tr>
+      <tr><td class="kw">videobyrå</td><td class="num">10</td><td class="num">ej tillgängligt</td><td class="num">ej tillgängligt</td><td><span class="pill warn">Låg</span> För brett</td></tr>
+      <tr><td class="kw">reklamfilm företag</td><td class="num">10</td><td class="num">43</td><td class="num">ej tillgängligt</td><td><span class="pill warn">Låg</span> Fel tjänst</td></tr>
+      <tr><td class="kw">bostadsvideo</td><td class="num">ingen data</td><td class="num">—</td><td class="num">—</td><td><span class="pill mute">Under mätgräns</span></td></tr>
+      <tr><td class="kw">mäklarfilm</td><td class="num">ingen data</td><td class="num">—</td><td class="num">—</td><td><span class="pill mute">Under mätgräns</span></td></tr>
+      <tr><td class="kw">fastighetsvideo</td><td class="num">ingen data</td><td class="num">—</td><td class="num">—</td><td><span class="pill mute">Under mätgräns</span></td></tr>
+      <tr><td class="kw">video mäklare</td><td class="num">ingen data</td><td class="num">—</td><td class="num">—</td><td><span class="pill mute">Under mätgräns</span></td></tr>
+      <tr><td class="kw">video till hemnet</td><td class="num">ingen data</td><td class="num">—</td><td class="num">—</td><td><span class="pill mute">Under mätgräns</span></td></tr>
+      <tr><td class="kw">bostadsvisning video</td><td class="num">ingen data</td><td class="num">—</td><td class="num">—</td><td><span class="pill mute">Under mätgräns</span></td></tr>
+      <tr><td class="kw">filma bostad</td><td class="num">ingen data</td><td class="num">—</td><td class="num">—</td><td><span class="pill mute">Under mätgräns</span></td></tr>
+      <tr><td class="kw">visningsfilm</td><td class="num">ingen data</td><td class="num">—</td><td class="num">—</td><td><span class="pill mute">Under mätgräns</span></td></tr>
+      <tr><td class="kw">drone fastighet</td><td class="num">ingen data</td><td class="num">—</td><td class="num">—</td><td><span class="pill mute">Under mätgräns</span></td></tr>
+      <tr><td class="kw">sälja bostad snabbare</td><td class="num">ingen data</td><td class="num">—</td><td class="num">—</td><td><span class="pill mute">Under mätgräns</span></td></tr>
+    </tbody>
+  </table>
+  <p class="note">Källa: DataForSEO Keywords Data — Google Ads Search Volume. 20 sökord testade i två anrop, 10 med volymdata. "Ingen data" = Google Ads returnerade ingen volympost, vilket i praktiken betyder under mätgränsen (&lt;10/mån).</p>
+
+  <h3 style="margin-top:36px">Den relevanta nischen är 140 sökningar i månaden</h3>
+  <div class="bars">
+    <div class="bar-row">
+      <div class="bar-lbl">bostadsfotograf</div>
+      <div class="bar-track"><div class="bar-fill warn" style="width:100%"></div></div>
+      <div class="bar-val">70</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">fastighetsfotograf</div>
+      <div class="bar-track"><div class="bar-fill" style="width:28.6%"></div></div>
+      <div class="bar-val">20</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">bostadsfilm</div>
+      <div class="bar-track"><div class="bar-fill" style="width:14.3%"></div></div>
+      <div class="bar-val">10</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">mäklarvideo</div>
+      <div class="bar-track"><div class="bar-fill" style="width:14.3%"></div></div>
+      <div class="bar-val">10</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">mäklarfoto</div>
+      <div class="bar-track"><div class="bar-fill" style="width:14.3%"></div></div>
+      <div class="bar-val">10</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">fotograf mäklare</div>
+      <div class="bar-track"><div class="bar-fill" style="width:14.3%"></div></div>
+      <div class="bar-val">10</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">marknadsföring mäklare</div>
+      <div class="bar-track"><div class="bar-fill" style="width:14.3%"></div></div>
+      <div class="bar-val">10</div>
+    </div>
+  </div>
+  <p class="axis">Sökningar per månad, Sverige/svenska. Ett mått, en axel. Summa: 140.</p>
+
+  <div class="callout warnbar" style="margin-top:28px">
+    <h3><span class="pill warn">Hög</span> &nbsp;Två varningar om siffrorna ovan</h3>
+    <p><strong>"videoproduktion" (320/mån) är inte användbar.</strong> Månadsdatan från API:et svänger extremt: 2 400 i april 2026, 720 i september 2025, men 50 i maj 2026 och 50 i juni 2026. 320 är ett tolvmånadersmedel som drivs av två avvikande månader. Den senaste faktiska månaden är 50. Räkna inte hem den.</p>
+    <p><strong>"bostadsfotograf" (70/mån) har fel intent.</strong> Live-SERP:en visar plats 1 = Indeed ("17 lediga jobb för Bostadsfotograf"), plats 2 = Diakrits artikel "så lyckas du som bostadsfotograf", plats 7 = Teamtailor-jobbannons. Relaterade sökningar är "Bostadsfotograf jobb", "Bostadsfotograf lön", "Frilans fotograf sökes". Det här är fotografer som söker jobb, inte mäklarkontor som söker leverantör. Volymen är verklig; köparna är det inte.</p>
+  </div>
+</section>
+
+<!-- 4. UPPSIDA -->
+<section>
+  <h2>4. De tre största möjligheterna de kommande 90 dagarna</h2>
+  <p class="sub">Uppgiften bad om de tre <em>sidor</em> som har störst uppsida. Det går inte att svara på: domänen har en enda sida och den rankar på ingenting. Jag har därför bytt enhet till de tre <em>sökord</em> som ger störst förväntad trafikökning om ni bygger en sida för dem. Det är en avvikelse från uppdraget och den är medveten.</p>
+
+  <table>
+    <caption>Rangordnat efter förväntad trafikökning, inte efter svårighetsgrad</caption>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Sökord</th>
+        <th class="num">Nuv. position</th>
+        <th class="num">Volym/mån</th>
+        <th class="num">Förväntat tillskott</th>
+        <th>Säkerhet</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">1</td>
+        <td class="kw">bostadsfilm</td>
+        <td class="num">Rankar ej</td>
+        <td class="num">10</td>
+        <td class="num">+2 besök/mån</td>
+        <td><span class="pill warn">Medel</span></td>
+      </tr>
+      <tr>
+        <td class="num">2</td>
+        <td class="kw">fastighetsfotograf</td>
+        <td class="num">Rankar ej</td>
+        <td class="num">20</td>
+        <td class="num">+1 besök/mån</td>
+        <td><span class="pill bad">Låg säkerhet</span></td>
+      </tr>
+      <tr>
+        <td class="num">3</td>
+        <td class="kw">mäklarvideo</td>
+        <td class="num">Rankar ej</td>
+        <td class="num">10</td>
+        <td class="num">+1 besök/mån</td>
+        <td><span class="pill warn">Medel</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:32px">1. "bostadsfilm" — 10 sökningar/mån</h3>
+  <p><strong>Varför den står stilla:</strong> ni finns inte på sidan. SERP:en domineras av exakt-matchande domäner — <code>svenskbostadsfilm.se</code> på plats 1, <code>hfagency.se/film</code> på plats 2, <code>se360.se/filmproduktion/bostadsfilm/</code> på plats 3. Men plats 9 hålls av <code>bostadsfilm.carrd.co</code>, en Carrd-enkelsida. Att en gratis one-pager håller topp 10 säger att konkurrensen är svag och att en riktig sida kan ta plats 3–5.</p>
+  <p><strong>Den enda ändringen jag skulle göra först:</strong> publicera <code>/bostadsfilm</code> som egen URL med den frasen i H1, title och första stycket — i dag nämns ordet inte alls i era H-taggar (ni skriver "bostadsvideo" och "video"). Ni tävlar om ett ord marknaden inte söker på.</p>
+  <p><strong>Uträkning:</strong> 10 sökningar/mån (Google Ads-medel; senast rapporterade månad, juni 2026, var 20) × antagen CTR 20 % för position 3–5 = 2 besök/mån. Den senaste månadens 20 skulle ge 4. CTR-kurvan är ett antagande från mig, inte API-data.</p>
+
+  <h3 style="margin-top:32px">2. "fastighetsfotograf" — 20 sökningar/mån</h3>
+  <p><strong>Varför den står stilla:</strong> ni finns inte på sidan, och ordet är inte ens er tjänst — ni säljer video, inte foto. Konkurrensindex 17 och CPC 2,64 kr visar att någon betalar för trafiken, vilket är ett tecken på köpintent snarare än jobbintent. Till skillnad från "bostadsfotograf" fastnade den inte i jobbannonser i den kontroll jag gjorde.</p>
+  <p><strong>Den enda ändringen jag skulle göra först:</strong> lägg till ett stycke på startsidan som uttryckligen säger att leveransen innehåller stillbilder från filmningen. Det gör ordet ärligt att ranka på. Bygg ingen egen sida förrän ni faktiskt levererar foto som produkt.</p>
+  <p><strong>Uträkning:</strong> 20 sökningar/mån × antagen CTR 6 % för position 8–10 = 1,2 besök/mån. <span class="pill bad">Låg säkerhet</span> — jag har inte kört live-SERP på "fastighetsfotograf" och vet därför inte hur mycket av resultatsidan som är jobbannonser, precis som på "bostadsfotograf". Det som skulle höja säkerheten: ett <code>serp/organic/live/advanced</code>-anrop på exakt den frasen.</p>
+
+  <h3 style="margin-top:32px">3. "mäklarvideo" — 10 sökningar/mån</h3>
+  <p><strong>Varför den står stilla:</strong> ni finns inte på sidan. Volymen har legat stabilt på 10/mån i varje rapporterad månad sedan juli 2025 — ingen tillväxt, men ingen kollaps heller. Konkurrensen anges som LOW.</p>
+  <p><strong>Den enda ändringen jag skulle göra först:</strong> lägg till frasen i H1. Er nuvarande H1 lyder "Sälj bostäder snabbare med proffsig video — levererad inom 24 timmar" och innehåller varken "bostadsfilm" eller "mäklarvideo", de två enda fraser i nischen som faktiskt har mätbar volym.</p>
+  <p><strong>Uträkning:</strong> 10 sökningar/mån × antagen CTR 12 % för position 5–7 = 1,2 besök/mån.</p>
+
+  <div class="callout accentbar" style="margin-top:36px">
+    <h3><span class="pill accent">Det här är rapportens slutsats</span></h3>
+    <p class="ink">Om ni tog <strong>position 1 på samtliga sju relevanta sökord samtidigt</strong> — ett utfall som inte kommer inträffa — landar ni på 140 sökningar × 27 % antagen CTR för position 1 = <strong>cirka 38 besök i månaden</strong>. Det är taket för hela nischen, inte ett mål.</p>
+    <p>Realistiskt 90-dagarsutfall av de tre åtgärderna ovan: <strong>4–6 besök i månaden</strong>. Med en normal B2B-konverteringsgrad blir det inte ett enda inbokat möte.</p>
+    <p class="ink"><strong>Organisk sökning är inte tillväxtkanalen för Bostadsvideo24.</strong> Det finns inga tvåhundra mäklarkontor i Sverige som googlar "bostadsvideo" varje månad. De finns — men de söker inte. De behöver bli uppsökta.</p>
+  </div>
+</section>
+
+<!-- 5. DE TRE SAKERNA -->
+<section>
+  <h2>De 3 saker jag skulle göra först</h2>
+
+  <div class="action">
+    <div class="n">1</div>
+    <div class="body">
+      <h3>Gör sajten upptäckbar — den är osynlig för Google i dag</h3>
+      <div class="where">Sida: www.bostadsvideo24.se (hela domänen)</div>
+      <p><strong>Exakt ändring:</strong> koppla domänen till Google Search Console och begär indexering av startsidan. Lägg upp en Google Business Profile för Bostadsvideo24. Skaffa de tre första inlänkarna: Peak Marketing AB:s sajt, Leadsmaskinen och er LinkedIn-företagssida.</p>
+      <p><strong>Varför just den:</strong> <code>backlinks/summary</code> returnerade 0 refererande domäner och <code>ranked_keywords</code> 0 rader. Sajten rankar inte ens på "bostadsvideo24". Utan en enda inlänk har Google ingen väg in. Allt annat på den här listan är meningslöst tills det här är gjort.</p>
+      <p><strong>Om Business Profile:</strong> båda konkurrent-SERP:arna jag körde visar Knowledge Graph-paneler för konkurrenter — <code>bostadsfilm.se</code> (Uppsala) på "bostadsfilm" och <code>bostadsfoto.se</code> (Enskede) på "bostadsfotograf". Det är gratis SERP-yta som ni inte tar.</p>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="n">2</div>
+    <div class="body">
+      <h3>Byt ut "bostadsvideo" mot "bostadsfilm" i H1 och title</h3>
+      <div class="where">Sida: startsidan — H1 och &lt;title&gt;</div>
+      <p><strong>Exakt ändring:</strong> nuvarande H1 är "Sälj bostäder snabbare med proffsig video — levererad inom 24 timmar". Skriv om till att innehålla <strong>bostadsfilm</strong> och <strong>mäklarvideo</strong>. Lägg till <code>/bostadsfilm</code> som egen undersida med samma erbjudande.</p>
+      <p><strong>Varför just den:</strong> "bostadsvideo" returnerade <strong>ingen volymdata alls</strong> från Google Ads — ordet ni byggt varumärke och rubriker på söker ingen på. "bostadsfilm" och "mäklarvideo" har 10/mån vardera. Det är små tal, men de är de enda som inte är noll.</p>
+      <p><strong>Bonus:</strong> sajten har <code>internal_links_count = 1</code>. Att lägga till en andra sida ger Google något att crawla vidare till.</p>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="n">3</div>
+    <div class="body">
+      <h3>Flytta budgeten från SEO till outbound</h3>
+      <div class="where">Kanalval — gäller hela satsningen, inte en enskild sida</div>
+      <p><strong>Exakt ändring:</strong> lägg inte mer tid på innehållsproduktion för organisk sökning efter att punkt 1 och 2 är gjorda. Bygg i stället en riktad lista på mäklarkontor och kör den genom Leadsmaskinens outbound-flöde.</p>
+      <p><strong>Varför just den:</strong> hela den relevanta nischen är <strong>140 sökningar i månaden</strong>. Taket vid position 1 på allt är ~38 besök/mån. Det räcker inte för att bygga en verksamhet på, oavsett hur bra innehållet blir. Antalet mäklarkontor i Sverige är många gånger större än antalet som googlar efter tjänsten.</p>
+      <p><strong>Betald sökning som komplement:</strong> CPC ligger på 1,00 kr för "bostadsfotograf" och 2,64 kr för "fastighetsfotograf" — extremt billigt. Men vid 140 sökningar/mån blir hela marknadens klickvolym några hundralappar i månaden. Ta den, men förvänta er inget volymtillskott.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="rpt">
+  <h2>Datakällor &amp; metod</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Endpoint</th>
+        <th>Parametrar</th>
+        <th class="num">Rader</th>
+        <th class="num">Hämtad</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="kw">dataforseo_labs/google/ranked_keywords</td><td>bostadsvideo24.se · Sweden · sv · subdomäner på · limit 200</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">dataforseo_labs/google/ranked_keywords</td><td>bostadsvideo24.se · Sweden · sv · alla SERP-typer · limit 100</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">dataforseo_labs/google/relevant_pages</td><td>bostadsvideo24.se · Sweden · sv · sorterat på organic ETV</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">dataforseo_labs/google/domain_rank_overview</td><td>bostadsvideo24.se · Sweden · sv</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">backlinks/summary</td><td>bostadsvideo24.se · subdomäner på</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">on_page/instant_pages</td><td>https://www.bostadsvideo24.se/ · JS på · sv</td><td class="num">1</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">serp/google/organic/live/advanced</td><td>"bostadsvideo24" · Sweden · sv · djup 20</td><td class="num">9 organiska</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">serp/google/organic/live/advanced</td><td>"bostadsfilm" · Sweden · sv · djup 10</td><td class="num">10 organiska</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">serp/google/organic/live/advanced</td><td>"bostadsfotograf" · Sweden · sv · djup 10</td><td class="num">9 organiska</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">keywords_data/google_ads/search_volume</td><td>15 sökord · Sweden · sv</td><td class="num">10</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">keywords_data/google_ads/search_volume</td><td>15 sökord · Sweden · sv (andra omgången)</td><td class="num">10</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">dataforseo_labs/google/keyword_ideas</td><td>bostadsfilm, mäklarvideo, fastighetsfotograf · Sweden · sv</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">dataforseo_labs/google/keyword_suggestions</td><td>bostadsvideo · Sweden · sv</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:32px;color:var(--ink)">Vad som saknas, och varför</h3>
+  <ul class="fine-list">
+    <li><strong>Ej tillgängligt: rankningshistorik, trafikutveckling, konkurrentjämförelse.</strong> Alla sådana endpoints kräver att domänen finns i rankningsindexet. Den gör inte det. Ingen av dem returnerade data.</li>
+    <li><strong>Ej tillgängligt: konkurrensindex och CPC för fem sökord</strong> ("bostadsfilm", "mäklarvideo", "mäklarfoto", "videobyrå", delvis "fotograf mäklare"). Google Ads returnerade sökvolym men inga bud- eller konkurrensfält för dessa. Cellerna är märkta "ej tillgängligt", inte gissade.</li>
+    <li><strong>Sju sökord blev aldrig testade.</strong> Google Ads Search Volume-endpointen returnerade max 10 poster per anrop trots att jag skickade 15. Otestade: "drönarfoto bostad", "videoproduktion mäklare", "presentationsfilm bostad", "hemnet video", "hemnet", "mäklare stockholm", "video marknadsföring". Ett tredje anrop skulle täcka dem.</li>
+    <li><strong>Ett anrop misslyckades.</strong> Live-SERP på "bostadsvideo24.se" gav <code>Internal SE Server Error (40101)</code>. Jag körde i stället "bostadsvideo24" utan toppdomän, vilket gav svar. Slutsatsen bygger på det anropet.</li>
+    <li><strong>Keyword Ideas och Keyword Suggestions gav noll rader.</strong> Det är i sig ett resultat: DataForSEO:s databas hittar inga besläktade svenska sökfraser kring "bostadsvideo" eller "bostadsfilm" med mätbar volym. Nischen är för liten för att generera en long tail.</li>
+  </ul>
+
+  <h3 style="margin-top:28px;color:var(--ink)">Vad som är mitt antagande, inte API-data</h3>
+  <p class="fine"><strong>CTR-kurvan.</strong> Varje trafikuppskattning i avsnitt 4 multiplicerar en API-hämtad sökvolym med en antagen klickfrekvens: 27 % för position 1, 20 % för position 3–5, 12 % för position 5–7, 6 % för position 8–10. De procenttalen kommer inte från DataForSEO — de är branschgenomsnitt jag applicerat. Volymerna är hämtade; omräkningen till besök är min. Alla uträkningar är utskrivna i löptext så att ni kan byta ut kurvan mot er egen.</p>
+  <p class="fine"><strong>Bedömningen "fel intent" på "bostadsfotograf"</strong> bygger på en live-SERP där tre av nio organiska träffar och tre av fyra relaterade sökningar handlar om jobb. Det är en läsning av data, inte ett mått från API:et.</p>
+  <p class="fine" style="margin-top:22px">Rapport genererad 2026-07-31. All data hämtad samma dag via DataForSEO. Inga siffror är uppskattade eller avrundade utöver det som uttryckligen märkts som antagande ovan.</p>
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teknisk granskning — bostadsvideo24.se</title>
+<style>
+:root{
+  --surface:#1a1a19;
+  --card:#232322;
+  --ink:#ffffff;
+  --ink-2:#c3c2b7;
+  --ink-3:#83827a;
+  --rule:#33332f;
+  --accent:#3987e5;
+  --warn:#e0a03c;
+  --bad:#e66767;
+  --good:#199e70;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--surface);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:56px 40px 96px}
+
+header.rpt{border-bottom:1px solid var(--rule);padding-bottom:32px;margin-bottom:44px}
+.eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin:0 0 14px}
+h1{font-size:40px;font-weight:700;line-height:1.15;margin:0 0 20px;letter-spacing:-.01em}
+.meta{display:flex;flex-wrap:wrap;gap:36px;margin-top:22px}
+.meta div{min-width:110px}
+.meta .k{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:5px}
+.meta .v{font-size:17px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+
+.heroes{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:52px}
+.hero{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:26px 22px}
+.hero .big{font-size:42px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.hero .lbl{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-top:12px;line-height:1.35}
+.hero.bad .big{color:var(--bad)}
+.hero.warn .big{color:var(--warn)}
+.hero.good .big{color:var(--good)}
+.hero.accent .big{color:var(--accent)}
+
+section{margin-bottom:56px}
+h2{font-size:26px;font-weight:700;margin:0 0 8px;letter-spacing:-.01em}
+.sub{color:var(--ink-2);font-size:16px;margin:0 0 24px;max-width:80ch}
+h3{font-size:19px;font-weight:700;margin:0 0 8px}
+p{margin:0 0 16px;color:var(--ink-2);max-width:82ch}
+p.ink{color:var(--ink)}
+strong{color:var(--ink);font-weight:600}
+
+.callout{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:8px;padding:26px 28px;margin-bottom:26px}
+.callout.badbar{border-left-color:var(--bad)}
+.callout.warnbar{border-left-color:var(--warn)}
+.callout.goodbar{border-left-color:var(--good)}
+.callout h3{margin-bottom:10px}
+.callout p:last-child{margin-bottom:0}
+
+table{width:100%;border-collapse:collapse;margin:0 0 14px;font-size:15px}
+caption{text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);padding-bottom:12px}
+th{text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:600;padding:0 14px 12px;border-bottom:1px solid var(--rule)}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+td{background:var(--card);padding:13px 14px;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
+td.kw{color:var(--ink);font-weight:600}
+tbody tr:last-child td{border-bottom:none}
+.note{font-size:14px;color:var(--ink-3);margin:0 0 8px;max-width:90ch}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:var(--ink-2);background:var(--card);padding:2px 6px;border-radius:4px;border:1px solid var(--rule)}
+.u{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;word-break:break-all}
+
+.pill{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:5px;white-space:nowrap}
+.pill.bad{background:rgba(230,103,103,.16);color:var(--bad);border:1px solid rgba(230,103,103,.4)}
+.pill.warn{background:rgba(224,160,60,.16);color:var(--warn);border:1px solid rgba(224,160,60,.4)}
+.pill.good{background:rgba(25,158,112,.16);color:var(--good);border:1px solid rgba(25,158,112,.45)}
+.pill.accent{background:rgba(57,135,229,.16);color:var(--accent);border:1px solid rgba(57,135,229,.45)}
+.pill.mute{background:rgba(131,130,122,.16);color:var(--ink-3);border:1px solid var(--rule)}
+
+.bars{margin:8px 0 10px}
+.bar-row{display:flex;align-items:center;gap:16px;padding:9px 0;border-bottom:1px solid var(--rule)}
+.bar-row:last-child{border-bottom:none}
+.bar-lbl{width:240px;flex:none;font-size:15px;color:var(--ink)}
+.bar-track{flex:1;height:18px;background:var(--card);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);border-radius:3px}
+.bar-fill.good{background:var(--good)}
+.bar-fill.warn{background:var(--warn)}
+.bar-fill.bad{background:var(--bad)}
+.bar-val{width:110px;flex:none;text-align:right;font-variant-numeric:tabular-nums;font-size:15px;font-weight:600;color:var(--ink)}
+.axis{font-size:13px;color:var(--ink-3);margin-top:10px}
+
+/* ISSUE CARDS */
+.issue{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:26px 28px;margin-bottom:18px}
+.issue-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;margin-bottom:4px}
+.issue-head .rank{font-size:14px;color:var(--ink-3);font-variant-numeric:tabular-nums;font-weight:700}
+.issue-head h3{margin:0;font-size:20px;flex:1;min-width:260px}
+.issue-meta{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:16px}
+.issue dl{margin:0;display:grid;grid-template-columns:130px 1fr;gap:10px 18px}
+.issue dt{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);padding-top:2px}
+.issue dd{margin:0;color:var(--ink-2)}
+.issue dd strong{color:var(--ink)}
+
+.action{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:28px 30px;margin-bottom:18px;display:flex;gap:24px}
+.action .n{flex:none;width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.action .body{flex:1}
+.action h3{margin-bottom:6px;font-size:20px}
+.action .where{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:14px}
+.action p:last-child{margin-bottom:0}
+
+.winner{background:var(--card);border:1px solid rgba(57,135,229,.45);border-left:4px solid var(--accent);border-radius:10px;padding:30px 32px}
+.winner h3{font-size:22px;margin-bottom:12px}
+
+footer.rpt{border-top:1px solid var(--rule);padding-top:34px;margin-top:16px}
+footer.rpt h2{font-size:22px;margin-bottom:18px}
+footer.rpt table{font-size:14px}
+.fine{font-size:14px;color:var(--ink-3);max-width:92ch;margin:0 0 12px}
+.fine strong{color:var(--ink-2)}
+ul.fine-list{font-size:14px;color:var(--ink-3);max-width:92ch;padding-left:20px;margin:0 0 18px}
+ul.fine-list li{margin-bottom:8px}
+@media(max-width:900px){
+  .heroes{grid-template-columns:repeat(2,1fr)}
+  .wrap{padding:36px 22px 64px}
+  h1{font-size:30px}
+  .bar-lbl{width:130px}
+  .issue dl{grid-template-columns:1fr;gap:4px 0}
+  .issue dt{margin-top:10px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="rpt">
+  <p class="eyebrow">Rapport 4 — Teknisk granskning</p>
+  <h1>Sidan är välbyggd. Problemet är att ingenting berättar för Google att den finns.</h1>
+  <div class="meta">
+    <div><div class="k">Domän</div><div class="v">bostadsvideo24.se</div></div>
+    <div><div class="k">Marknad</div><div class="v">Sverige · svenska</div></div>
+    <div><div class="k">Sidor</div><div class="v">1 st</div></div>
+    <div><div class="k">Datum</div><div class="v">2026-07-31</div></div>
+  </div>
+</header>
+
+<div class="heroes">
+  <div class="hero good">
+    <div class="big">100</div>
+    <div class="lbl">On-page-score av 100</div>
+  </div>
+  <div class="hero good">
+    <div class="big">137</div>
+    <div class="lbl">Millisekunders TTFB, median</div>
+  </div>
+  <div class="hero bad">
+    <div class="big">992</div>
+    <div class="lbl">Kilobyte sidvikt</div>
+  </div>
+  <div class="hero bad">
+    <div class="big">89 %</div>
+    <div class="lbl">Av sidvikten är två JPEG-filer</div>
+  </div>
+  <div class="hero warn">
+    <div class="big">8</div>
+    <div class="lbl">Verkliga problem funna</div>
+  </div>
+</div>
+
+<!-- SAMMANFATTNING -->
+<section>
+  <h2>Kort sammanfattning</h2>
+  <p class="sub">Jag hittade 8 problem som realistiskt kan kosta rankning eller konverteringar. Fem av dem tar under en timme att åtgärda. Jag hittade också sex saker som ser ut som problem men inte är det — de listas längst ned så att ingen lägger tid på dem.</p>
+
+  <div class="callout goodbar">
+    <h3><span class="pill good">Vinner</span> &nbsp;Det tekniska hantverket håller</h3>
+    <p>On-page-score <strong>100 av 100</strong>. TTFB på <strong>137 ms</strong> i median över fem mätningar, med <code>x-vercel-cache: HIT</code>. Cumulative layout shift <strong>0</strong>. HTML komprimerad med Brotli till 5 378 byte. HSTS aktivt med två års maxålder. Omdirigeringskedjorna är korrekta i ett hopp.</p>
+    <p>Det här är inte en sajt med tekniska skulder. Det är en sajt utan upptäcktsväg — och det är en helt annan sorts problem.</p>
+  </div>
+</section>
+
+<!-- ÅTGÄRDA DENNA VECKA -->
+<section>
+  <h2>Åtgärda den här veckan</h2>
+  <p class="sub">Fyra problem. Sammanlagd arbetstid: cirka två och en halv timme.</p>
+
+  <div class="issue">
+    <div class="issue-head">
+      <span class="rank">01</span>
+      <h3>Varken robots.txt eller sitemap.xml finns</h3>
+      <span class="pill bad">Kritisk</span>
+    </div>
+    <div class="issue-meta">Störst påverkan på hela sajten · 20 minuter</div>
+    <dl>
+      <dt>Vad</dt>
+      <dd>Båda filerna svarar <strong>HTTP 404</strong>. Kombinerat med noll refererande domäner från rapport 1 finns det ingen väg alls in till sajten: inga länkar utifrån, ingen sitemap som talar om att sidan existerar, och inget i Search Console.</dd>
+      <dt>Berörda URL:er</dt>
+      <dd class="u">https://www.bostadsvideo24.se/robots.txt → 404<br>https://www.bostadsvideo24.se/sitemap.xml → 404</dd>
+      <dt>Varför det kostar</dt>
+      <dd>Google hittar sidor på två sätt: via länkar eller via en sitemap. Sajten har noll av båda. Det är den tekniska förklaringen till att <code>ranked_keywords</code> ger 0 rader — Google har aldrig fått veta att sajten finns.</dd>
+      <dt>Exakt ändring</dt>
+      <dd>Lägg <code>public/robots.txt</code> med raderna <code>User-agent: *</code>, <code>Allow: /</code> och <code>Sitemap: https://www.bostadsvideo24.se/sitemap.xml</code>. Lägg <code>public/sitemap.xml</code> med startsidans URL och <code>lastmod</code>. Verifiera domänen i Google Search Console och skicka in sitemapen.</dd>
+      <dt>Tid</dt>
+      <dd><strong>20 minuter</strong>, varav 15 är Search Console-verifieringen.</dd>
+    </dl>
+  </div>
+
+  <div class="issue">
+    <div class="issue-head">
+      <span class="rank">02</span>
+      <h3>Två JPEG-filer utgör 89 procent av sidvikten</h3>
+      <span class="pill bad">Kritisk</span>
+    </div>
+    <div class="issue-meta">Påverkar mobilprestanda och LCP · 45 minuter</div>
+    <dl>
+      <dt>Vad</dt>
+      <dd>Sidan väger <strong>992 KB</strong>. HTML, CSS och typsnitt står tillsammans för 108 KB. De två bilderna står för <strong>884 KB</strong>. Ingen av dem levereras i WebP eller AVIF.</dd>
+      <dt>Berörda URL:er</dt>
+      <dd class="u">/assets/img/maklarprofil-exempel.jpg — 474 442 B, 1920×1080 px<br>/assets/img/stillbilder-underlag.jpg — 430 892 B, 3048×400 px</dd>
+      <dt>Varför det kostar</dt>
+      <dd>Largest Contentful Paint är ett rankningsmått och drivs nästan alltid av den största bilden ovanför mitten. På mobilt nät är skillnaden mellan 100 KB och 900 KB flera sekunder. Sajten säljer proffsig videoproduktion — en långsam sida motsäger löftet.</dd>
+      <dt>Exakt ändring</dt>
+      <dd>Konvertera båda till WebP med kvalitet 80. Begränsa <code>maklarprofil-exempel.jpg</code> till 1 600 px bredd och <code>stillbilder-underlag.jpg</code> till 2 000 px. Servera via <code>&lt;picture&gt;</code> med JPEG som reserv. Behåll <code>loading="lazy"</code> på bild två och lägg <code>fetchpriority="high"</code> på bild ett.</dd>
+      <dt>Tid</dt>
+      <dd><strong>45 minuter</strong> inklusive konvertering och test.</dd>
+    </dl>
+  </div>
+
+  <div class="issue">
+    <div class="issue-head">
+      <span class="rank">03</span>
+      <h3>Kampanjerbjudandet går ut i dag</h3>
+      <span class="pill bad">Kritisk</span>
+    </div>
+    <div class="issue-meta">Konvertering, inte rankning · 10 minuter</div>
+    <dl>
+      <dt>Vad</dt>
+      <dd>Sidan har texten <strong>"Introduktionspris hela juli — 50 % rabatt på första månaden"</strong> både i navigationsbannern och i prisrubriken. I dag är 31 juli 2026. Från och med i morgon marknadsför sajten ett erbjudande som gått ut.</dd>
+      <dt>Berörda URL:er</dt>
+      <dd class="u">https://www.bostadsvideo24.se/ — <code>.nav-banner</code> och H2 i prissektionen</dd>
+      <dt>Varför det kostar</dt>
+      <dd>Ett utgånget erbjudande är den tydligaste möjliga signalen att ingen sköter sajten. Besökaren som klickar på "50 % rabatt" och möts av juli-villkor i september drar en slutsats om leveranssäkerheten hos ett företag som lovar 24 timmar.</dd>
+      <dt>Exakt ändring</dt>
+      <dd>Byt till ett rullande villkor utan månadsnamn — "50 % rabatt på första månaden" — eller sätt en påminnelse den sista i varje månad. Att ta bort månadsnamnet är den varaktiga lösningen.</dd>
+      <dt>Tid</dt>
+      <dd><strong>10 minuter</strong>. Två textsträngar.</dd>
+    </dl>
+  </div>
+
+  <div class="issue">
+    <div class="issue-head">
+      <span class="rank">04</span>
+      <h3>og:image saknas — varje delad länk visas utan bild</h3>
+      <span class="pill warn">Hög</span>
+    </div>
+    <div class="issue-meta">Konvertering i outbound-kanalen · 20 minuter</div>
+    <dl>
+      <dt>Vad</dt>
+      <dd>Sidan har <code>og:title</code>, <code>og:description</code>, <code>og:type</code> och <code>og:locale</code> — men <strong>ingen <code>og:image</code></strong> och inga <code>twitter:</code>-taggar. Noll träffar på båda i råmarkupen.</dd>
+      <dt>Berörda URL:er</dt>
+      <dd class="u">https://www.bostadsvideo24.se/ — <code>&lt;head&gt;</code></dd>
+      <dt>Varför det kostar</dt>
+      <dd>Rapport 1 landade i att outbound, inte organisk sökning, är kanalen. Då delas länken i LinkedIn-meddelanden, mejl och Slack — och varje gång renderas ett naket textkort utan bild. För ett företag som säljer visuell produktion är det den dyraste möjliga första kontakten.</dd>
+      <dt>Exakt ändring</dt>
+      <dd>Skapa en 1200×630-bild med en tydlig videostillbild och texten "Bostadsvideo på 24 timmar". Lägg <code>&lt;meta property="og:image" content="https://www.bostadsvideo24.se/assets/img/og.jpg"&gt;</code> plus <code>og:image:width</code>, <code>og:image:height</code>, <code>og:url</code> och <code>twitter:card=summary_large_image</code>.</dd>
+      <dt>Tid</dt>
+      <dd><strong>20 minuter</strong> om bilden finns, en timme om den ska produceras.</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- SIDVIKT-DIAGRAM -->
+<section>
+  <h2>Sidvikten i detalj</h2>
+  <div class="bars">
+    <div class="bar-row">
+      <div class="bar-lbl">maklarprofil-exempel.jpg</div>
+      <div class="bar-track"><div class="bar-fill bad" style="width:100%"></div></div>
+      <div class="bar-val">474 442 B</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">stillbilder-underlag.jpg</div>
+      <div class="bar-track"><div class="bar-fill bad" style="width:90.8%"></div></div>
+      <div class="bar-val">430 892 B</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Typsnitt (woff2)</div>
+      <div class="bar-track"><div class="bar-fill warn" style="width:16.2%"></div></div>
+      <div class="bar-val">76 868 B</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">HTML</div>
+      <div class="bar-track"><div class="bar-fill good" style="width:3.7%"></div></div>
+      <div class="bar-val">17 713 B</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">CSS</div>
+      <div class="bar-track"><div class="bar-fill good" style="width:3.3%"></div></div>
+      <div class="bar-val">15 640 B</div>
+    </div>
+  </div>
+  <p class="axis">Byte per resurs, okomprimerat vid nedladdning. Totalt 1 015 555 byte = 992 KB.</p>
+</section>
+
+<!-- ÅTGÄRDA DENNA MÅNAD -->
+<section>
+  <h2>Åtgärda den här månaden</h2>
+  <p class="sub">Tre problem. Ingen av dem blockerar något akut, men alla tre begränsar taket.</p>
+
+  <div class="issue">
+    <div class="issue-head">
+      <span class="rank">05</span>
+      <h3>Hela konverteringen hänger på ett enda JavaScript-beroende</h3>
+      <span class="pill warn">Hög</span>
+    </div>
+    <div class="issue-meta">Konvertering · 30 minuter</div>
+    <dl>
+      <dt>Vad</dt>
+      <dd>Sidan har <strong>noll <code>&lt;form&gt;</code></strong>, <strong>noll <code>&lt;button&gt;</code></strong>, <strong>noll <code>mailto:</code></strong> och <strong>noll <code>tel:</code></strong>. Samtliga sex handlingsknappar är <code>&lt;a href="#boka"&gt;</code> med attributet <code>data-cal-link</code> som öppnar en cal.com-modal via <code>app.cal.com/embed/embed.js</code>.</dd>
+      <dt>Berörda URL:er</dt>
+      <dd class="u">https://www.bostadsvideo24.se/ — 6 element med <code>data-cal-link="stefan-vikstrom-peakmarketing/strategimote-bostadsvideo24"</code></dd>
+      <dt>Varför det kostar</dt>
+      <dd>Om skriptet blockeras av en företagsbrandvägg, en annonsblockerare eller ett tillfälligt avbrott hos cal.com, gör alla sex knappar exakt en sak: de scrollar till en sektion utan bokningsmöjlighet. Besökaren har då ingen väg att höra av sig. Målgruppen är mäklarkontor, och företagsnät blockerar tredjepartsskript oftare än privatpersoners.</dd>
+      <dt>Exakt ändring</dt>
+      <dd>Lägg en synlig reservväg i <code>#boka</code>-sektionen och i sidfoten: en <code>mailto:</code>-länk och ett telefonnummer som fungerar utan JavaScript. Behåll cal.com som primärt val.</dd>
+      <dt>Tid</dt>
+      <dd><strong>30 minuter</strong>.</dd>
+    </dl>
+  </div>
+
+  <div class="issue">
+    <div class="issue-head">
+      <span class="rank">06</span>
+      <h3>Ingen strukturerad data</h3>
+      <span class="pill warn">Medel</span>
+    </div>
+    <div class="issue-meta">Rankning och SERP-yta · 40 minuter</div>
+    <dl>
+      <dt>Vad</dt>
+      <dd><strong>Noll JSON-LD-block</strong> i markupen. Ingen <code>Organization</code>, ingen <code>LocalBusiness</code>, ingen <code>Service</code>, ingen <code>FAQPage</code>.</dd>
+      <dt>Berörda URL:er</dt>
+      <dd class="u">https://www.bostadsvideo24.se/ — hela dokumentet</dd>
+      <dt>Varför det kostar</dt>
+      <dd>Rapport 2 och 3 visade att konkurrenterna har Knowledge Graph-paneler i SERP:en — <code>bostadsfoto.se</code> och <code>bostadsfilm.se</code> har båda panel med adress, telefon och öppettider. Det är gratis SERP-yta som tilldelas företag Google kan identifiera. Utan strukturerad data och utan Google Business Profile finns inget att bygga en panel av.</dd>
+      <dt>Exakt ändring</dt>
+      <dd>Lägg ett <code>Organization</code>-block med namn, logotyp, URL och organisationsnummer, plus ett <code>Service</code>-block för bostadsvideo med <code>areaServed: Sverige</code>. Sidan har redan sex H3-rubriker i frågeform — de kan bli ett <code>FAQPage</code>-block utan att en enda rad brödtext skrivs om.</dd>
+      <dt>Tid</dt>
+      <dd><strong>40 minuter</strong>.</dd>
+    </dl>
+  </div>
+
+  <div class="issue">
+    <div class="issue-head">
+      <span class="rank">07</span>
+      <h3>Ingen canonical-tagg i markupen</h3>
+      <span class="pill mute">Låg</span>
+    </div>
+    <div class="issue-meta">Låg faktisk risk · 5 minuter</div>
+    <dl>
+      <dt>Vad</dt>
+      <dd>Råmarkupen innehåller <strong>noll</strong> <code>&lt;link rel="canonical"&gt;</code>. <span class="pill warn">Låg säkerhet</span> DataForSEO rapporterar samtidigt <code>checks.canonical: true</code> i två separata hämtningar. Jag kan inte förena de två uppgifterna och redovisar därför båda.</dd>
+      <dt>Berörda URL:er</dt>
+      <dd class="u">https://www.bostadsvideo24.se/ — <code>&lt;head&gt;</code></dd>
+      <dt>Varför det kostar</dt>
+      <dd>Mindre än man tror. Omdirigeringarna är redan korrekta: <code>http://</code> och versionen utan www går båda till <code>https://www.</code> med 308 i ett hopp. Det finns bara en sida och inga frågeparametrar. Risken uppstår först när ni börjar köra kampanjlänkar med <code>?utm_source=</code>, eftersom varje sådan variant då kan indexeras separat.</dd>
+      <dt>Exakt ändring</dt>
+      <dd>Lägg <code>&lt;link rel="canonical" href="https://www.bostadsvideo24.se/"&gt;</code> i <code>&lt;head&gt;</code>. Gör det innan den första annonskampanjen, inte efter.</dd>
+      <dt>Tid</dt>
+      <dd><strong>5 minuter</strong>.</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- SÅ SMÅNINGOM -->
+<section>
+  <h2>Åtgärda så småningom</h2>
+
+  <div class="issue">
+    <div class="issue-head">
+      <span class="rank">08</span>
+      <h3>Largest Contentful Paint har aldrig uppmätts</h3>
+      <span class="pill mute">Låg</span>
+    </div>
+    <div class="issue-meta">Mätproblem, inte sidproblem · 15 minuter</div>
+    <dl>
+      <dt>Vad</dt>
+      <dd><code>instant_pages</code> returnerar <code>largest_contentful_paint: 0</code> och <code>first_input_delay: 0</code> i båda hämtningarna. Det är inte ett resultat — det är fält som inte fylls i. <code>on_page/lighthouse</code>, som skulle ha gett riktiga värden, <strong>fallerade tre gånger i rad</strong> med anslutningsfel.</dd>
+      <dt>Berörda URL:er</dt>
+      <dd class="u">https://www.bostadsvideo24.se/</dd>
+      <dt>Varför det spelar roll</dt>
+      <dd>LCP är det Core Web Vital som väger tyngst, och det är exakt det mått som problem 02 påverkar. Utan en mätning kan jag inte visa vad bildoptimeringen faktiskt ger. Jag har därför inte satt någon siffra på förbättringen.</dd>
+      <dt>Exakt ändring</dt>
+      <dd>Kör PageSpeed Insights manuellt på URL:en, före och efter bildoptimeringen. Notera LCP-värdet båda gångerna. När sajten fått trafik kommer fältdata in i Search Console under Core Web Vitals.</dd>
+      <dt>Tid</dt>
+      <dd><strong>15 minuter</strong>, två mätningar.</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- FALSKA LARM -->
+<section>
+  <h2>Ser ut som problem, men är det inte</h2>
+  <p class="sub">Sex saker jag kontrollerade och avfärdade. De står här för att ingen ska lägga tid på dem.</p>
+
+  <table>
+    <caption>Kontrollerat och avfärdat · med skäl</caption>
+    <thead>
+      <tr><th>Observation</th><th class="num">Mätvärde</th><th>Varför det inte är ett problem</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="kw">Renderblockerande CSS</td><td class="num">15 640 B</td>
+        <td><span class="pill good">Vinner</span> En enda stylesheet på 15 KB. Att inline:a den sparar en tur och retur som redan tar 137 ms. Vinsten är inom mätbrus.</td>
+      </tr>
+      <tr>
+        <td class="kw">Bilder saknar title-attribut</td><td class="num">2 av 2</td>
+        <td><span class="pill good">Vinner</span> DataForSEO flaggar <code>no_image_title</code>. Attributet <code>title</code> på bilder har inget SEO-värde. Båda bilderna har beskrivande <code>alt</code>-text, vilket är det som räknas.</td>
+      </tr>
+      <tr>
+        <td class="kw">Omdirigeringskedjor</td><td class="num">1 hopp</td>
+        <td><span class="pill good">Vinner</span> <code>http://bostadsvideo24.se</code> → 308 → <code>https://bostadsvideo24.se</code> → 308 → <code>https://www.bostadsvideo24.se</code>. Permanenta koder, ingen loop, en destination.</td>
+      </tr>
+      <tr>
+        <td class="kw">404-hantering</td><td class="num">HTTP 404</td>
+        <td><span class="pill good">Vinner</span> En URL som inte finns svarar med riktig 404, inte en mjuk 200. Vercel sköter det korrekt utan konfiguration.</td>
+      </tr>
+      <tr>
+        <td class="kw">Endast 1 intern länk</td><td class="num">1 st</td>
+        <td><span class="pill warn">Låg</span> Sant, men det är inget tekniskt fel — sajten har en sida. Bristen på sidor är en innehållsfråga och behandlas i rapport 2 och 3, inte här.</td>
+      </tr>
+      <tr>
+        <td class="kw">Cache-control max-age=0</td><td class="num">0 s</td>
+        <td><span class="pill good">Vinner</span> Ser fel ut, men <code>x-vercel-cache: HIT</code> med <code>age: 1 236 409</code> visar att Vercels edge-cache serverar dokumentet. Rätt uppsättning för HTML som ska kunna uppdateras direkt.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- DE 3 SAKERNA -->
+<section>
+  <h2>De 3 saker jag skulle göra först</h2>
+
+  <div class="action">
+    <div class="n">1</div>
+    <div class="body">
+      <h3>Lägg upp robots.txt och sitemap.xml, verifiera i Search Console</h3>
+      <div class="where">Nya filer: /public/robots.txt och /public/sitemap.xml</div>
+      <p><strong>Exakt ändring:</strong> <code>robots.txt</code> med <code>User-agent: *</code>, <code>Allow: /</code> och en <code>Sitemap:</code>-rad. <code>sitemap.xml</code> med startsidans URL och <code>lastmod</code>. Verifiera sedan domänen i Google Search Console och skicka in sitemapen manuellt.</p>
+      <p><strong>Varför just den:</strong> båda filerna svarar 404 i dag. Tillsammans med noll refererande domäner betyder det att Google saknar varje tänkbar väg in. Allt annat i den här rapporten optimerar en sida som ännu inte kan hittas.</p>
+      <p><strong>Tid:</strong> 20 minuter.</p>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="n">2</div>
+    <div class="body">
+      <h3>Konvertera de två bilderna till WebP</h3>
+      <div class="where">Filer: /assets/img/maklarprofil-exempel.jpg och /assets/img/stillbilder-underlag.jpg</div>
+      <p><strong>Exakt ändring:</strong> WebP med kvalitet 80, maxbredd 1 600 px respektive 2 000 px, serverat via <code>&lt;picture&gt;</code> med JPEG som reserv. Lägg <code>fetchpriority="high"</code> på den första bilden.</p>
+      <p><strong>Varför just den:</strong> 884 KB av sidans 992 KB är dessa två filer. <code>maklarprofil-exempel.jpg</code> ligger på 474 442 byte i 1920×1080, <code>stillbilder-underlag.jpg</code> på 430 892 byte i 3048×400. Allt annat på sidan väger tillsammans 108 KB.</p>
+      <p><strong>Tid:</strong> 45 minuter. <span class="pill warn">Låg säkerhet på utfallet</span> — jag kan inte ange hur mycket LCP förbättras, eftersom LCP aldrig gick att mäta. Mät med PageSpeed Insights före och efter.</p>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="n">3</div>
+    <div class="body">
+      <h3>Ta bort ordet "juli" ur kampanjtexten</h3>
+      <div class="where">Startsidan: navigationsbannern och H2 i prissektionen</div>
+      <p><strong>Exakt ändring:</strong> byt "Introduktionspris hela juli — 50 % rabatt på första månaden" mot "Introduktionspris — 50 % rabatt på första månaden". Två textsträngar.</p>
+      <p><strong>Varför just den:</strong> det är 31 juli 2026 i dag. I morgon säljer sajten ett erbjudande som gått ut, på två synliga platser. Det är rapportens billigaste åtgärd och den enda som blir aktivt skadlig om den inte görs.</p>
+      <p><strong>Tid:</strong> 10 minuter.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MEST VERKNINGSFULLA -->
+<section>
+  <h2>Den enskilt mest verkningsfulla åtgärden</h2>
+
+  <div class="winner">
+    <h3>Sitemap plus Search Console-verifiering</h3>
+    <p class="ink">Av allt på den här sajten är det den enda åtgärd som ändrar sajtens tillstånd i grunden. I dag är svaret på frågan "kan Google hitta den här sajten?" nej — inte långsamt, inte dåligt, utan <strong>nej</strong>. Efter åtgärden är svaret ja.</p>
+    <p><strong>Vad jag förväntar mig att den gör:</strong> att sajten indexeras och börjar ranka på sitt eget varumärkesnamn "bostadsvideo24" inom en till tre veckor. Det är hela förväntan.</p>
+    <p><strong>Vad jag inte förväntar mig:</strong> trafik. Rapport 2 visade att hela den relevanta nischen är 140 sökningar i månaden och att taket vid förstaplats på samtliga sökord är cirka 38 besök per månad. Indexering gör inte sajten synlig för köpare — den gör den bara <em>möjlig</em> att hitta för någon som redan hört namnet, till exempel efter ett outbound-mejl.</p>
+    <p class="ink">Det är fortfarande rätt åtgärd att göra först. Men den löser ett hygienproblem, inte ett tillväxtproblem. Tillväxten ligger i outbound, precis som rapport 1 landade i.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="rpt">
+  <h2>Datakällor &amp; metod</h2>
+
+  <table>
+    <thead><tr><th>Källa</th><th>Vad som hämtades</th><th class="num">Rader</th><th class="num">Hämtad</th></tr></thead>
+    <tbody>
+      <tr><td class="kw">on_page/instant_pages</td><td>https://www.bostadsvideo24.se/ · JS på · sv</td><td class="num">1</td><td class="num">2026-07-31 15:18 UTC</td></tr>
+      <tr><td class="kw">on_page/instant_pages</td><td>Samma URL, tidigare hämtning för jämförelse</td><td class="num">1</td><td class="num">2026-07-31 12:24 UTC</td></tr>
+      <tr><td class="kw">on_page/lighthouse</td><td>Mobil · försökt tre gånger</td><td class="num">0 — fallerade</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">Direkthämtning</td><td>robots.txt och sitemap.xml</td><td class="num">2 svar, båda 404</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">Direkthämtning</td><td>4 URL-varianter för omdirigeringskontroll</td><td class="num">4</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">Direkthämtning</td><td>Råmarkup, 17 713 byte · analys av head, rubriker, länkar, bilder</td><td class="num">1</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">Direkthämtning</td><td>4 statiska resurser · storlek och pixelmått</td><td class="num">4</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">Direkthämtning</td><td>TTFB, 5 mätningar i följd</td><td class="num">5</td><td class="num">2026-07-31</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:32px;color:var(--ink)">Vad som saknas, och varför</h3>
+  <ul class="fine-list">
+    <li><strong>Ej tillgängligt: Largest Contentful Paint och First Input Delay.</strong> <code>instant_pages</code> returnerar <code>0</code> för båda, vilket betyder att fälten inte fylls i — inte att värdet är noll. <code>on_page/lighthouse</code> avbröts tre gånger med <code>MCP server connection lost</code> och gav aldrig något svar. Ingen siffra för LCP förekommer därför i rapporten, och ingen förbättring har prognostiserats för bildoptimeringen.</li>
+    <li><strong>Ej tillgängligt: en riktig crawl.</strong> Den tillgängliga connectorn har inga asynkrona crawl-endpoints, bara enskilda sidhämtningar. Det spelar ingen roll här — sajten har en enda sida, bekräftat av <code>internal_links_count: 1</code> och av att samtliga elva <code>&lt;a&gt;</code>-taggar pekar på ankare på samma sida (<code>#boka</code>, <code>#priser</code>, <code>#resultat</code>, <code>#process</code>). På en sajt med undersidor hade slutsatserna varit ofullständiga.</li>
+    <li><strong>Motstridiga uppgifter om canonical.</strong> Råmarkupen ger noll träffar på <code>rel="canonical"</code>. DataForSEO rapporterar <code>checks.canonical: true</code> i båda hämtningarna. Jag har inte kunnat avgöra vilken som är rätt och har graderat problemet som lågt i stället för att välja sida. Det som skulle avgöra saken: en kontroll i Search Console av vilken URL Google själv väljer som kanonisk.</li>
+    <li><strong>Åtgärdstiderna är mina uppskattningar.</strong> Ingen av dem kommer från API:et. De bygger på vad ändringarna innebär i en Vercel-baserad kodbas och kan variera med hur projektet är uppsatt.</li>
+  </ul>
+
+  <h3 style="margin-top:28px;color:var(--ink)">Vad som är min bedömning, inte API-data</h3>
+  <p class="fine"><strong>Filtreringen.</strong> Uppgiften var att skilja verkliga problem från kosmetiska varningar. Vilka åtta som togs med och vilka sex som avfärdades är mitt urval. Samtliga avfärdade finns listade med mätvärde och skäl så att du kan invända mot enskilda beslut.</p>
+  <p class="fine"><strong>Bedömningen att cal.com-beroendet är en risk.</strong> Jag har konstaterat i markupen att det inte finns något formulär, ingen mailto-länk och inget telefonnummer, och att alla sex knappar bär <code>data-cal-link</code>. Att företagsbrandväggar oftare blockerar tredjepartsskript är en slutsats jag drar, inte något jag mätt på er trafik.</p>
+  <p class="fine" style="margin-top:22px">On-page-score 100 av 100, TTFB 137 ms i median, CLS 0 och samtliga byte-tal kommer från hämtningar gjorda 2026-07-31. Rapporten innehåller inga prognoser.</p>
+</footer>
+
+</div>
+</body>
+</html>

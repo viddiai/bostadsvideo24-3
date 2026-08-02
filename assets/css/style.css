@@ -192,6 +192,13 @@ img { max-width: 100%; height: auto; }
 /* ---------- Siffermur ---------- */
 .stats-head { margin-bottom: 44px; }
 .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.crumbs { font-size: 13px; color: var(--faint); margin-bottom: 22px; display: flex; gap: 8px; }
+.crumbs a { color: var(--muted); text-underline-offset: 3px; }
+.crumbs a:hover { color: var(--accent-deep); }
+
+.stats-source { margin: 20px 0 0; font-size: 13px; line-height: 1.6; color: var(--faint); }
+.stats-source a { color: inherit; text-underline-offset: 3px; }
+.stats-source a:hover { color: var(--accent-deep); }
 .stat-card {
   border: var(--border); border-radius: var(--radius); padding: 26px;
   display: flex; flex-direction: column; gap: 6px; background: var(--bg-card);
@@ -209,6 +216,16 @@ img { max-width: 100%; height: auto; }
 .step-num { font-size: 34px; font-weight: 700; color: var(--accent); }
 .step h3 { margin: 0 0 4px; font-size: 21px; font-weight: 700; }
 .step p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
+
+/* ---------- FAQ ---------- */
+.faq h2 { margin-bottom: 32px; }
+.faq-item { padding: 24px 0; border-top: var(--border); }
+.faq-item h3 { margin: 0 0 8px; font-size: 19px; font-weight: 700; text-wrap: balance; }
+.faq-item p { margin: 0; font-size: 16px; line-height: 1.65; color: var(--muted); text-wrap: pretty; }
+
+.cta-fallback { margin: 24px 0 0; font-size: 15px; line-height: 1.6; color: var(--footer-muted); }
+.cta-fallback a { color: inherit; text-underline-offset: 3px; }
+.cta-fallback a:hover { color: var(--accent-glow); }
 
 /* ---------- Wall of love ---------- */
 .wall-head { margin-bottom: 40px; }
@@ -253,6 +270,8 @@ img { max-width: 100%; height: auto; }
   font-weight: 500; margin-right: 8px;
 }
 .price-period { font-size: 14px; font-weight: 500; color: var(--faint); }
+.price-then { margin: -6px 0 0; font-size: 13px; font-weight: 500; color: var(--faint); }
+.price-card--featured .price-then { color: var(--accent-pale); }
 .price-desc { margin: 0; font-size: 14px; line-height: 1.6; color: var(--muted); }
 .price-list {
   margin: 0; padding: 0; list-style: none;
@@ -327,6 +346,8 @@ img { max-width: 100%; height: auto; }
   padding: 22px 56px; font-size: 13px; color: var(--faint); border-top: var(--border);
 }
 .footer .logo { font-size: 13px; color: var(--ink); }
+.footer a { color: var(--muted); text-underline-offset: 3px; }
+.footer a:hover { color: var(--accent-deep); }
 
 /* ============================================================
    Responsivt

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Synlighet i AI-sök — bostadsvideo24.se</title>
+<style>
+:root{
+  --surface:#1a1a19;
+  --card:#232322;
+  --ink:#ffffff;
+  --ink-2:#c3c2b7;
+  --ink-3:#83827a;
+  --rule:#33332f;
+  --accent:#3987e5;
+  --warn:#e0a03c;
+  --bad:#e66767;
+  --good:#199e70;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--surface);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:56px 40px 96px}
+
+header.rpt{border-bottom:1px solid var(--rule);padding-bottom:32px;margin-bottom:44px}
+.eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin:0 0 14px}
+h1{font-size:40px;font-weight:700;line-height:1.15;margin:0 0 20px;letter-spacing:-.01em}
+.meta{display:flex;flex-wrap:wrap;gap:36px;margin-top:22px}
+.meta div{min-width:110px}
+.meta .k{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:5px}
+.meta .v{font-size:17px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+
+.heroes{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:52px}
+.hero{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:26px 22px}
+.hero .big{font-size:42px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.hero .lbl{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-top:12px;line-height:1.35}
+.hero.bad .big{color:var(--bad)}
+.hero.warn .big{color:var(--warn)}
+.hero.good .big{color:var(--good)}
+.hero.accent .big{color:var(--accent)}
+
+section{margin-bottom:56px}
+h2{font-size:26px;font-weight:700;margin:0 0 8px;letter-spacing:-.01em}
+.sub{color:var(--ink-2);font-size:16px;margin:0 0 24px;max-width:80ch}
+h3{font-size:19px;font-weight:700;margin:0 0 8px}
+p{margin:0 0 16px;color:var(--ink-2);max-width:82ch}
+p.ink{color:var(--ink)}
+strong{color:var(--ink);font-weight:600}
+
+.callout{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:8px;padding:26px 28px;margin-bottom:26px}
+.callout.badbar{border-left-color:var(--bad)}
+.callout.warnbar{border-left-color:var(--warn)}
+.callout.goodbar{border-left-color:var(--good)}
+.callout h3{margin-bottom:10px}
+.callout p:last-child{margin-bottom:0}
+
+table{width:100%;border-collapse:collapse;margin:0 0 14px;font-size:15px}
+caption{text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);padding-bottom:12px}
+th{text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:600;padding:0 14px 12px;border-bottom:1px solid var(--rule)}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+td{background:var(--card);padding:13px 14px;border-bottom:1px solid var(--rule);color:var(--ink-2);vertical-align:top}
+td.kw{color:var(--ink);font-weight:600}
+tbody tr:last-child td{border-bottom:none}
+.note{font-size:14px;color:var(--ink-3);margin:0 0 8px;max-width:92ch}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:var(--ink-2);background:var(--card);padding:2px 6px;border-radius:4px;border:1px solid var(--rule)}
+.u{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;word-break:break-all}
+
+.pill{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:5px;white-space:nowrap}
+.pill.bad{background:rgba(230,103,103,.16);color:var(--bad);border:1px solid rgba(230,103,103,.4)}
+.pill.warn{background:rgba(224,160,60,.16);color:var(--warn);border:1px solid rgba(224,160,60,.4)}
+.pill.good{background:rgba(25,158,112,.16);color:var(--good);border:1px solid rgba(25,158,112,.45)}
+.pill.accent{background:rgba(57,135,229,.16);color:var(--accent);border:1px solid rgba(57,135,229,.45)}
+.pill.mute{background:rgba(131,130,122,.16);color:var(--ink-3);border:1px solid var(--rule)}
+
+.bars{margin:8px 0 10px}
+.bar-row{display:flex;align-items:center;gap:16px;padding:9px 0;border-bottom:1px solid var(--rule)}
+.bar-row:last-child{border-bottom:none}
+.bar-lbl{width:230px;flex:none;font-size:15px;color:var(--ink)}
+.bar-track{flex:1;height:18px;background:var(--card);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);border-radius:3px}
+.bar-fill.good{background:var(--good)}
+.bar-fill.warn{background:var(--warn)}
+.bar-fill.bad{background:var(--bad)}
+.bar-val{width:110px;flex:none;text-align:right;font-variant-numeric:tabular-nums;font-size:15px;font-weight:600;color:var(--ink)}
+.axis{font-size:13px;color:var(--ink-3);margin-top:10px}
+
+.quote{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--warn);border-radius:8px;padding:22px 26px;margin-bottom:16px}
+.quote .q{color:var(--ink);font-size:17px;line-height:1.5;margin:0 0 10px}
+.quote .src{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3)}
+
+.action{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:28px 30px;margin-bottom:18px;display:flex;gap:24px}
+.action .n{flex:none;width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.action .body{flex:1}
+.action h3{margin-bottom:6px;font-size:20px}
+.action .where{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:14px}
+.action p:last-child{margin-bottom:0}
+
+footer.rpt{border-top:1px solid var(--rule);padding-top:34px;margin-top:16px}
+footer.rpt h2{font-size:22px;margin-bottom:18px}
+footer.rpt table{font-size:14px}
+.fine{font-size:14px;color:var(--ink-3);max-width:92ch;margin:0 0 12px}
+.fine strong{color:var(--ink-2)}
+ul.fine-list{font-size:14px;color:var(--ink-3);max-width:92ch;padding-left:20px;margin:0 0 18px}
+ul.fine-list li{margin-bottom:8px}
+@media(max-width:900px){
+  .heroes{grid-template-columns:repeat(2,1fr)}
+  .wrap{padding:36px 22px 64px}
+  h1{font-size:30px}
+  .bar-lbl{width:140px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="rpt">
+  <p class="eyebrow">Rapport 5 — Synlighet i AI-sök</p>
+  <h1>24 köparfrågor, fyra AI-motorer, 73 namngivna leverantörer. Bostadsvideo24 nämns noll gånger.</h1>
+  <div class="meta">
+    <div><div class="k">Varumärke</div><div class="v">Bostadsvideo24</div></div>
+    <div><div class="k">Domän</div><div class="v">bostadsvideo24.se</div></div>
+    <div><div class="k">Marknad</div><div class="v">Sverige · svenska</div></div>
+    <div><div class="k">Motorer</div><div class="v">4 st</div></div>
+    <div><div class="k">Datum</div><div class="v">2026-07-31</div></div>
+  </div>
+</header>
+
+<div class="heroes">
+  <div class="hero accent">
+    <div class="big">24</div>
+    <div class="lbl">Frågekörningar genomförda</div>
+  </div>
+  <div class="hero bad">
+    <div class="big">0</div>
+    <div class="lbl">Gånger Bostadsvideo24 nämns</div>
+  </div>
+  <div class="hero warn">
+    <div class="big">73</div>
+    <div class="lbl">Andra leverantörer som namnges</div>
+  </div>
+  <div class="hero warn">
+    <div class="big">10</div>
+    <div class="lbl">Av 24 svar nämner HF Agency-koncernen</div>
+  </div>
+  <div class="hero accent">
+    <div class="big">5</div>
+    <div class="lbl">Svar där AI:n vägrade namnge någon alls</div>
+  </div>
+</div>
+
+<!-- TÄCKNING -->
+<section>
+  <h2>1. Täckning — vad som faktiskt kontrollerades</h2>
+  <p class="sub">Uppgiften kräver att jag är tydlig med detta, så det står först. Två metoder användes. Den ena fungerade, den andra gick inte att använda på den här marknaden.</p>
+
+  <table>
+    <caption>Metod A — direkta frågor till AI-motorer · fungerade</caption>
+    <thead>
+      <tr><th>Motor</th><th>Modell</th><th class="num">Frågor</th><th class="num">Med webbkällor</th><th class="num">Nämner varumärket</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="kw">ChatGPT</td><td>gpt-5.4 · webbsök på</td><td class="num">8</td><td class="num">4</td><td class="num">0</td></tr>
+      <tr><td class="kw">Perplexity</td><td>sonar-pro · webbsök på</td><td class="num">8</td><td class="num">8</td><td class="num">0</td></tr>
+      <tr><td class="kw">Gemini</td><td>gemini-3.1-pro-preview · webbsök på</td><td class="num">4</td><td class="num">4</td><td class="num">0</td></tr>
+      <tr><td class="kw">Claude</td><td>claude-opus-4-8 · webbsök på</td><td class="num">4</td><td class="num">3</td><td class="num">0</td></tr>
+      <tr><td class="kw"><strong>Summa</strong></td><td>4 motorer</td><td class="num"><strong>24</strong></td><td class="num"><strong>19</strong></td><td class="num"><strong>0</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout badbar">
+    <h3><span class="pill bad">Metod B fungerade inte</span> &nbsp;LLM-omnämnandedatabasen saknar svensk täckning</h3>
+    <p><code>ai_optimization/llm_mentions/search</code> anropades för sex domäner — bostadsvideo24.se, hfagency.se, se360.se, gmshots.com, bostadsfoto.se och husfoto.se. <strong>Noll rader.</strong> Även sökorden "bostadsvideo", "mäklarvideo" och "bostadsfilm" gav noll rader.</p>
+    <p>Innan jag drog slutsatsen att varumärket saknas testade jag databasen mot kontrollvärden. <code>hemnet.se</code>, <code>booli.se</code> och <code>svenskfast.se</code> — tre av Sveriges största bostadssajter — gav också <strong>noll rader</strong>. Samma anrop mot <code>ahrefs.com</code> returnerade ett svar på <strong>95 277 tecken över 1 345 rader</strong>.</p>
+    <p class="ink"><strong>Slutsatsen är alltså inte att Bostadsvideo24 saknas i databasen — det är att databasen inte täcker svenska domäner över huvud taget.</strong> Hela den här rapporten vilar därför på metod A: 24 verkliga frågekörningar, inte på indexerad historik.</p>
+  </div>
+
+  <p class="note">De åtta frågorna: (1) Vilka företag i Sverige gör bostadsvideor åt mäklarkontor? (2) Vad kostar bostadsfilm och bostadsfoto för ett mäklarkontor? (3) Mäklarkontor i Göteborg — vilken leverantör ska vi anlita? (4) Vem levererar mäklarvideo med 24 timmars leveranstid? (5) Vad är e-styling och vilka svenska företag erbjuder det? (6) Bästa mäklarfotograf i Stockholm? (7) Hur får jag video till mina Hemnet-annonser? (8) Vilken byrå ska ett mäklarkontor välja för bostadsfoto och rörligt material? Gemini och Claude kördes på frågorna 1, 3, 5 och 6.</p>
+</section>
+
+<!-- VEM CITERAS -->
+<section>
+  <h2>2. Vilka som citeras i stället</h2>
+  <p class="sub">73 unika leverantörer namngavs över de 24 körningarna. Här är de som återkom i minst tre svar.</p>
+
+  <div class="bars">
+    <div class="bar-row">
+      <div class="bar-lbl">HF Agency</div>
+      <div class="bar-track"><div class="bar-fill warn" style="width:100%"></div></div>
+      <div class="bar-val">7 svar</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Husfoto</div>
+      <div class="bar-track"><div class="bar-fill warn" style="width:100%"></div></div>
+      <div class="bar-val">7 svar</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">GM Shots</div>
+      <div class="bar-track"><div class="bar-fill warn" style="width:85.7%"></div></div>
+      <div class="bar-val">6 svar</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Exposia</div>
+      <div class="bar-track"><div class="bar-fill warn" style="width:71.4%"></div></div>
+      <div class="bar-val">5 svar</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">SE360</div>
+      <div class="bar-track"><div class="bar-fill warn" style="width:71.4%"></div></div>
+      <div class="bar-val">5 svar</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Svensk Bostadsfilm</div>
+      <div class="bar-track"><div class="bar-fill" style="width:57.1%"></div></div>
+      <div class="bar-val">4 svar</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Fotograf Stockholm</div>
+      <div class="bar-track"><div class="bar-fill" style="width:42.9%"></div></div>
+      <div class="bar-val">3 svar</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Fotograf Patrik Lindqvist</div>
+      <div class="bar-track"><div class="bar-fill" style="width:42.9%"></div></div>
+      <div class="bar-val">3 svar</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Diakrit</div>
+      <div class="bar-track"><div class="bar-fill" style="width:42.9%"></div></div>
+      <div class="bar-val">3 svar</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Bostadsvideo24</div>
+      <div class="bar-track"><div class="bar-fill bad" style="width:0%"></div></div>
+      <div class="bar-val">0 svar</div>
+    </div>
+  </div>
+  <p class="axis">Antal av 24 svar där varumärket namnges. HF Agency och Husfoto är samma bolag och förekommer tillsammans i 10 av 24 svar.</p>
+
+  <div class="callout warnbar">
+    <h3><span class="pill warn">Hög</span> &nbsp;Den AI-synliga konkurrensen är inte densamma som den Google-synliga</h3>
+    <p>Elva leverantörer citerades minst två gånger utan att finnas med på de 43 domäner du lämnade in inför rapport 3: <strong>GM Shots</strong> (6 svar), <strong>Exposia</strong> (5), Fotograf Patrik Lindqvist (3), MotionMyProperty (2), Din:Kon (2), Drönarfoto Stockholm (2), Daniel Alloh (2), STHLM Bostadsfoto (2), Bostadsfotograferna (2), Hellström Photography (2) och EJ:s Fotografi (2).</p>
+    <p class="ink">GM Shots citeras oftare än SE360 och Diakrit — två av dina huvudkonkurrenter i sökresultaten. Att bevaka bara Google-konkurrenterna missar alltså den grupp som faktiskt syns när en kontorschef frågar en AI-assistent.</p>
+  </div>
+</section>
+
+<!-- DÄR DÖRREN STÅR ÖPPEN -->
+<section>
+  <h2>3. Där dörren står öppen</h2>
+  <p class="sub">Fem av 24 svar namngav ingen leverantör alls. AI:n ville svara men hade inget att citera. Det är den mest användbara datapunkten i rapporten.</p>
+
+  <div class="quote">
+    <p class="q">"Jag kan tyvärr inte ge dig en verifierad lista just nu."</p>
+    <p class="src">ChatGPT gpt-5.4 · fråga 4: "Vem levererar mäklarvideo med 24 timmars leveranstid i Sverige?"</p>
+  </div>
+
+  <div class="quote">
+    <p class="q">"Jag lyckades inte få fram verifierbara live-resultat för att tryggt namnge specifika aktuella byråer just nu, så jag vill inte chansa på leverantörsnamn."</p>
+    <p class="src">ChatGPT gpt-5.4 · fråga 8: "Vilken byrå ska ett mäklarkontor välja för bostadsfoto och rörligt material?"</p>
+  </div>
+
+  <div class="quote">
+    <p class="q">"Jag försökte verifiera aktuella svenska företag som erbjuder e-styling, men jag fick tyvärr inga användbara träffar i sökningen här."</p>
+    <p class="src">ChatGPT gpt-5.4 · fråga 5: "Vad är e-styling och vilka svenska företag erbjuder det?"</p>
+  </div>
+
+  <div class="callout badbar">
+    <h3><span class="pill bad">Kritisk</span> &nbsp;Er exakta positionering besvaras redan — med någon annans namn</h3>
+    <p>Fråga 4 handlade om 24 timmars leverans. Det är hela ert löfte, det står i er titel och i er H1. ChatGPT vägrade svara. Perplexity gjorde inte det:</p>
+    <div class="quote" style="margin-top:16px;border-left-color:var(--bad)">
+      <p class="q">"Sammanfattningsvis: GM Shots och Daniel Alloh är de mest tydligt snabblevererande aktörerna i Sverige i träffarna, med leverans ofta inom 24h för foto, och sannolikt möjlighet till mycket snabb videoleverans efter överenskommelse."</p>
+      <p class="src">Perplexity sonar-pro · fråga 4</p>
+    </div>
+    <p class="ink">Perplexity rekommenderar två företag som levererar <em>foto</em> inom 24 timmar och gissar sedan att de "sannolikt" klarar video. Ni levererar faktiskt video inom 24 timmar — men eftersom ingen källa säger det får gissningen stå oemotsagd.</p>
+  </div>
+</section>
+
+<!-- VAD DE CITERADE SIDORNA HAR -->
+<section>
+  <h2>4. Vad de citerade sidorna har som er inte har</h2>
+  <p class="sub">Jag gick igenom samtliga URL:er som de 19 källförsedda svaren hämtade från. Tre mönster återkommer, och er sajt bryter mot alla tre.</p>
+
+  <table>
+    <caption>De tre mönstren · med exempel ur de faktiskt citerade URL:erna</caption>
+    <thead>
+      <tr><th>Mönster</th><th>Citerade exempel</th><th>Bostadsvideo24</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="kw">Egen URL per tjänst</td>
+        <td class="u">hfagency.se/film · hfagency.se/e-styling · hfagency.se/maklare · husfoto.se/video · husfoto.se/e-styling · se360.se/filmproduktion/bostadsfilm/ · se360.se/foto-maklare/ · fotografstockholm.se/maklarfotograf/ · bofoto.se/boka-bostadsfotograf/</td>
+        <td><span class="pill bad">Saknas</span> Hela sajten är <strong>en enda URL</strong>. Rapport 4 bekräftade <code>internal_links_count: 1</code>.</td>
+      </tr>
+      <tr>
+        <td class="kw">Närvaro i kataloger</td>
+        <td class="u">fotografer.se/stockholm/bostadsfotograf/ · reco.se · houzz.se · maklarlabbet.se/fotografering.php · ocast.com · offerta.se · partna.se · clutch.co · thatsup.se · gigheaven.com · addagio.io</td>
+        <td><span class="pill bad">Saknas</span> Finns inte i någon av dem. Katalogsidorna citerades i <strong>fyra separata svar</strong>.</td>
+      </tr>
+      <tr>
+        <td class="kw">Tredjepartsomnämnande</td>
+        <td class="u">hemnet.se/artiklar/guider/2024/12/19/alla-vinner-med-video-i-bostadsannonsen · ekonomifokus.se · sfoto.se/prisguiden · fotosidan.se/forum · di.se · livsstil.se · fmf.se</td>
+        <td><span class="pill bad">Saknas</span> Rapport 1 mätte <strong>0 refererande domäner</strong>. Ingen skriver om er.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <h3><span class="pill accent">Det tekniska villkoret bakom alltihop</span></h3>
+    <p>ChatGPT-svarens källor bar taggen <code>?utm_source=openai</code> — beviset på att motorn hämtade sidorna live vid frågetillfället, inte ur träningsdata. AI-motorerna läser alltså webben i realtid. Då gäller samma villkor som för en sökmotor.</p>
+    <p>Rapport 4 visade att bostadsvideo24.se saknar <strong>robots.txt</strong>, saknar <strong>sitemap.xml</strong>, saknar <strong>strukturerad data</strong> och har <strong>noll inlänkar</strong>. En AI-motor som söker efter svenska bostadsvideoleverantörer har ingen mekanism för att hitta sidan, och skulle den hitta den finns ingen <code>Organization</code>-markup som talar om vad företaget heter och gör.</p>
+    <p class="ink">Att synas i AI-sök är inte en separat disciplin här. Det är samma indexeringsproblem som rapport 1 och 4 identifierade, sett från ett annat håll.</p>
+  </div>
+</section>
+
+<!-- DE 3 SAKERNA -->
+<section>
+  <h2>De 3 saker jag skulle göra först</h2>
+  <p class="sub">I ordning efter hur sannolikt de leder till att varumärket citeras.</p>
+
+  <div class="action">
+    <div class="n">1</div>
+    <div class="body">
+      <h3>Registrera företaget i de kataloger AI-motorerna faktiskt citerar</h3>
+      <div class="where">Externa sajter, inte er egen — börja med fotografer.se, reco.se och ocast.com</div>
+      <p><strong>Exakt ändring:</strong> skapa företagsprofil på <code>fotografer.se</code>, <code>reco.se</code>, <code>houzz.se</code>, <code>ocast.com</code>, <code>offerta.se</code> och <code>partna.se</code>. Ange i varje profil uttryckligen "bostadsvideo för mäklarkontor" och "leverans inom 24 timmar". Lägg samtidigt upp Google Business Profile, som rapport 4 rekommenderade.</p>
+      <p><strong>Varför just den:</strong> katalogsidor citerades i fyra av de 19 källförsedda svaren. Perplexity hämtade <code>fotografer.se/stockholm/bostadsfotograf/</code> och <code>maklarlabbet.se/fotografering.php</code>; Gemini hämtade <code>houzz.se</code> och <code>maklarofferter.se</code>. Det är den snabbaste vägen in i AI-motorernas källmaterial, eftersom katalogerna redan är indexerade och redan citeras — er sajt är ingetdera.</p>
+      <p><strong>Tidsåtgång:</strong> en halvdag för samtliga profiler. Detta är den enda av de tre åtgärderna som inte kräver att er egen sajt först blir indexerad.</p>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="n">2</div>
+    <div class="body">
+      <h3>Publicera en sida som uttryckligen besvarar 24-timmarsfrågan</h3>
+      <div class="where">Ny sida: www.bostadsvideo24.se/bostadsvideo-24-timmar</div>
+      <p><strong>Exakt ändring:</strong> en sida vars H1 lyder ungefär "Mäklarvideo levererad inom 24 timmar", med en uttrycklig mening som en AI kan citera ordagrant: vad som ingår, hur klockan räknas, vad som händer om leveransen spricker. Skriv den som ett svar på en fråga, inte som säljtext.</p>
+      <p><strong>Varför just den:</strong> ChatGPT svarade på fråga 4 med "Jag kan tyvärr inte ge dig en verifierad lista just nu". Perplexity fyllde tomrummet med GM Shots och Daniel Alloh och tillade att de "sannolikt" klarar snabb videoleverans. Det är er positionering, obesatt i den ena motorn och felaktigt besatt i den andra.</p>
+      <p><strong>Förutsättning:</strong> sidan gör ingen nytta förrän sitemap och Search Console är på plats — åtgärd 1 i rapport 4. <span class="pill warn">Låg säkerhet på tidsutfallet</span> Jag kan inte säga hur lång tid det tar innan en motor plockar upp sidan; det beror på indexering och på om någon länkar till er.</p>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="n">3</div>
+    <div class="body">
+      <h3>Dela upp enkelsidan i separata tjänste-URL:er</h3>
+      <div class="where">Nya sidor: /bostadsfilm, /maklarfotograf, /priser</div>
+      <p><strong>Exakt ändring:</strong> bryt ut startsidans sektioner till egna URL:er, enligt byggordningen i rapport 2. Lägg <code>Organization</code>- och <code>Service</code>-markup på varje, enligt rapport 4.</p>
+      <p><strong>Varför just den:</strong> jag hittade inte en enda citerad startsida bland konkurrenternas träffar där en djupare sida fanns. Motorerna hämtade <code>hfagency.se/film</code>, <code>husfoto.se/video</code>, <code>se360.se/filmproduktion/bostadsfilm/</code> och <code>fotografstockholm.se/maklarfotograf/</code> — alltid den specifika tjänstesidan. En AI som ska svara på "vem gör bostadsvideo" citerar en sida som handlar om bostadsvideo, inte en sida som handlar om ett företag som bland annat gör bostadsvideo.</p>
+      <p><strong>Bonus:</strong> samma åtgärd står redan som prioritet i rapport 2 av rena SEO-skäl. Den betalar sig i båda kanalerna.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="rpt">
+  <h2>Datakällor &amp; metod</h2>
+
+  <table>
+    <thead><tr><th>Endpoint</th><th>Parametrar</th><th class="num">Rader</th><th class="num">Hämtad</th></tr></thead>
+    <tbody>
+      <tr><td class="kw">ai_optimization/llm_responses/models</td><td>chat_gpt</td><td class="num">48 modeller</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">ai_optimization/llm_responses/models</td><td>perplexity</td><td class="num">3 modeller</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">ai_optimization/llm_responses/models</td><td>gemini</td><td class="num">7 modeller</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">ai_optimization/llm_responses/models</td><td>claude</td><td class="num">13 modeller</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">ai_optimization/llm_responses/live</td><td>chat_gpt · gpt-5.4 · web_search true · 8 frågor</td><td class="num">8 svar</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">ai_optimization/llm_responses/live</td><td>perplexity · sonar-pro · web_search true · 8 frågor</td><td class="num">8 svar</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">ai_optimization/llm_responses/live</td><td>gemini · gemini-3.1-pro-preview · web_search true · 4 frågor</td><td class="num">4 svar</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">ai_optimization/llm_responses/live</td><td>claude · claude-opus-4-8 · web_search true · 4 frågor</td><td class="num">4 svar</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">ai_optimization/llm_mentions/search</td><td>chat_gpt · 6 måldomäner inkl. bostadsvideo24.se</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">ai_optimization/llm_mentions/search</td><td>chat_gpt · 3 sökord: bostadsvideo, mäklarvideo, bostadsfilm</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">ai_optimization/llm_mentions/search</td><td>chat_gpt · kontroll: hemnet.se, booli.se, svenskfast.se</td><td class="num">0</td><td class="num">2026-07-31</td></tr>
+      <tr><td class="kw">ai_optimization/llm_mentions/search</td><td>chat_gpt · kontroll: ahrefs.com</td><td class="num">1 345 rader</td><td class="num">2026-07-31</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:32px;color:var(--ink)">Vad som saknas, och varför</h3>
+  <ul class="fine-list">
+    <li><strong>Ej tillgängligt: historiska omnämnandemått, AI-sökvolym och trendkurvor.</strong> Samtliga sådana mått kommer från <code>llm_mentions</code>-databasen, som returnerade noll rader för varje svensk domän jag testade — inklusive Hemnet, Booli och Svensk Fastighetsförmedling. Samma anrop mot ahrefs.com returnerade 1 345 rader, vilket visar att endpointen fungerar men saknar svensk täckning. Inga siffror för AI-sökvolym eller omnämnandeandel förekommer därför i rapporten.</li>
+    <li><strong>Ojämn täckning mellan motorerna.</strong> ChatGPT och Perplexity kördes på alla åtta frågorna, Gemini och Claude på fyra. Det gör att jämförelser mellan motorer inte är helt rättvisa. Antalet frågor per motor står utskrivet i täckningstabellen så att du kan väga in det.</li>
+    <li><strong>En körning fallerade och gjordes om.</strong> ChatGPT fråga 6 gav först ett anslutningsfel och kördes om framgångsrikt. Resultatet i rapporten kommer från omkörningen.</li>
+    <li><strong>Ett svar per fråga och motor.</strong> LLM-svar varierar mellan körningar. Jag har kört varje kombination en gång, inte flera, vilket betyder att enskilda leverantörsnamn kan skifta vid en omkörning. Huvudresultatet — noll omnämnanden av Bostadsvideo24 över 24 körningar — är däremot inte ett slumputfall.</li>
+  </ul>
+
+  <h3 style="margin-top:28px;color:var(--ink)">Vad som är min bedömning, inte API-data</h3>
+  <p class="fine"><strong>Frågorna.</strong> De åtta frågorna är formulerade av mig utifrån vad en kontorschef rimligen skulle fråga en AI-assistent. De kommer inte från uppmätt sökdata — rapport 2 visade att sådan data knappt existerar i den här nischen. En annan uppsättning frågor kan ge andra leverantörsnamn.</p>
+  <p class="fine"><strong>Räkningen av varumärken.</strong> Jag har räknat hur många av de 24 svaren som nämner varje leverantör. Sammanslagningen av HF Agency och Husfoto till ett bolag bygger på beviset i rapport 3 och är min tolkning — motorerna behandlar dem som separata varumärken.</p>
+  <p class="fine"><strong>De tre mönstren i avsnitt 4.</strong> Att citerade sidor tenderar att vara djupa tjänstesidor, kataloger och tredjepartsomnämnanden är min läsning av de URL:er motorerna faktiskt hämtade. Det är ett mönster, inte en uppmätt rankningsfaktor.</p>
+  <p class="fine" style="margin-top:22px">Rapporten innehåller inga prognoser och inga uppskattade mått. Samtliga svar hämtades 2026-07-31 via DataForSEO:s AI Optimization-endpoints.</p>
+</footer>
+
+</div>
+</body>
+</html>

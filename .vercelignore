@@ -2,3 +2,8 @@ Bostadsvideo24 Landningssida.html
 README.md
 _extracted
 assets/img/*.png
+
+# Internt underlag — får ALDRIG publiceras.
+# Innehåller konkurrentanalys, sökordsdata, prisstrategi och det faktum att
+# domänen rankar på noll sökord. Verifiera efter deploy att /seo/ ger 404.
+seo
