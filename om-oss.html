@@ -57,6 +57,7 @@ Cal.ns["strategimote-bostadsvideo24"]("ui", {"cssVarsPerTheme":{"light":{"cal-br
       "@id": "https://www.bostadsvideo24.se/#grundare",
       "name": "Stefan",
       "jobTitle": "Grundare",
+      "image": "https://www.bostadsvideo24.se/assets/img/stefan-grundare.jpg",
       "worksFor": { "@id": "https://www.bostadsvideo24.se/#organization" }
     }
   ]
@@ -85,29 +86,23 @@ Cal.ns["strategimote-bostadsvideo24"]("ui", {"cssVarsPerTheme":{"light":{"cal-br
       <nav class="crumbs" aria-label="Brödsmulor">
         <a href="/">Start</a> <span aria-hidden="true">/</span> <span>Om oss</span>
       </nav>
-      <span class="section-label">Om oss</span>
-      <h1>Vi är videoteamet som mäklare hyr in — <em>utan att någon behöver boka en inspelning.</em></h1>
-      <p class="about-lead">Bostadsvideo24 föddes ur en enkel observation: rörlig bild säljer bostäder bättre, men nästan ingen mäklare hinner producera den. Traditionell filmproduktion kostar för mycket, tar för lång tid och kräver att någon åker ut med kamera. Så objekt efter objekt läggs ut på Hemnet med bara stillbilder.</p>
-      <p class="about-kicker">Vi byggde bort hela det problemet.</p>
-
-      <!--
-        PORTRÄTT SAKNAS. Bilden assets/img/stefan-grundare.jpg finns inte i
-        projektet. Lägg den där (gärna 4:5, minst 1 200 px bred) och
-        avkommentera blocket nedan — då blir hero tvåspaltig som i utkastet.
-        Tills dess står signaturen ensam, vilket fungerar men är svagare:
-        ett ansikte på en om-oss-sida är det som gör bolaget till en person.
-
-      <div class="portrait">
-        <picture>
-          <source srcset="assets/img/stefan-grundare.webp" type="image/webp">
-          <img src="assets/img/stefan-grundare.jpg" alt="Stefan, grundare av Bostadsvideo24" width="1200" height="1500">
-        </picture>
-      </div>
-      -->
-
-      <div class="byline">
-        <div class="name">Stefan</div>
-        <div class="role">Grundare, Bostadsvideo24</div>
+      <div class="about-hero-grid">
+        <div class="about-hero-copy">
+          <span class="section-label">Om oss</span>
+          <h1>Vi är videoteamet som mäklare hyr in — <em>utan att någon behöver boka en inspelning.</em></h1>
+          <p class="about-lead">Bostadsvideo24 föddes ur en enkel observation: rörlig bild säljer bostäder bättre, men nästan ingen mäklare hinner producera den. Traditionell filmproduktion kostar för mycket, tar för lång tid och kräver att någon åker ut med kamera. Så objekt efter objekt läggs ut på Hemnet med bara stillbilder.</p>
+          <p class="about-kicker">Vi byggde bort hela det problemet.</p>
+          <div class="byline">
+            <div class="name">Stefan</div>
+            <div class="role">Grundare, Bostadsvideo24</div>
+          </div>
+        </div>
+        <div class="portrait">
+          <picture>
+            <source srcset="assets/img/stefan-grundare.webp" type="image/webp">
+            <img src="assets/img/stefan-grundare.jpg" alt="Stefan, grundare av Bostadsvideo24" width="1200" height="1500" fetchpriority="high" decoding="async">
+          </picture>
+        </div>
       </div>
     </div>
   </header>

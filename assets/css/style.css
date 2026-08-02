@@ -193,6 +193,17 @@ img { max-width: 100%; height: auto; }
 .stats-head { margin-bottom: 44px; }
 .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 /* ---------- Om oss ---------- */
+.about-hero-grid { display: grid; grid-template-columns: 1.06fr .94fr; gap: 56px; align-items: end; }
+.about-hero-copy { display: flex; flex-direction: column; align-items: flex-start; }
+.about-hero-copy .section-label { margin-bottom: 18px; }
+.about-hero-copy h1 { font-size: 52px; max-width: 15ch; margin-bottom: 28px; }
+.about-hero-copy .about-kicker { margin-top: 12px; }
+/* Porträttet är taget mot vit studiobakgrund. Utan ram flyter det ihop med
+   sidans krämvita botten — ramen är samma som sajtens övriga bildramar. */
+.portrait img {
+  display: block; width: 100%; height: auto;
+  border: var(--border); border-radius: var(--radius);
+}
 .about-lead { font-size: 18px; line-height: 1.7; color: var(--muted); max-width: 56ch; margin: 0 0 20px; text-wrap: pretty; }
 .about-kicker { font-size: 24px; line-height: 1.45; font-weight: 700; color: var(--ink); margin: 30px 0 0; letter-spacing: -0.01em; }
 .byline { margin-top: 34px; padding-left: 16px; border-left: 3px solid var(--accent); }
@@ -217,6 +228,9 @@ img { max-width: 100%; height: auto; }
 .about-row p { margin: 0; font-size: 16px; line-height: 1.68; color: var(--muted); max-width: 60ch; text-wrap: pretty; }
 
 @media (max-width: 900px) {
+  .about-hero-grid { grid-template-columns: 1fr; gap: 36px; }
+  .about-hero-copy h1 { font-size: 40px; }
+  .portrait { order: -1; max-width: 320px; }
   .about-cols { grid-template-columns: 1fr; gap: 36px; }
   .about-row { grid-template-columns: 1fr; gap: 8px; }
 }
