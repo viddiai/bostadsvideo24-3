@@ -8,7 +8,7 @@ Bostadsvideo24 är en tjänst från Peak Automation AB (org.nr 559555-6936), Met
 
 1. Mäklarkontoret skickar objektets uppgifter och sina befintliga professionella bilder.
 2. Bostadsvideo24 producerar och redigerar videon i kontorets egna mallar och varumärke.
-3. Färdig film levereras inom 24 timmar från godkänt korrektur.
+3. Färdig film levereras inom 24 timmar från godkänt material.
 
 Eftersom videon byggs av bilder som redan finns behöver ingen resa till objektet. Det är skälet till att leveranstiden är 24 timmar och att hela Sverige täcks.
 
@@ -32,7 +32,7 @@ Introduktionserbjudande: 50 % rabatt på första månaden (3 950 / 7 450 / 14 95
 
 ## Leveransvillkor
 
-- Leverans inom 24 timmar räknat från godkänt korrektur.
+- Leverans inom 24 timmar räknat från godkänt material.
 - De 24 timmarna räknas under vardagar klockan 08.00–17.00.
 - Om en försening beror på Bostadsvideo24 får kunden videon utan kostnad.
 - Stillbilder ingår inte i leveransen — kunden tillhandahåller bilderna.
