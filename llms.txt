@@ -51,5 +51,6 @@ Mäklarkontor, kontorschefer, franchisetagare, högvolymsteam och enskilda fasti
 
 - [Startsida](https://www.bostadsvideo24.se/): tjänst, paket, priser och vanliga frågor
 - [Mäklarfotograf](https://www.bostadsvideo24.se/maklarfotograf): hur tjänsten fungerar för kontor som redan anlitar en mäklarfotograf — Bostadsvideo24 fotograferar inte utan producerar film av fotografens befintliga bilder
+- [Om oss](https://www.bostadsvideo24.se/om-oss): teamet bakom tjänsten, tekniken och de tre principer verksamheten bygger på
 - [Vanliga frågor](https://www.bostadsvideo24.se/#fragor): pris, leveranstid, format, täckning och arbetssätt
 - [Paket och priser](https://www.bostadsvideo24.se/#priser): de tre paketen i detalj
