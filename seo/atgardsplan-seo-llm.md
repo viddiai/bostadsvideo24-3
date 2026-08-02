@@ -157,7 +157,7 @@ Topp 10 består av fotografer som alla säljer samma sak. Er sida är den enda s
 
 ### Vad som saknas på sidan
 
-**Tekniska krav på bildunderlaget.** Sidan säger att ni arbetar med kundens befintliga bilder, men inte hur många bilder som behövs, vilken upplösning som krävs eller om något format inte fungerar. Jag har inte uppgifterna och har därför inte skrivit något om det. Det är den första frågan en kontorschef ställer efter "kostar det något extra", och den bör in i FAQ:n.
+**~~Tekniska krav på bildunderlaget~~ — TILLAGT 2026-08-02.** FAQ-frågan "Vilken kvalitet måste bilderna hålla?" finns nu på både startsidan och : originalfiler i stället för Hemnet-nedladdningar, riktmärke 2 400 px, 8–15 bilder per objekt, tre typer som inte fungerar, och löfte om granskning samma dag.
 
 **Referenser.** Sidan har inga kundcitat. Startsidans "wall of love" är fortfarande platshållare. Ett enda citat från ett kontor som behållit sin fotograf och lagt till film vore det starkaste beviset på hela sidan.
 
