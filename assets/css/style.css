@@ -201,7 +201,7 @@ img { max-width: 100%; height: auto; }
    med sidans krämvita botten. Kanten är samma ink-linje som övriga bildramar. */
 .byline-img {
   display: block; width: 88px; height: 88px;
-  border-radius: 50%; border: var(--border); object-fit: cover;
+  border-radius: var(--radius); border: var(--border); object-fit: cover;
 }
 .about-lead { font-size: 18px; line-height: 1.7; color: var(--muted); max-width: 56ch; margin: 0 0 20px; text-wrap: pretty; }
 .about-kicker { font-size: 24px; line-height: 1.45; font-weight: 700; color: var(--ink); margin: 30px 0 0; letter-spacing: -0.01em; }
