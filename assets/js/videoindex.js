@@ -42,7 +42,6 @@ document.querySelectorAll(".video-facade").forEach(function (btn) {
     var iframe = document.createElement("iframe");
     iframe.src = src + (src.indexOf("?") === -1 ? "?" : "&") + "autoplay=true";
     iframe.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
-    iframe.allowFullscreen = true;
     iframe.title = btn.getAttribute("aria-label") || "Videospelare";
     frame.appendChild(iframe);
     btn.remove();

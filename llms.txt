@@ -1,13 +1,17 @@
 # Bostadsvideo24
 
-> Bostadsvideo24 är ett externt videoteam för svenska mäklarkontor. Företaget producerar bostadsfilm och mäklarvideo från mäklarens befintliga professionella stillbilder — ingen filmning på plats — och levererar färdig, redigerad film inom 24 timmar till fast månadspris.
+> Bostadsvideo24 är mäklarkontorets externa videoavdelning. Företaget producerar bostadsfilm från de professionella stillbilder kontoret redan beställt till varje objekt — ingen filmning på plats — och levererar färdig, redigerad film inom 24 timmar. Fast pris per mäklare och månad, alla publicerade objekt ingår. Målgruppen är franchisetagare, kontorschefer och VD för mäklarföretag.
 
 Bostadsvideo24 är en tjänst från Peak Automation AB (org.nr 559555-6936), Metodvägen 2 B, 435 33 Mölnlycke. Verksamheten täcker hela Sverige.
 
+## Videoindex — så börjar ett samarbete
+
+Nya kontor börjar med ett gratis **Videoindex**: en rapport som visar hur många aktiva objekt kontoret har ute, hur många av dem som har film, samma siffror för samtliga mäklarkontor i kommunen (rangordnade), kontorets placering i lokal videotäckning samt vad full täckning skulle kosta för ett kontor av den storleken. Rapporten bygger enbart på publik annonsdata — inga objektbilder används — och levereras inom 24 timmar. Den beställs via formuläret på startsidan.
+
 ## Hur tjänsten fungerar
 
-1. Mäklarkontoret skickar objektets uppgifter och sina befintliga professionella bilder.
-2. Bostadsvideo24 producerar och redigerar videon i kontorets egna mallar och varumärke.
+1. Kontoret lägger ut objektet som vanligt. Bostadsvideo24 hämtar de bilder som redan beställts.
+2. Bostadsvideo24 klipper och brandar filmen i kontorets mall — logga, färger och mäklarens profil-bar.
 3. Färdig film levereras inom 24 timmar från godkänt material.
 
 Eftersom videon byggs av bilder som redan finns behöver ingen resa till objektet. Det är skälet till att leveranstiden är 24 timmar och att hela Sverige täcks.
@@ -16,19 +20,25 @@ Eftersom videon byggs av bilder som redan finns behöver ingen resa till objekte
 
 - **16:9** — för Hemnet och kontorets egen hemsida (Hemnet visar video direkt i annonsens bildgalleri)
 - **9:16** — för Instagram, TikTok och Facebook
-- **Mäklarprofil-bar** — mäklarens porträtt och kontorets logotyp inlagt i filmen
+- **Kort loop för delning** samt mäklarens profil-bar och kontorets logotyp i filmen
 
 ## Priser
 
-Fast månadspris, inte styckpris per objekt. Jämförelsen är styckkostnader på 3 000–10 000 kronor per objekt hos traditionella leverantörer.
+Fast pris per mäklare och månad — alla kontorets publicerade objekt ingår. Inte styckpris per film.
 
-| Paket | Pris per månad | Omfattning |
-|---|---|---|
-| Flaggskepp | 7 900 kr | 1×30 sekunder eller 2×15 sekunder |
-| Topp-producent | 14 900 kr | 3×30 sekunder eller 6×15 sekunder |
-| Office / Team | 29 900 kr | ca 6×30 sekunder eller 12×15 sekunder |
+| Kontorets storlek | Pris per mäklare och månad |
+|---|---|
+| 3–5 mäklare | 2 400 kr |
+| 6–9 mäklare | 2 100 kr |
+| 10+ mäklare | 1 900 kr |
 
-Introduktionserbjudande: 50 % rabatt på första månaden (3 950 / 7 450 / 14 950 kr första månaden).
+Alla priser exkl. moms. Minst 3 platser. Rimlig användning: upp till 4 publicerade objekt per mäklare och månad. Uppstart och mallbygge i kontorets varumärke: 0 kr. Ingen bindningstid — 30 dagars uppsägning.
+
+Exempel: ett kontor med fem mäklare betalar 12 000 kr per månad och får film på varje objekt. Vid normal volym, cirka 150 objekt om året, blir det under 1 000 kr per film. En bostadsfilm köpt styckvis kostar normalt 1 700–3 000 kr och kräver fotograf på plats.
+
+## Varför video (Hemnets data, december 2024)
+
+Enligt Hemnets egen mätning ("Alla vinner med video i bostadsannonsen", december 2024) ger annonser med video 44 % fler bokade visningar, delas 76 % oftare och sparas 31 % oftare. Videoöppningarna per annons gick från 4 till 19 efter att Hemnet lade video direkt i bildgalleriet. Hemnet konstaterar samtidigt att relativt få mäklare använder video regelbundet.
 
 ## Leveransvillkor
 
@@ -36,21 +46,22 @@ Introduktionserbjudande: 50 % rabatt på första månaden (3 950 / 7 450 / 14 95
 - De 24 timmarna räknas under vardagar klockan 08.00–17.00.
 - Om en försening beror på Bostadsvideo24 får kunden videon utan kostnad.
 - Stillbilder ingår inte i leveransen — kunden tillhandahåller bilderna.
+- Kontoret äger filmerna utan tidsgräns, även efter avslutat kundförhållande.
 
 ## Vem tjänsten är för
 
-Mäklarkontor, kontorschefer, franchisetagare, högvolymsteam och enskilda fastighetsmäklare i Sverige.
+Franchisetagare, kontorschefer och VD för mäklarföretag i Sverige. Enskilda mäklare kan beställa ett Videoindex men tjänsten säljs per kontor (minst 3 platser).
 
 ## Kontakt
 
 - E-post: info@bostadsvideo24.se
 - Telefon: 076-028 87 32
-- Demo bokas via kalenderlänk på startsidan.
+- Videoindex beställs via formuläret på startsidan.
 
 ## Länkar
 
-- [Startsida](https://www.bostadsvideo24.se/): tjänst, paket, priser och vanliga frågor
+- [Startsida](https://www.bostadsvideo24.se/): Videoindex, tjänsten, pris per mäklare och vanliga frågor
 - [Mäklarfotograf](https://www.bostadsvideo24.se/maklarfotograf): hur tjänsten fungerar för kontor som redan anlitar en mäklarfotograf — Bostadsvideo24 fotograferar inte utan producerar film av fotografens befintliga bilder
 - [Om oss](https://www.bostadsvideo24.se/om-oss): teamet bakom tjänsten, tekniken och de tre principer verksamheten bygger på
-- [Vanliga frågor](https://www.bostadsvideo24.se/#fragor): pris, leveranstid, format, täckning och arbetssätt
-- [Paket och priser](https://www.bostadsvideo24.se/#priser): de tre paketen i detalj
+- [Vanliga frågor](https://www.bostadsvideo24.se/#fragor): mäklarnas arbetsinsats, ägande, kedjeriktlinjer och uppstart
+- [Priser](https://www.bostadsvideo24.se/#priser): pris per mäklare och räkneexempel
