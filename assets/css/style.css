@@ -546,8 +546,11 @@ img { max-width: 100%; height: auto; }
 /* ---------- Videoindex-sektionen: tvåspalt + punktlista ---------- */
 .vi-grid2 { display: grid; grid-template-columns: 1fr 420px; gap: 44px; align-items: start; }
 .vi-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 16.5px; line-height: 1.55; }
-.vi-list li { display: flex; gap: 10px; }
-.vi-list .check { flex: none; }
+/* OBS: li får inte vara flex — textnoderna runt <strong> blir då egna
+   anonyma flex-items och texten sprids ut med luckor. Bocken ligger
+   absolut i stället, så innehållet flödar som vanlig text. */
+.vi-list li { position: relative; padding-left: 26px; }
+.vi-list .check { position: absolute; left: 0; top: 0; }
 .section--solution .vi-list { color: var(--accent-paler); }
 .section--solution .vi-list .check { color: var(--bg); }
 .section--solution .footnote { color: var(--accent-pale); }
