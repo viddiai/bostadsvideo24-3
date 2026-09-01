@@ -13,6 +13,8 @@ valfri webbserver.
 - `index.html` — landningssidan. Primär CTA: *Få ert Videoindex* (formulär längst ned)
 - `tack.html` — tacksida efter formuläret (`/tack`, noindex)
 - `maklarfotograf.html` — SEO-sida mot sökordet "mäklarfotograf"; CTA pekar mot `/#videoindex`
+- `maklarkontor.html` — kampanjlandning för mejlutskick till kontorsägare/franchisetagare
+  (`/maklarkontor`, noindex, utanför sitemap). Eget formulär + demofilmer; bantad nav.
 - `om-oss.html` — om teamet
 - `assets/css/style.css` — designsystem + komponenterna för omtaget (flödesmockup, rapport, pristabell, formulär)
 - `assets/js/videoindex.js` — formulärhantering, video-fasader (Bunny laddas först vid klick) och dataLayer-spårning
