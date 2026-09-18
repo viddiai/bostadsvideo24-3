@@ -15,8 +15,12 @@ valfri webbserver.
 - `maklarfotograf.html` — SEO-sida mot sökordet "mäklarfotograf"; CTA pekar mot `/#videoindex`
 - `maklarkontor.html` — kampanjlandning för mejlutskick till kontorsägare/franchisetagare
   (`/maklarkontor`, noindex, utanför sitemap). Eget formulär + demofilmer; bantad nav.
+
+Prislistan ligger inte på sajten: inget prisavsnitt, ingen navlänk "Priser" och inga
+prisuppgifter i strukturerad data. Priset lämnas i Videoindexet och i säljsamtalet.
 - `om-oss.html` — om teamet
-- `assets/css/style.css` — designsystem + komponenterna för omtaget (flödesmockup, rapport, pristabell, formulär)
+- `assets/css/style.css` — designsystem + komponenterna för omtaget (flödesmockup, rapport, formulär).
+  Pristabellens klasser ligger kvar oanvända efter att prisavsnittet togs bort
 - `assets/js/videoindex.js` — formulärhantering, video-fasader (Bunny laddas först vid klick) och dataLayer-spårning
 - `assets/fonts/` — Bricolage Grotesque (variabelt typsnitt, lokalt för GDPR och prestanda)
 - `assets/img/` — bilder (JPEG för webben, PNG-original)
@@ -29,7 +33,8 @@ valfri webbserver.
   GHL-webhooken finns — då faller formuläret tillbaka på ett förifyllt mejl till
   info@bostadsvideo24.se, så inget lead tappas. Klistra in webhook-URL:en när den är klar.
 - **Spårning:** events pushas till `window.dataLayer` (GTM-redo): `page_view`,
-  `video_play`, `pris_view`, `form_start`, `form_submit`. Se spec §6.
+  `video_play`, `form_start`, `form_submit`. Se spec §6. (`pris_view` ligger kvar i koden
+  men triggas inte längre — det krävde sektionen `#priser`, som är borttagen.)
 - **Video:** Bunny Stream, bibliotek 699355. Iframes laddas först vid klick på poster-bilden.
 - **Bokning:** Cal.com-länken (`stefan-vikstrom-peakmarketing/strategimote-bostadsvideo24`)
   finns bara kvar på tacksidan som nästa steg efter Videoindex.
