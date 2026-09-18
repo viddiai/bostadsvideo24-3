@@ -22,19 +22,11 @@ Eftersom videon byggs av bilder som redan finns behöver ingen resa till objekte
 - **9:16** — för Instagram, TikTok och Facebook
 - **Kort loop för delning** samt mäklarens profil-bar och kontorets logotyp i filmen
 
-## Priser
+## Prismodell
 
-Fast pris per mäklare och månad — alla kontorets publicerade objekt ingår. Inte styckpris per film.
+Fast pris per mäklare och månad — alla kontorets publicerade objekt ingår. Inte styckpris per film. Minst 3 platser. Rimlig användning: upp till 4 publicerade objekt per mäklare och månad. Uppstart och mallbygge i kontorets varumärke: 0 kr. Ingen bindningstid — 30 dagars uppsägning.
 
-| Kontorets storlek | Pris per mäklare och månad |
-|---|---|
-| 3–5 mäklare | 2 400 kr |
-| 6–9 mäklare | 2 100 kr |
-| 10+ mäklare | 1 900 kr |
-
-Alla priser exkl. moms. Minst 3 platser. Rimlig användning: upp till 4 publicerade objekt per mäklare och månad. Uppstart och mallbygge i kontorets varumärke: 0 kr. Ingen bindningstid — 30 dagars uppsägning.
-
-Exempel: ett kontor med fem mäklare betalar 12 000 kr per månad och får film på varje objekt. Vid normal volym, cirka 150 objekt om året, blir det under 1 000 kr per film. En bostadsfilm köpt styckvis kostar normalt 1 700–3 000 kr och kräver fotograf på plats.
+Prisnivån per mäklare beror på kontorets storlek och publiceras inte. Den lämnas tillsammans med det gratis Videoindexet, som bland annat visar vad full videotäckning skulle kosta för ett kontor av den storleken.
 
 ## Varför video (Hemnets data, december 2024)
 
@@ -60,8 +52,7 @@ Franchisetagare, kontorschefer och VD för mäklarföretag i Sverige. Enskilda m
 
 ## Länkar
 
-- [Startsida](https://www.bostadsvideo24.se/): Videoindex, tjänsten, pris per mäklare och vanliga frågor
+- [Startsida](https://www.bostadsvideo24.se/): Videoindex, tjänsten och vanliga frågor
 - [Mäklarfotograf](https://www.bostadsvideo24.se/maklarfotograf): hur tjänsten fungerar för kontor som redan anlitar en mäklarfotograf — Bostadsvideo24 fotograferar inte utan producerar film av fotografens befintliga bilder
 - [Om oss](https://www.bostadsvideo24.se/om-oss): teamet bakom tjänsten, tekniken och de tre principer verksamheten bygger på
 - [Vanliga frågor](https://www.bostadsvideo24.se/#fragor): mäklarnas arbetsinsats, ägande, kedjeriktlinjer och uppstart
-- [Priser](https://www.bostadsvideo24.se/#priser): pris per mäklare och räkneexempel

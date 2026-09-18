@@ -157,6 +157,12 @@ Hemnet konstaterar samtidigt att relativt få mäklare använder video regelbund
 
 ### 3.6 Pris
 
+> **Not 2026-09-18:** prisavsnittet och navlänken "Priser" är borttagna från sajten
+> (startsidan, `/maklarfotograf` och `/maklarkontor`), liksom prisuppgifterna i
+> strukturerad data och i `llms.txt`. Tabellen nedan gäller som intern prislista och
+> som underlag i Videoindexet — inte som publik sektion. Räkneexemplet (§3.7) ligger
+> kvar på startsidan och visar fortfarande 12 000 kr/mån för referenskontoret.
+
 **Rubrik:** "Ett fast pris per mäklare. Alla era objekt ingår."
 
 | Kontorets storlek | Pris per mäklare och månad | Exempel |
